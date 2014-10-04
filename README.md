@@ -2,7 +2,8 @@ Flucso
 ======
 An open source Android client for FriendFeed.
 
-Discussion: https://friendfeed.com/flucso (italian)
+Discussion:
+- https://friendfeed.com/flucso (italian)
 
 Requirements:
 - Retrofit, http://square.github.io/retrofit
