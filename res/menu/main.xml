@@ -1,0 +1,56 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.esorciccio.flucso.MainActivity" >
+
+    <item
+        android:id="@+id/drawer_refresh"
+        android:title="@string/action_refresh"
+        android:icon="@drawable/menu_refresh"
+        android:menuCategory="container"
+        android:orderInCategory="0"
+        android:showAsAction="always"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/drawer_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/menu_settings"
+        android:menuCategory="container"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/drawer_about"
+        android:title="@string/action_about"
+        android:icon="@drawable/menu_about"
+        android:menuCategory="container"
+        android:orderInCategory="2"
+        android:showAsAction="always"
+        app:showAsAction="always"/>
+    
+    <item
+        android:id="@+id/action_search"
+        android:title="@string/action_search"
+        android:icon="@drawable/menu_search"
+        android:menuCategory="system"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/menu_settings"
+        android:menuCategory="system"
+        android:orderInCategory="2"
+        android:showAsAction="never"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/action_about"
+        android:icon="@drawable/menu_about"
+        android:menuCategory="system"
+        android:orderInCategory="3"
+        android:showAsAction="never"
+        app:showAsAction="never"/>
+
+</menu>

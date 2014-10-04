@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Activities -->
+    <string name="action_post">Post</string>
+    <string name="action_search">Search</string>
+    <string name="action_refresh">Refresh navigator</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
+    <string name="post_title">Post on FriendFeed</string>
+    <string name="post_title_new">New post</string>
+    <string name="post_title_edit">Edit post</string>
+    <string name="post_geo">Location</string>
+    <string name="post_tos">Recipients (people/rooms)</string>
+    <string name="post_body">Your message here</string>
+    <string name="post_comment">First comment here</string>
+    <string name="search_title">Search on FriendFeed</string>
+    <string name="search_tabf">Your feeds</string>
+    <string name="search_tabp">Posts (FF search)</string>
+    <string name="search_fwhat">Search for</string>
+    <string name="search_fhint">User or room name</string>
+    <string name="search_fwher">Search in</string>
+    <string name="search_sect1">Include entries from:</string>
+    <string name="search_sect2">Keyword/quality filters:</string>
+    <string name="search_words">Words in title or comments</string>
+    <string name="search_wotit">Words in title only</string>
+    <string name="search_wocom">Words in a comment</string>
+    <string name="search_comby">Has comments from</string>
+    <string name="search_likby">Liked by</string>
+    <string name="search_numst">Has at least:</string>
+    <string name="search_numsc">comments</string>
+    <string name="search_numsl">likes</string>
+    <string name="search_scop1">All FriendFeed users</string>
+    <string name="search_scop2">My friends and groups</string>
+    <string name="search_scop3">A friend list:</string>
+    <string name="search_s3hin">your list</string>
+    <string name="search_scop4">Specific user(s):</string>
+    <string name="search_s4hin">users</string>
+    <string name="search_scop5">Specific group(s):</string>
+    <string name="search_s5hin">groups</string>
+    <string name="search_btngo">Execute search</string>
+    <string name="search_error">Missing required field for selection</string>
+    <string name="subscr_title">Manage subscription</string>
+
+    <!-- Fragments -->
+    <string name="action_popup_none">No actions available</string>
+    <string name="action_search_send">Search</string>
+    <string name="action_post_send">Send</string>
+    <string name="action_feed_post">Post</string>
+    <string name="action_post_file">Attach file</string>
+    <string name="action_post_snap">Attach photo</string>
+    <string name="action_post_home">Post in home</string>
+    <string name="action_post_wimg">Screenshot the linked site</string>
+    <string name="action_feed_dm">Direct message</string>
+    <string name="action_feed_autoups">Auto updates</string>
+    <string name="action_feed_stopups">Pause updates</string>
+    <string name="action_feed_subscr">Set subscription</string>
+    <string name="action_feed_admin">Admin</string>
+    <string name="action_feed_scrollup">New posts available! (tap to go up)</string>
+    <string name="action_entry_speedc">Instant comment</string>
+    <string name="action_entry_summ">Gimme a summary</string>
+    <string name="action_entry_like">Like</string>
+    <string name="action_entry_unlike">Unlike</string>
+    <string name="action_entry_hide">Hide</string>
+    <string name="action_entry_unhide">Un-hide</string>
+    <string name="action_entry_share">Forward</string>
+    <string name="action_entry_edit">Edit post</string>
+    <string name="action_entry_delete">Delete post</string>
+    <string name="action_entry_web">Open in browser</string>
+    <string name="action_gall_prior">Previous</string>
+    <string name="action_gall_next">Next</string>
+    <string name="action_comm_edit">Edit comment</string>
+    <string name="action_comm_delete">Delete comment</string>
+    <string name="entry_tab_dests">To</string>
+    <string name="entry_tab_files">files</string>
+    <string name="entry_tab_likes">likes</string>
+    <string name="entry_tab_comms">comments</string>
+    <string name="entry_cant_comm">comments disabled</string>
+    <string name="entry_new_comm1">new comment</string>
+    <string name="entry_new_comm2">Your comment here</string>
+    <string name="fetching_wait">fetching items, please wait&#8230;</string>
+    <string name="fetching_none">that\'s all for now, enjoy :)</string>
+
+    <!-- Drawer -->
+    <string name="drawer_close">Close drawer</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="noaccount_name">Login to FriendFeed</string>
+    <string name="noaccount_login">An active account is required</string>
+    <string name="waiting_profile">Waiting for profile&#8230;</string>
+    <string name="waiting_entry">Loading entry&#8230;</string>
+
+    <!-- Simple responses -->
+    <string name="ask_delete_entry">Delete this entry?</string>
+    <string name="ask_subscr_open">Subscribe this feed?</string>
+    <string name="ask_subscr_private">Subscribe this feed? (private)</string>
+    <string name="res_rfcall_failed">Request failed</string>
+    <string name="res_intent_failed">Intent failed</string>
+    <string name="res_imcrea_failed">New image failed</string>
+    <string name="res_impath_failed">Invalid path (cannot handle cloud images)</string>
+    <string name="res_immime_failed">Unable to identify the file type</string>
+    <string name="res_imdupe_failed">File already added</string>
+    <string name="res_wparse_failed">0 images found, sorry</string>
+    <string name="res_delentr_ok">Entry deleted</string>
+    <string name="res_inscomm_ok">Comment added</string>
+    <string name="res_updcomm_ok">Comment updated</string>
+    <string name="res_delcomm_ok">Comment deleted</string>
+    <string name="res_inslike_ok">Like added</string>
+    <string name="res_dellike_ok">Like removed</string>
+    <string name="res_hidden_ok">Post hidden</string>
+    <string name="res_unhide_ok">The post is not hidden anymore</string>
+
+    <!-- Login dialog -->
+    <string name="login_username">Username</string>
+    <string name="login_remotekey">Remote key</string>
+    <string name="login_showremkey">Remote key visible</string>
+    <string name="login_browseremkey">Browse to remote key</string>
+
+    <!-- Comment dialog -->
+    <string name="comment_body">Comment body</string>
+
+    <!-- settings -->
+    <string name="settings_title">Flucso settings</string>
+    <string name="pd_login_title">FriendFeed login</string>
+    <string name="pd_login_summ">Your username and remote key combination</string>
+    <string name="pk_startup_title">Startup feed</string>
+    <string name="pk_startup_summ">The first feed you want to see on startup.</string>
+    <string name="pk_locale_title">Localization</string>
+    <string name="pk_locale_summ">The language for group names and other stuff coming out from FriendFeed.</string>
+    <string name="pc_feed_title">Feeds options</string>
+    <string name="pk_feed_upd_title">Automatic updates</string>
+    <string name="pk_feed_upd_summ">The foreground feed will be updated automatically.</string>
+    <string name="pk_feed_fof_title">Include \"Friend-of-Friend\"</string>
+    <string name="pk_feed_fof_summ">Entries that the your friends have commented on or liked.</string>
+    <string name="pk_feed_hid_title">Include hidden posts</string>
+    <string name="pk_feed_hid_summ">(just if you want to be able to unhide something)</string>
+    <string name="pk_feed_elc_title">Inline last comment</string>
+    <string name="pk_feed_elc_summ">Show the last comment snippet under the entry\'s body.</string>
+    <string name="pk_feed_hbk_title">Banned words</string>
+    <string name="pk_feed_hbk_summ">Hide entries containing words (comma delimited list).</string>
+    <string name="pc_entry_title">Posts options</string>
+    <string name="pk_entry_imco_title">Images in comments</string>
+    <string name="pk_entry_imco_summ">When to (try to) show images linked in comments.</string>
+    <string name="pc_serv_title">Service settings</string>
+    <string name="pk_serv_prof_title">Profile update interval</string>
+    <string name="pk_serv_prof_summ">User data, subscriptions, subscribers, etc.</string>
+    <string name="pk_serv_notf_title">Direct Messages notifications</string>
+    <string name="pk_serv_notf_summ">For what kind of messages you want to be notified.</string>
+    <string name="pk_serv_msgs_title">Direct Messages check interval</string>
+    <string name="pk_serv_msgs_summ">Private messages.</string>
+
+    <!-- Misc -->
+    <string name="app_name">Flucso</string>
+    <string name="app_label">A FriendFeed client.</string>
+    <string name="app_descr">An Android client app for FriendFeed (http://friendfeed.com) written by Giorgio Gelardi ggelardi@gmail.com</string>
+    <string name="app_author">Giorgio Gelardi, ggelardi@gmail.com</string>
+    <string name="label_author">Author:</string>
+    <string name="label_credits">Acknowledgements:</string>
+    <string name="yourname">You</string>
+    <string name="yourfeed">Your feed</string>
+    <string name="empty_text"></string>
+    <string name="warning_dm">This is a direct message right now.</string>
+    <string name="comms_summary">Basically they are saying:</string>
+    <string name="dlg_btn_ok">OK</string>
+    <string name="dlg_btn_cancel">Cancel</string>
+    <string name="dlg_btn_retry">Try again</string>
+    <string name="title_loading">Loading&#8230;</string>
+    <string name="title_posting">Sending&#8230;</string>
+    <string name="title_hidden">hidden post from</string>
+    <string name="title_subscr">Subscribed in:</string>
+    <string name="notif_dm_new">You have a new direct message</string>
+    <string name="notif_dm_upd">A conversation has been updated</string>
+
+    <!-- Test -->
+    <string name="test_version">1.25</string>
+    <string name="test_username">Pippo Baudo</string>
+    <string name="test_to_line">Feed di Pippo Baudo, Slucchettati</string>
+    <string name="test_fof_line">(Pietro Gambadilegno, Pippo Baudo and Paolino Paperino liked this)</string>
+    <string name="test_time_1">11 minuti fa</string>
+    <string name="test_time_2">alle 12\:25 del 21/7</string>
+    <string name="test_body_short">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</string>
+    <string name="test_body_long">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</string>
+    <string name="test_nums_1">3</string>
+    <string name="test_nums_2">65</string>
+    <string name="test_nums_3">196</string>
+    <string name="test_type">group</string>
+    <string name="test_link">www.pizzipazzi.com/asd/asdrubale.html</string>
+
+</resources>

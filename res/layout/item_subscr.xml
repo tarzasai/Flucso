@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/img_subscr"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="6dp"
+        android:contentDescription="@string/empty_text"
+        android:src="@drawable/nomugshot_medium" />
+
+    <Switch
+        android:id="@+id/sw_subscr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_action_time"
+        android:text="@string/test_username" />
+
+</LinearLayout>

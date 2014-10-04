@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/divider_empty"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
+    android:showDividers="middle" >
+    
+    <include layout="@layout/shared_entry_header" />
+
+    <net.esorciccio.flucso.WwTextView
+        android:id="@+id/txt_entry_body_big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:linksClickable="true"
+        android:text="@string/test_body_long" />
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/txt_dummy1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="@string/empty_text" />
+
+                <TextView
+                    android:id="@+id/txt_dummy2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="@string/empty_text" />
+
+                <TextView
+                    android:id="@+id/txt_dummy3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="@string/empty_text" />
+
+                <TextView
+                    android:id="@+id/txt_dummy4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="@string/empty_text" />
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>

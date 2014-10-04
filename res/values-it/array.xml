@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    
+    <string-array name="search_feed_scopes">
+        <item>iscrizioni e iscritti</item>
+        <item>solo iscrizioni</item>
+        <item>solo iscritti</item>
+    </string-array>
+    
+    <string-array name="speed_comments">
+        <item>...</item>
+        <item>+1</item>
+        <item>&lt;3</item>
+        <item>:(</item>
+        <item>*__________________*</item>
+        <item>_______@____________________</item>
+        <item>___________________@__________</item>
+        <item>aaaaawwwwwwwwwwww</item>
+        <item>bellachesei!</item>
+        <item>#bombabilissima</item>
+        <item>#gac</item>
+        <item>GIAO</item>
+        <item>#esticazzi</item>
+        <item>OFFAME</item>
+        <item>magna tranquillo</item>
+        <item>MOSDROH!</item>
+        <item>MUOI!</item>
+        <item>NOAO</item>
+        <item>NOAOAOAOAOAOAOAOAO</item>
+        <item>non si capisce</item>
+        <item>OALD</item>
+        <item>ORGHL!</item>
+        <item>#piastrelle</item>
+        <item>PICS</item>
+        <item>#ragazzafriendfeed</item>
+        <item>#ragazzofriendfeed</item>
+        <item>SEI TU?</item>
+        <item>#severomagiusto</item>
+        <item>#stacce</item>
+        <item>stai senza pensieri</item>
+        <item>stattene alla casa</item>
+        <item>ti rimango in terra</item>
+        <item>#troppobraccio</item>
+        <item>uccidiamola!</item>
+        <item>uccidiamolo!</item>
+        <item>WTF?</item>
+    </string-array>
+    
+    <string-array name="pk_locale_values">
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fa</item>
+        <item>fr</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>zh-cn</item>
+    </string-array>
+    
+    <string-array name="pk_locale_names">
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>فارسی</item>
+        <item>Français</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>русский язык</item>
+        <item>Türkçe</item>
+        <item>中文(简体)</item>
+    </string-array>
+    
+    <string-array name="pk_startup_names">
+        <item>Home</item>
+        <item>Messaggi diretti</item>
+        <item>Le mie discussioni</item>
+        <item>Il meglio del giorno</item>
+        <item>Avvio</item>
+    </string-array>
+    
+    <string-array name="pk_startup_values">
+        <item>home</item>
+        <item>filter/direct</item>
+        <item>filter/discussions</item>
+        <item>summary/1</item>
+        <item>list/startup</item>
+    </string-array>
+    
+    <string-array name="pk_entry_imco_names">
+        <item>Mai</item>
+        <item>Solo in WiFi</item>
+        <item>Sempre</item>
+    </string-array>
+    
+    <string-array name="pk_entry_imco_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
+    <string-array name="pk_serv_prof_names">
+        <item>Mai</item>
+        <item>5 minuti</item>
+        <item>10 minuti</item>
+        <item>15 minuti</item>
+        <item>30 minuti</item>
+    </string-array>
+    
+    <string-array name="pk_serv_prof_values">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+    </string-array>
+    
+    <string-array name="pk_serv_notf_names">
+        <item>Disattiva le notifiche</item>
+        <item>Notifica DM personali (non i crosspost)</item>
+        <item>Notifica tutti i messaggi diretti</item>
+    </string-array>
+    
+    <string-array name="pk_serv_notf_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
+    <string-array name="pk_serv_msgs_names">
+        <item>2 minuti</item>
+        <item>5 minuti</item>
+        <item>10 minuti</item>
+        <item>15 minuti</item>
+        <item>30 minuti</item>
+    </string-array>
+    
+    <string-array name="pk_serv_msgs_values">
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+    </string-array>
+    
+</resources>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:divider="@drawable/divider_ffbg"
+    android:orientation="vertical"
+    android:showDividers="middle" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <ListView
+            android:id="@+id/lv_entry_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice" >
+        </ListView>
+
+        <LinearLayout
+            android:id="@+id/l_entry_hdr_float"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/floating_header"
+            android:clickable="true"
+            android:padding="6dp"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/img_entry_from_small"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="6dp"
+                android:contentDescription="@string/empty_text"
+                android:src="@drawable/nomugshot_medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/txt_entry_from_small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:drawableStart="@drawable/entry_private"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/test_username"
+                        android:textColor="@color/entry_name_text"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_entry_to_small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/entry_to"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/test_to_line"
+                        android:textColor="@android:color/darker_gray" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_entry_body_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/test_body_long" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_entry_last"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:alpha="0.6"
+            android:contentDescription="@string/empty_text"
+            android:src="@drawable/go_down"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <net.esorciccio.flucso.ActionEditText
+        android:id="@+id/edt_entry_comm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/entry_new_comm2"
+        android:imeOptions="actionSend"
+        android:inputType="textAutoCorrect|textMultiLine"
+        android:maxLines="3" />
+
+</LinearLayout>

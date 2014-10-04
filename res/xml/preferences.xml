@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <net.esorciccio.flucso.LoginDialog
+        android.dialogIcon="@android:drawable/ic_dialog_info"
+        android:summary="@string/pd_login_summ"
+        android:title="@string/pd_login_title" />
+
+    <ListPreference
+        android:key="pk_startup"
+        android:defaultValue="home"
+        android:dialogTitle="@string/pk_startup_title"
+        android:entries="@array/pk_startup_names"
+        android:entryValues="@array/pk_startup_values"
+        android:summary="@string/pk_startup_summ"
+        android:title="@string/pk_startup_title" />
+
+    <ListPreference
+        android:key="pk_locale"
+        android:defaultValue="en"
+        android:dialogTitle="@string/pk_locale_title"
+        android:entries="@array/pk_locale_names"
+        android:entryValues="@array/pk_locale_values"
+        android:summary="@string/pk_locale_summ"
+        android:title="@string/pk_locale_title" />
+
+    <PreferenceCategory
+        android:key="pc_feed"
+        android:title="@string/pc_feed_title" >
+        
+        <CheckBoxPreference
+            android:key="pk_feed_upd"
+            android:defaultValue="true"
+            android:summary="@string/pk_feed_upd_summ"
+            android:title="@string/pk_feed_upd_title" />
+        
+        <CheckBoxPreference
+            android:key="pk_feed_fof"
+            android:defaultValue="true"
+            android:summary="@string/pk_feed_fof_summ"
+            android:title="@string/pk_feed_fof_title" />
+        
+        <CheckBoxPreference
+            android:key="pk_feed_hid"
+            android:defaultValue="true"
+            android:summary="@string/pk_feed_hid_summ"
+            android:title="@string/pk_feed_hid_title" />
+        
+        <CheckBoxPreference
+            android:key="pk_feed_elc"
+            android:defaultValue="true"
+            android:summary="@string/pk_feed_elc_summ"
+            android:title="@string/pk_feed_elc_title" />
+        
+        <EditTextPreference 
+            android:key="pk_feed_hbk"
+            android:summary="@string/pk_feed_hbk_summ"
+            android:title="@string/pk_feed_hbk_title" />
+        
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pc_entry"
+        android:title="@string/pc_entry_title" >
+        
+        <net.esorciccio.flucso.IntListPreference
+            android:key="pk_entry_imco"
+            android:defaultValue="1"
+            android:dialogTitle="@string/pk_entry_imco_title"
+            android:entries="@array/pk_entry_imco_names"
+            android:entryValues="@array/pk_entry_imco_values"
+            android:summary="@string/pk_entry_imco_summ"
+            android:title="@string/pk_entry_imco_title" />
+        
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:key="pc_service"
+        android:title="@string/pc_serv_title" >
+        
+        <net.esorciccio.flucso.IntListPreference
+            android:key="pk_serv_prof"
+            android:defaultValue="30"
+            android:dialogTitle="@string/pk_serv_prof_title"
+            android:entries="@array/pk_serv_prof_names"
+            android:entryValues="@array/pk_serv_prof_values"
+            android:summary="@string/pk_serv_prof_summ"
+            android:title="@string/pk_serv_prof_title" />
+        
+        <net.esorciccio.flucso.IntListPreference
+            android:key="pk_serv_notf"
+            android:defaultValue="0"
+            android:dialogTitle="@string/pk_serv_notf_title"
+            android:entries="@array/pk_serv_notf_names"
+            android:entryValues="@array/pk_serv_notf_values"
+            android:summary="@string/pk_serv_notf_summ"
+            android:title="@string/pk_serv_notf_title" />
+        
+        <net.esorciccio.flucso.IntListPreference
+            android:key="pk_serv_msgs"
+            android:defaultValue="10"
+            android:dialogTitle="@string/pk_serv_msgs_title"
+            android:entries="@array/pk_serv_msgs_names"
+            android:entryValues="@array/pk_serv_msgs_values"
+            android:summary="@string/pk_serv_msgs_summ"
+            android:title="@string/pk_serv_msgs_title" />
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

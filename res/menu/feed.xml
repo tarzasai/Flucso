@@ -1,0 +1,49 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.esorciccio.flucso.FeedFragment" >
+    
+    <item
+        android:id="@+id/action_feed_post"
+        android:title="@string/action_feed_post"
+        android:icon="@drawable/menu_post"
+        android:menuCategory="container"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        app:showAsAction="always"/>
+    
+    <item
+        android:id="@+id/action_feed_dm"
+        android:title="@string/action_feed_dm"
+        android:icon="@drawable/menu_dm"
+        android:menuCategory="container"
+        android:orderInCategory="30"
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
+    
+    <item
+        android:id="@+id/action_feed_auto"
+        android:title="@string/action_feed_autoups"
+        android:icon="@drawable/menu_play"
+        android:menuCategory="container"
+        android:orderInCategory="20"
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_feed_pause"
+        android:title="@string/action_feed_stopups"
+        android:icon="@drawable/menu_pause"
+        android:menuCategory="container"
+        android:orderInCategory="20"
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
+    
+    <item
+        android:id="@+id/action_feed_subscr"
+        android:title="@string/action_feed_subscr"
+        android:menuCategory="container"
+        android:orderInCategory="95"
+        android:showAsAction="never"
+        app:showAsAction="never"/>
+
+</menu>

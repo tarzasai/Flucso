@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.esorciccio.flucso.PostActivity" >
+    
+    <ScrollView 
+        android:id="@+id/sv_post_main"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/post_bg_nonpriv"
+	    android:padding="6dp" >
+		
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:divider="@drawable/horizontal_line"
+	        android:dividerPadding="4dp"
+	        android:orientation="vertical"
+	        android:showDividers="middle" >
+
+	        <TextView
+	            android:id="@+id/txt_post_link"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="8dp"
+	            android:drawableStart="@drawable/ic_action_web_site"
+	            android:drawablePadding="4dp"
+	            android:ellipsize="end"
+	            android:ems="10"
+	            android:gravity="center_vertical"
+	            android:linksClickable="false"
+	            android:maxLines="2"
+	            android:text="@string/test_link" />
+			
+	        <LinearLayout
+	            android:id="@+id/l_post_sez_dsts"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="10dp"
+	            android:layout_marginTop="10dp"
+	            android:gravity="top" >
+				
+	            <LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:gravity="center_horizontal"
+	                android:orientation="vertical" >
+					
+	                <TextView
+	                    android:id="@+id/txt_post_dsts_count"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:drawableTop="@drawable/ic_action_forward"
+	                    android:gravity="center_horizontal"
+	                    android:text="@string/test_nums_1" />
+						
+	            </LinearLayout>
+				
+	            <LinearLayout
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" >
+					
+	                <AutoCompleteTextView
+	                    android:id="@+id/edt_post_actv"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:ems="10"
+	                    android:hint="@string/post_tos"
+	                    android:maxLines="1" >
+						
+	                    <requestFocus />
+	                </AutoCompleteTextView>
+	
+	                <net.esorciccio.flucso.ExpandableHeightGridView
+	                    android:id="@+id/gv_post_dsts"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:horizontalSpacing="0dp"
+	                    android:numColumns="auto_fit"
+	                    android:stretchMode="columnWidth"
+	                    android:verticalSpacing="0dp" >
+						
+	                </net.esorciccio.flucso.ExpandableHeightGridView>
+	
+	            </LinearLayout>
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:id="@+id/l_post_sez_atts"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="10dp"
+	            android:layout_marginTop="10dp"
+	            android:gravity="top" >
+	
+	            <LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" >
+	
+	                <TextView
+	                    android:id="@+id/txt_post_atts_count"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:drawableTop="@drawable/ic_action_attachment"
+	                    android:gravity="center_horizontal"
+	                    android:text="@string/test_nums_1" />
+	            </LinearLayout>
+	
+	            <net.esorciccio.flucso.ExpandableHeightGridView
+	                android:id="@+id/gv_post_atts"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:horizontalSpacing="0dp"
+	                android:numColumns="3"
+	                android:stretchMode="columnWidth"
+	                android:verticalSpacing="0dp" >
+	            </net.esorciccio.flucso.ExpandableHeightGridView>
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:id="@+id/l_post_sez_body"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp"
+	            android:gravity="top"
+	            android:orientation="vertical" >
+	
+	            <LinearLayout
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_marginBottom="6dp" >
+	
+	                <LinearLayout
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:orientation="vertical" >
+	
+	                    <TextView
+	                        android:id="@+id/txt_post_body_count"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:drawableTop="@drawable/ic_action_edit"
+	                        android:gravity="center_horizontal"
+	                        android:text="@string/test_nums_3" />
+	                </LinearLayout>
+	
+	                <EditText
+	                    android:id="@+id/edt_post_body"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:ems="10"
+	                    android:gravity="top"
+	                    android:hint="@string/post_body"
+	                    android:inputType="textMultiLine"
+	                    android:text="@string/test_time_1" />
+	
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/l_post_sez_comm"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content" >
+	
+	                <ImageView
+	                    android:id="@+id/imageView10"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:contentDescription="@string/empty_text"
+	                    android:src="@drawable/ic_action_new_event" />
+	
+	                <EditText
+	                    android:id="@+id/edt_post_comm"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:ems="10"
+	                    android:hint="@string/post_comment"
+	                    android:inputType="textMultiLine"
+	                    android:text="@string/test_body_short" />
+	            </LinearLayout>
+	
+	        </LinearLayout>
+	
+	    </LinearLayout>
+	
+	</ScrollView>
+
+    <WebView
+        android:id="@+id/wv_post_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:visibility="gone" />
+
+</RelativeLayout>

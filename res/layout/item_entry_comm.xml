@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="6dp"
+    android:paddingStart="6dp"
+    android:paddingEnd="0dp"
+    android:paddingTop="6dp"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/img_comm_from"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/empty_text"
+        android:src="@drawable/nomugshot_medium" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="-3dp"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/txt_comm_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:drawableStart="@drawable/entry_private"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/test_username"
+                android:textColor="@color/entry_name_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_comm_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_time_1"
+                android:textColor="@android:color/darker_gray" />
+
+        </LinearLayout>
+
+        <net.esorciccio.flucso.WwTextView
+            android:id="@+id/txt_comm_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:linksClickable="true"
+            android:text="@string/test_body_short" />
+
+        <ImageView
+            android:id="@+id/img_comm_media"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:contentDescription="@string/empty_text"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_action_picture" />
+        
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_comm_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_text"
+        android:src="@drawable/btn_popup" />
+
+</LinearLayout>

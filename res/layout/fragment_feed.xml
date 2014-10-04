@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/feed_background" >
+
+	<android.support.v4.widget.SwipeRefreshLayout 
+	    android:id="@+id/swipe_feed"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	
+	    <ListView
+	        android:id="@+id/lv_feed"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_gravity="start"
+	        android:layout_weight="4"
+	        android:choiceMode="singleChoice"
+	        android:divider="@android:color/transparent"
+	        android:dividerHeight="6dp"
+	        android:paddingLeft="8dp"
+	        android:paddingRight="8dp"
+	        android:scrollbarStyle="outsideOverlay" />
+	
+	</android.support.v4.widget.SwipeRefreshLayout>
+
+	<ImageView
+	    android:id="@+id/img_feed_first"
+	    android:layout_width="45dp"
+	    android:layout_height="45dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentEnd="true"
+	    android:layout_margin="10dp"
+	    android:alpha="0.4"
+	    android:contentDescription="@string/empty_text"
+	    android:src="@drawable/go_up"
+	    android:visibility="visible" />
+
+</RelativeLayout>

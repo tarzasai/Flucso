@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/edtUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_username" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/edtRemoteKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_remotekey"
+        android:inputType="textPassword" />
+
+    <CheckBox
+        android:id="@+id/chkPwdVisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_showremkey" />
+
+    <Button
+        android:id="@+id/btnRemoteKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_browseremkey" />
+
+</LinearLayout>
