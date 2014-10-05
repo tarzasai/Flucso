@@ -36,7 +36,7 @@ dependencies {
         mavenCentral()
     }
 
-//    compile 'com.google.android:support-v4:r7'
+    
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.squareup.picasso:picasso:2.3.4'
