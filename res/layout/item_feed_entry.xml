@@ -115,14 +115,14 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:contentDescription="@string/empty_text"
-                        android:src="@drawable/nomugshot_medium" />
+                        android:src="@drawable/nomugshot" />
 
                     <ImageView
                         android:id="@+id/img_feed_fof2"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:contentDescription="@string/empty_text"
-                        android:src="@drawable/nomugshot_medium" />
+                        android:src="@drawable/nomugshot" />
                 </LinearLayout>
 
                 <TextView
@@ -150,7 +150,7 @@
                     android:layout_height="25dp"
                     android:layout_marginEnd="6dp"
                     android:contentDescription="@string/empty_text"
-                    android:src="@drawable/nomugshot_medium" />
+                    android:src="@drawable/nomugshot" />
 
                 <TextView
                     android:id="@+id/txt_feed_lc"

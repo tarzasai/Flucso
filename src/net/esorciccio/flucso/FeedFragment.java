@@ -251,7 +251,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		if (item == miSubsc) {
 			pauseUpdates(false);
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			Commons.picasso(getActivity()).load(adapter.feed.getAvatarUrl()).placeholder(R.drawable.nomugshot_medium).into(
+			Commons.picasso(getActivity()).load(adapter.feed.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(
 				new Target() {
 				@Override
 				public void onPrepareLoad(Drawable arg0) {
@@ -465,7 +465,6 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	}
 	
 	public void subscribe() {
-		pauseUpdates(true);
 		Callback<SimpleResponse> callback = new Callback<SimpleResponse>() {
 			@Override
 			public void success(SimpleResponse result, Response response) {

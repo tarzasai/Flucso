@@ -17,7 +17,7 @@
             android:layout_height="25dp"
             android:layout_marginRight="5dp"
             android:contentDescription="@string/empty_text"
-            android:src="@drawable/nomugshot_medium" />
+            android:src="@drawable/nomugshot" />
 
         <TextView
             android:id="@+id/txt_like_from"

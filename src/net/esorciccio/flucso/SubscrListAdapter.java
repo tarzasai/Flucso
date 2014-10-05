@@ -87,7 +87,7 @@ public class SubscrListAdapter extends BaseAdapter {
 		}
 		ListRef item = getItem(position);
 		Commons.picasso(context).load("http://friendfeed-api.com/v2/picture/" + item.fid + "?size=large").placeholder(
-			R.drawable.nomugshot_medium).into(vh.img);
+			R.drawable.nomugshot).into(vh.img);
 		vh.sw.setTag(Integer.valueOf(position));
 		vh.sw.setText(item.name);
 		vh.sw.setChecked(item.active);

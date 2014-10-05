@@ -29,7 +29,7 @@
                 android:layout_height="50sp"
                 android:layout_marginRight="8dp"
                 android:contentDescription="@string/empty_text"
-                android:src="@drawable/nomugshot_medium" />
+                android:src="@drawable/nomugshot" />
 
             <LinearLayout
                 android:id="@+id/user_texts"

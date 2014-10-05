@@ -112,7 +112,7 @@ public class FeedAdapter extends BaseAdapter {
 		}
 		
 		Commons.picasso(context).load(entry.from.getAvatarUrl()).placeholder(
-			R.drawable.nomugshot_medium).into(vh.imgFrom);
+			R.drawable.nomugshot).into(vh.imgFrom);
 		
 		vh.txtFrom.setText(entry.from.getName());
 		vh.txtFrom.setCompoundDrawablesWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
@@ -153,7 +153,7 @@ public class FeedAdapter extends BaseAdapter {
 			Comment c = entry.comments.get(entry.comments.size() - 1);
 			if (c.placeholder)
 				c = entry.comments.get(entry.comments.size() - 2);
-			Commons.picasso(context).load(c.from.getAvatarUrl()).placeholder(R.drawable.nomugshot_medium).into(vh.imgLC);
+			Commons.picasso(context).load(c.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(vh.imgLC);
 			vh.txtLC.setText(Html.fromHtml(c.body));
 		}
 		
@@ -187,13 +187,13 @@ public class FeedAdapter extends BaseAdapter {
 			vh.lFoF.setVisibility(View.VISIBLE);
 			vh.imgFoF1.setVisibility(View.VISIBLE);
 			Commons.picasso(context).load("http://friendfeed-api.com/v2/picture/" + fofs[0] + "?size=large").placeholder(
-				R.drawable.nomugshot_medium).into(vh.imgFoF1);
+				R.drawable.nomugshot).into(vh.imgFoF1);
 			if (fofs.length == 1)
 				vh.imgFoF2.setVisibility(View.GONE);
 			else {
 				vh.imgFoF2.setVisibility(View.VISIBLE);
 				Commons.picasso(context).load("http://friendfeed-api.com/v2/picture/" + fofs[1] + "?size=large").placeholder(
-					R.drawable.nomugshot_medium).into(vh.imgFoF2);
+					R.drawable.nomugshot).into(vh.imgFoF2);
 			}
 		}
 		

@@ -454,7 +454,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 							LayoutInflater inflater = getActivity().getLayoutInflater();
 							View view = inflater.inflate(R.layout.dialog_comm_show, null);
 							Commons.picasso(getActivity()).load(comm.from.getAvatarUrl()).placeholder(
-								R.drawable.nomugshot_medium).into((ImageView) view.findViewById(R.id.img_comm_from));
+								R.drawable.nomugshot).into((ImageView) view.findViewById(R.id.img_comm_from));
 							((TextView) view.findViewById(R.id.txt_comm_from)).setText(comm.from.getName());
 							((TextView) view.findViewById(R.id.txt_comm_body)).setText(Html.fromHtml(comm.body));
 							new AlertDialog.Builder(getActivity()).setTitle(R.string.action_comm_delete).setView(
@@ -583,11 +583,12 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	}
 	
 	private void updateView() {
-		Commons.picasso(getActivity().getApplicationContext()).load(entry.from.getAvatarUrl()).placeholder(
-			R.drawable.nomugshot_medium).into(imgFromB);
-		Commons.picasso(getActivity().getApplicationContext()).load(entry.from.getAvatarUrl()).placeholder(
-			R.drawable.nomugshot_medium).into(imgFromS);
+		if (getActivity() == null)
+			return; // wtf?
 		
+		Commons.picasso(getActivity()).load(entry.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(imgFromB);
+		Commons.picasso(getActivity()).load(entry.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(imgFromS);
+
 		from = entry.from.getName();
 		getActivity().setTitle(from);
 		txtFromB.setText(from);

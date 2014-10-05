@@ -401,7 +401,7 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 	
 	private void profileReady() {
 		Commons.picasso(getApplicationContext()).load(session.profile.getAvatarUrl()).placeholder(
-			R.drawable.nomugshot_medium).into(mUserIcon);
+			R.drawable.nomugshot).into(mUserIcon);
 		mUserLogin.setText(session.getUsername());
 		mUserName.setText(session.profile.name);
 		mUserBox.setOnClickListener(new View.OnClickListener() {

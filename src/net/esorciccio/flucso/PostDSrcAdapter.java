@@ -60,7 +60,7 @@ public class PostDSrcAdapter extends BaseAdapter implements Filterable {
 			vh = (ViewHolder) view.getTag();
 		}
 		Commons.picasso(view.getContext().getApplicationContext()).load(feedlist.get(position).getAvatarUrl()).placeholder(
-			R.drawable.nomugshot_medium).into(vh.img);
+			R.drawable.nomugshot).into(vh.img);
 		vh.txt.setText(feedlist.get(position).getName());
 		return view;
 	}

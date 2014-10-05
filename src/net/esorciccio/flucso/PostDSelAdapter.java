@@ -57,7 +57,7 @@ public class PostDSelAdapter extends BaseAdapter {
 			vh = (ViewHolder) view.getTag();
 		}
 		Commons.picasso(view.getContext().getApplicationContext()).load(feedlist.get(position).getAvatarUrl()).placeholder(
-			R.drawable.nomugshot_medium).into(vh.img);
+			R.drawable.nomugshot).into(vh.img);
 		vh.txt.setText(feedlist.get(position).getName());
 		vh.del.setTag(Integer.valueOf(position));
 		return view;

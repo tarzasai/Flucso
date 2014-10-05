@@ -14,7 +14,7 @@
         android:layout_height="25dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/empty_text"
-        android:src="@drawable/nomugshot_medium" />
+        android:src="@drawable/nomugshot" />
 
     <LinearLayout
         android:layout_width="0dp"
