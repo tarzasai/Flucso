@@ -36,11 +36,15 @@ dependencies {
         mavenCentral()
     }
 
-    
+
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile files('libs/Classifier4J-0.6.jar')
     provided 'com.android.support:appcompat-v7:20.0.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
 }
