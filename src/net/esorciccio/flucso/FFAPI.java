@@ -196,6 +196,13 @@ public class FFAPI {
 		
 		static String lastDeletedEntry = "";
 		
+		public int indexOf(String eid) {
+			for (int i = 0; i < entries.size(); i++)
+				if (entries.get(i).isIt(eid))
+					return i;
+			return -1;
+		}
+		
 		public Entry find(String eid) {
 			for (Entry e : entries)
 				if (e.id.equals(eid))

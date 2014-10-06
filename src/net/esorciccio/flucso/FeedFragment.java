@@ -48,8 +48,8 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	private static final int AMOUNT_INCR = 20;
 	
 	private FeedAdapter adapter;
-	//private String title;
 	private String cursor;
+	private String eid;
 	private int amount;
 	private int lastext = -1;
 	private boolean paused = false;
@@ -136,7 +136,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view == llFooter)
 					return;
-				Entry entry = (Entry) adapter.getItem(position - 1); // because of the header.
+				Entry entry = adapter.getItem(position - 1); // because of the header.
 				if (entry.hidden) {
 					doHideUnhide(entry, true);
 				} else {
@@ -179,6 +179,21 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		Log.v("feed", this.getClass().getName() + ".onActivityCreated");
+		
+		if (savedInstanceState == null)
+			return;
+
+		eid = savedInstanceState.getString("eid", null);
+		cursor = savedInstanceState.getString("cursor", null);
+		amount = savedInstanceState.getInt("amount", AMOUNT_BASE);
+		paused = savedInstanceState.getBoolean("paused");
+	}
+	
+	@Override
 	public void onResume() {
 		super.onResume();
 		
@@ -198,6 +213,10 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
+		//Log.v("feed", this.getClass().getName() + ".onSaveInstanceState");
+		
+		outState.putString("eid", lvFeed != null && adapter.feed != null && adapter.feed.entries.size() > 0 ?
+			adapter.getItem(lvFeed.getFirstVisiblePosition()).id : "");
 		outState.putString("name", fname);
 		outState.putString("cursor", cursor);
 		outState.putInt("amount", amount);
@@ -218,7 +237,6 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (adapter.feed == null) {
-			//miPostF.setVisible(false);
 			miPostU.setVisible(false);
 			miAutoU.setVisible(false);
 			miPause.setVisible(false);
@@ -302,7 +320,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		} catch (Exception err) {
 			return; // wtf?
 		}
-		final Entry entry = (Entry) adapter.getItem(pos);
+		final Entry entry = adapter.getItem(pos);
 		switch (v.getId()) {
 			case R.id.img_entry_from:
 				mContainer.openFeed(entry.from.name, entry.from.id, null);
@@ -527,10 +545,12 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 						cursor = updates.realtime.cursor;
 						amount = adapter.feed.entries.size();
 						adapter.notifyDataSetChanged();
-						lvFeed.smoothScrollToPosition(0);
+						int i = TextUtils.isEmpty(eid) ? 0 : adapter.feed.indexOf(eid);
+						lvFeed.smoothScrollToPosition(i > 0 ? i : 0);
 						context.setTitle(fname);
 						checkAutoUpdMenuItems();
 						lastext = -1; // reset the extender task.
+						eid = null; // reset the saved pos.
 					}
 				});
 			} catch (final Exception error) {
@@ -601,6 +621,9 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 						int offset = lvFeed.getFirstVisiblePosition();
 						adapter.notifyDataSetChanged();
 						if (added > 0) {
+							
+							Log.v("feed", "updater move: " + Integer.toString(added + offset));
+							
 							lvFeed.smoothScrollToPosition(added + offset);
 							if (imgGoUp.getVisibility() == View.VISIBLE)
 								imgGoUp.startAnimation(blink);

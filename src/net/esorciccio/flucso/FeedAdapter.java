@@ -35,12 +35,12 @@ public class FeedAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		return (feed == null || feed.entries == null) ? 0 : feed.entries.size();
+		return feed == null ? 0 : feed.entries.size();
 	}
 	
 	@Override
-	public Object getItem(int position) {
-		return (position < 0 || position >= getCount()) ? null : feed.entries.get(position);
+	public Entry getItem(int position) {
+		return feed.entries.get(position);
 	}
 	
 	@Override
@@ -96,7 +96,7 @@ public class FeedAdapter extends BaseAdapter {
 		vh.txtHide.setTag(Integer.valueOf(position));
 		
 		String tmp;
-		final Entry entry = (Entry) getItem(position);
+		final Entry entry = getItem(position);
 		
 		if (entry.hidden || entry.badwords) {
 			vh.lNormal.setVisibility(View.GONE);
