@@ -136,7 +136,9 @@
     <string name="pk_feed_elc_title">Inline last comment</string>
     <string name="pk_feed_elc_summ">Show the last comment snippet under the entry\'s body.</string>
     <string name="pk_feed_hbk_title">Banned words</string>
-    <string name="pk_feed_hbk_summ">Hide entries containing words (comma delimited list).</string>
+    <string name="pk_feed_hbk_summ">Hide entries containing these words (comma delimited list).</string>
+    <string name="pk_feed_hbf_title">Banned feeds</string>
+    <string name="pk_feed_hbf_summ">Hide entries crossposted in these feeds (comma delimited list of feeds ID, not names).</string>
     <string name="pc_entry_title">Posts options</string>
     <string name="pk_entry_imco_title">Images in comments</string>
     <string name="pk_entry_imco_summ">When to (try to) show images linked in comments.</string>

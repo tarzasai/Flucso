@@ -57,6 +57,11 @@
             android:summary="@string/pk_feed_hbk_summ"
             android:title="@string/pk_feed_hbk_title" />
         
+        <EditTextPreference 
+            android:key="pk_feed_hbf"
+            android:summary="@string/pk_feed_hbf_summ"
+            android:title="@string/pk_feed_hbf_title" />
+        
     </PreferenceCategory>
 
     <PreferenceCategory

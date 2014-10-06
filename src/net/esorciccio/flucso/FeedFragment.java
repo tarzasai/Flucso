@@ -353,7 +353,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	@Override
 	protected void initFragment() {
 		if (adapter != null && adapter.feed != null)
-			adapter.feed.checkBadWords();
+			adapter.feed.setLocalHide();
 		resumeUpdates(false, false);
 	}
 	
@@ -539,7 +539,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 						if (!FeedFragment.this.isVisible() || FeedFragment.this.isRemoving())
 							return;
 						srl.setRefreshing(false);
-						adapter.feed.checkBadWords();
+						adapter.feed.setLocalHide();
 						adapter.feed.update(updates);
 						fname = adapter.feed.name;
 						cursor = updates.realtime.cursor;

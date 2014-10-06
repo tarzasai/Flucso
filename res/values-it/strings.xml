@@ -136,7 +136,9 @@
     <string name="pk_feed_elc_title">Ultimo commento</string>
     <string name="pk_feed_elc_summ">Mostra l\'ultimo commento sotto il testo del post.</string>
     <string name="pk_feed_hbk_title">Parole vietate</string>
-    <string name="pk_feed_hbk_summ">Nascondi i post che contengono le parole elencate (separale con le virgole).</string>
+    <string name="pk_feed_hbk_summ">Nascondi i post che contengono le parole elencate (separate da virgole).</string>
+    <string name="pk_feed_hbf_title">Feed vietati</string>
+    <string name="pk_feed_hbf_summ">Nascondi i post condivisi nei feed elencati (ID dei feed separati da virgole).</string>
     <string name="pc_entry_title">Opzioni per i post</string>
     <string name="pk_entry_imco_title">Anteprima immagini nei commenti</string>
     <string name="pk_entry_imco_summ">Quando vuoi mostrare (se possibile) le immagini linkate nei commenti.</string>

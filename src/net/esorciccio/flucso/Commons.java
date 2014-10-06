@@ -30,6 +30,7 @@ public class Commons {
 		public static final String FEED_HID = "pk_feed_hid";
 		public static final String FEED_ELC = "pk_feed_elc";
 		public static final String FEED_HBK = "pk_feed_hbk";
+		public static final String FEED_HBF = "pk_feed_hbf";
 		public static final String ENTR_IMCO = "pk_entry_imco";
 		public static final String SERV_PROF = "pk_serv_prof";
 		public static final String SERV_NOTF = "pk_serv_notf";

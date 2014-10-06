@@ -215,7 +215,7 @@ public class FFAPI {
 			for (Entry e : feed.entries)
 				if (find(e.id) == null) {
 					entries.add(e);
-					e.checkBadWords();
+					e.setLocalHide();
 					res++;
 				}
 			return res;
@@ -227,7 +227,7 @@ public class FFAPI {
 			for (Entry e : feed.entries)
 				if (e.created) {
 					entries.add(0, e);
-					e.checkBadWords();
+					e.setLocalHide();
 					res++;
 				} else
 					for (Entry old : entries)
@@ -243,10 +243,10 @@ public class FFAPI {
 			return res;
 		}
 		
-		public void checkBadWords() {
-			if (Entry.bWords.size() > 0)
+		public void setLocalHide() {
+			if (Entry.bFeeds.size() + Entry.bWords.size() > 0)
 				for (Entry e : entries)
-					e.checkBadWords();
+					e.setLocalHide();
 		}
 		
 		static class Realtime {
@@ -275,19 +275,25 @@ public class FFAPI {
 		boolean hidden = false; // undocumented
 		boolean created;
 		boolean updated;
-		boolean badwords = false; // local
-		
+		boolean banned = false; // local
+
+		static List<String> bFeeds = new ArrayList<String>();
 		static List<String> bWords = new ArrayList<String>();
 		
-		public void checkBadWords() {
-			badwords = false;
+		public void setLocalHide() {
+			banned = false;
+			for (BaseFeed bf: to)
+				if (bFeeds.contains(bf.id)) {
+					banned = true;
+					return;
+				}
 			if (!TextUtils.isEmpty(rawBody))
 				try {
 					String chk = body.toLowerCase(Locale.getDefault()).trim() + "\n\n\n" +
 						rawBody.toLowerCase(Locale.getDefault()).trim();
 					for (String bw: bWords)
 						if (chk.indexOf(bw) >= 0) {
-							badwords = true;
+							banned = true;
 							return;
 						}
 				} catch (Exception err) {
@@ -432,7 +438,7 @@ public class FFAPI {
 					thumbnails = entry.thumbnails;
 					files = entry.files;
 					geo = entry.geo;
-					checkBadWords();
+					setLocalHide();
 				}
 				for (Comment comm : entry.comments)
 					if (comm.created)

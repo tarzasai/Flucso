@@ -98,7 +98,7 @@ public class FeedAdapter extends BaseAdapter {
 		String tmp;
 		final Entry entry = getItem(position);
 		
-		if (entry.hidden || entry.badwords) {
+		if (entry.hidden || entry.banned) {
 			vh.lNormal.setVisibility(View.GONE);
 			vh.lHidden.setVisibility(View.VISIBLE);
 			vh.txtFromH.setCompoundDrawablesWithIntrinsicBounds(entry.hidden ? R.drawable.ic_action_discard :

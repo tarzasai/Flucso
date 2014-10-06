@@ -1,10 +1,7 @@
 package net.esorciccio.flucso;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import net.esorciccio.flucso.Commons.PK;
@@ -44,17 +41,20 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 			editor.commit();
 		}
 		
-		loadBadWords();
+		loadLocalFilters();
 	}
 	
-	private void loadBadWords() {
+	private void loadLocalFilters() {
 		String chk = prefs.getString(PK.FEED_HBK, "").toLowerCase(Locale.getDefault()).trim();
 		if (TextUtils.isEmpty(chk))
 			Entry.bWords.clear();
-		else {
-			String[] hbk = chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+");//.split("[,\\s]+");
-			Entry.bWords = Arrays.asList(hbk);
-		}
+		else
+			Entry.bWords = Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+"));
+		chk = prefs.getString(PK.FEED_HBF, "").toLowerCase(Locale.getDefault()).trim();
+		if (TextUtils.isEmpty(chk))
+			Entry.bFeeds.clear();
+		else
+			Entry.bFeeds = Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+"));
 	}
 	
 	public FeedInfo profile;
@@ -107,8 +107,8 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 			FFAPI.dropClients();
 		} else if (key.equals(PK.LOCALE)) {
 			FFAPI.dropClients();
-		} else if (key.equals(PK.FEED_HBK)) {
-			loadBadWords();
+		} else if (key.equals(PK.FEED_HBK) || key.equals(PK.FEED_HBF)) {
+			loadLocalFilters();
 		}
 	}
 }
