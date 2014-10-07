@@ -326,6 +326,23 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 			nmg.cancel(FFService.NOTIFICATION_ID); // remove from notification bar
 			return;
 		}
+        if (intent.getAction().equals(FFService.DSC_BASE_NOTIF)) {
+            String fid = "filter/discussions";
+            SectionItem si = session.navigation != null ? session.navigation.getSectionByFeed(fid) : null;
+            if (si == null) {
+                si = new SectionItem();
+                si.id = fid;
+                si.type = "special";
+                si.name = "My Discussions";
+            }
+            if (getFragmentManager().findFragmentByTag(FeedFragment.FRAGMENT_TAG) == null)
+                selectDrawerItem(si);
+            else
+                openFeed(si.name, fid, null);
+            //NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            //nmg.cancel(FFService.NOTIFICATION_ID); // remove from notification bar
+            return;
+        }
 		if (intent.getAction().equals(Intent.ACTION_VIEW)) {
 			Uri data = intent.getData();
 			if (data.getHost().equals("ff.im")) {

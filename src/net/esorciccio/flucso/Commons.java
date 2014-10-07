@@ -38,6 +38,7 @@ public class Commons {
 		public static final String SERV_PROR = "pk_serv_pror";
 		//
 		public static final String SERV_MSGS_CURS = "pk_serv_msgs_cursor";
+        public static final String SERV_DSCS_CURS = "pk_serv_dscs_cursor";
 	}
 	
 	public static boolean isConnected(Context context) {
