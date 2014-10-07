@@ -122,24 +122,16 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				String msg = intent.getStringExtra("message");
-				switch (intent.getAction()) {
-					case FFService.SERVICE_ERROR:
-						Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-						break;
-					case FFService.PROFILE_READY:
-						profileReady();
-						loadNavigation();
-						break;
-					/*case FFService.DM_BASE_NOTIF:
-						String fid = "filter/direct";
-						SectionItem si = session.navigation != null ? session.navigation.getSectionByFeed(fid) : null;
-						openFeed(si != null ? si.name : "Direct Messages", fid, null);
-						break;*/
-					default:
-						Toast.makeText(MainActivity.this, "Unknown intent from service: " + intent.getAction(),
-							Toast.LENGTH_SHORT).show();
-						break;
-				}
+                String action = intent.getAction();
+                if(action.equals(FFService.SERVICE_ERROR)) {
+                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                } else if(action.equals(FFService.PROFILE_READY)) {
+                    profileReady();
+                    loadNavigation();
+                } else {
+                    Toast.makeText(MainActivity.this, "Unknown intent from service: " + intent.getAction(),
+                            Toast.LENGTH_SHORT).show();
+                }
 			}
 		};
 		srvMsgsFilters = new IntentFilter();
