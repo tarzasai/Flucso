@@ -22,7 +22,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     sourceSets {
         main {
@@ -50,13 +50,10 @@ android {
 
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
 dependencies {
-
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.squareup.picasso:picasso:2.3.4'
