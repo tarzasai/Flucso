@@ -37,6 +37,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	private long dmintv;
 	private long prlast;
 	private long dmlast;
+    private long cmlast;
 	private int dmnotf;
     private List<DiscussionNotification> discussionNotifications = new ArrayList<DiscussionNotification>();
 	
@@ -176,7 +177,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	}
 
     private void checkComments() {
-        if (dmnotf == 0 || dmintv > (new Date().getTime() - dmlast) / (60 * 1000) % 60)
+        if (dmnotf == 0 || dmintv > (new Date().getTime() - cmlast) / (60 * 1000) % 60)
             return;
         Log.v("FFService", "checkComments()");
         try {
@@ -209,7 +210,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
                     nmg.notify(n.idnotification, ncb.build());
                 }
             }
-            dmlast = new Date().getTime();
+            cmlast = new Date().getTime();
         } catch (Exception error) {
             notifyError(error);
         }
