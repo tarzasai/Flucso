@@ -481,9 +481,10 @@ public class PostActivity extends Activity implements OnClickListener {
 		return null;
 	}
 	
-	@TargetApi(Build.VERSION_CODES.KITKAT) private String getFilePath(final Uri uri) {
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	private String getFilePath(final Uri uri) {
 		// Make sure we're running on KitKat or higher to use the Storage Access Framework
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {			
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			if (DocumentsContract.isDocumentUri(this, uri)) {
 				if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
 					// DownloadsProvider
