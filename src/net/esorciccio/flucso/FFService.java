@@ -193,7 +193,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Builder ncb = new NotificationCompat.Builder(this).setSmallIcon(
                             R.drawable.ic_launcher).setContentTitle(getResources().getString(R.string.app_name)).setContentText(
-                            e.comments.size() > 1 ? "New comments/likes on " + e.body : e.comments.get(0).body).setAutoCancel(true)
+                            e.comments.size() > 1 ? R.string.notif_cm_new + " " + e.body : e.comments.get(0).body).setAutoCancel(true)
                             .setContentIntent(rpi);
                     NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 

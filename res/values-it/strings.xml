@@ -175,6 +175,7 @@
     <string name="title_subscr">Sottoscritto in:</string>
     <string name="notif_dm_new">Hai ricevuto nuovi messaggi diretti</string>
     <string name="notif_dm_upd">Ci sono nuovi commenti nei messaggi diretti</string>
+    <string name="notif_cm_new">Nuovi commenti/like su</string>
 
     <!-- Test -->
     <string name="test_version">1.25</string>
