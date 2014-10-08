@@ -331,8 +331,6 @@ public class MainActivity extends Activity implements OnFFReqsListener {
                 selectDrawerItem(si);
             else
                 openFeed(si.name, fid, null);
-            //NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            //nmg.cancel(FFService.NOTIFICATION_ID); // remove from notification bar
             return;
         }
 		if (intent.getAction().equals(Intent.ACTION_VIEW)) {
