@@ -35,10 +35,12 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
     private String cursor_discussions;
 	private long printv;
 	private long dmintv;
+	private long cmintv;
 	private long prlast;
 	private long dmlast;
     private long cmlast;
 	private int dmnotf;
+	private int cmnotf;
     private List<DiscussionNotification> discussionNotifications = new ArrayList<DiscussionNotification>();
 	
 	public FFService() {
@@ -64,6 +66,8 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		printv = session.getPrefs().getInt(PK.SERV_PROF, 0);
 		dmnotf = session.getPrefs().getInt(PK.SERV_NOTF, 0);
 		dmintv = session.getPrefs().getInt(PK.SERV_MSGS, 0);
+		cmnotf = session.getPrefs().getInt(PK.SERV_NOTC, 0);
+		cmintv = session.getPrefs().getInt(PK.SERV_COMM, 0);
 		
 		session.getPrefs().registerOnSharedPreferenceChangeListener(this);
 		
@@ -177,7 +181,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	}
 
     private void checkComments() {
-        if (dmnotf == 0 || dmintv > (new Date().getTime() - cmlast) / (60 * 1000) % 60)
+        if (cmnotf == 0 || cmintv > (new Date().getTime() - cmlast) / (60 * 1000) % 60)
             return;
         Log.v("FFService", "checkComments()");
         try {
@@ -231,6 +235,12 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		} else if (key.equals(PK.SERV_MSGS)) {
 			dmintv = sharedPreferences.getInt(PK.SERV_MSGS, 0);
 			Log.v("FFService", "dmintv: " + Long.toString(dmintv));
+		} else if (key.equals(PK.SERV_NOTC)) {
+			cmnotf = session.getPrefs().getInt(PK.SERV_NOTC, 0);
+			Log.v("FFService", "cmnotf: " + Integer.toString(cmnotf));
+		} else if (key.equals(PK.SERV_COMM)) {
+			cmintv = sharedPreferences.getInt(PK.SERV_COMM, 0);
+			Log.v("FFService", "dmintv: " + Long.toString(cmintv));
 		}
 	}
 

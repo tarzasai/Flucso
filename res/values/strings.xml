@@ -149,6 +149,10 @@
     <string name="pk_serv_notf_summ">For what kind of messages you want to be notified.</string>
     <string name="pk_serv_msgs_title">Direct Messages check interval</string>
     <string name="pk_serv_msgs_summ">Private messages.</string>
+    <string name="pk_serv_notc_title">My Discussions notifications</string>
+    <string name="pk_serv_notc_summ">Enable or disable notifications.</string>
+    <string name="pk_serv_comm_title">My Discussions check interval</string>
+    <string name="pk_serv_comm_summ">My Discussions.</string>
 
     <!-- Misc -->
     <string name="app_name">Flucso</string>
