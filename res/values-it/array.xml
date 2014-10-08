@@ -149,7 +149,7 @@
         <item>Attiva le notifiche</item>
     </string-array>
     
-    <string-array name="pk_serv_notf_values">
+    <string-array name="pk_serv_notc_values">
         <item>0</item>
         <item>1</item>
     </string-array>
