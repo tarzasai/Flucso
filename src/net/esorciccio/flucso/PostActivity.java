@@ -17,6 +17,7 @@ import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedFile;
 import retrofit.mime.TypedString;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -28,6 +29,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -479,32 +481,36 @@ public class PostActivity extends Activity implements OnClickListener {
 		return null;
 	}
 	
+	@TargetApi(Build.VERSION_CODES.KITKAT)
 	private String getFilePath(final Uri uri) {
-		if (DocumentsContract.isDocumentUri(this, uri)) {
-			if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-				// DownloadsProvider
-				String id = DocumentsContract.getDocumentId(uri);
-				Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
-					Long.valueOf(id));
-				return getDataColumn(contentUri, null, null);
+		// Make sure we're running on KitKat or higher to use the Storage Access Framework
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (DocumentsContract.isDocumentUri(this, uri)) {
+				if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+					// DownloadsProvider
+					String id = DocumentsContract.getDocumentId(uri);
+					Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
+						Long.valueOf(id));
+					return getDataColumn(contentUri, null, null);
+				}
+				if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+					// MediaProvider
+					String docId = DocumentsContract.getDocumentId(uri);
+					String[] split = docId.split(":");
+					String type = split[0];
+					Uri contentUri = null;
+					if ("image".equals(type))
+						contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+					else if ("video".equals(type))
+						contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+					else if ("audio".equals(type))
+						contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+					String selection = "_id=?";
+					String[] selectionArgs = new String[] { split[1] };
+					return getDataColumn(contentUri, selection, selectionArgs);
+				}
+				return null; // probably stored in some cloud service...
 			}
-			if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-				// MediaProvider
-				String docId = DocumentsContract.getDocumentId(uri);
-				String[] split = docId.split(":");
-				String type = split[0];
-				Uri contentUri = null;
-				if ("image".equals(type))
-					contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-				else if ("video".equals(type))
-					contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-				else if ("audio".equals(type))
-					contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-				String selection = "_id=?";
-				String[] selectionArgs = new String[] { split[1] };
-				return getDataColumn(contentUri, selection, selectionArgs);
-			}
-			return null; // probably stored in some cloud service...
 		}
 		if ("file".equalsIgnoreCase(uri.getScheme()))
 			return uri.getPath();
