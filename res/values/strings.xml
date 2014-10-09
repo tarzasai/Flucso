@@ -149,6 +149,10 @@
     <string name="pk_serv_notf_summ">For what kind of messages you want to be notified.</string>
     <string name="pk_serv_msgs_title">Direct Messages check interval</string>
     <string name="pk_serv_msgs_summ">Private messages.</string>
+    <string name="pk_serv_notc_title">My Discussions notifications</string>
+    <string name="pk_serv_notc_summ">Enable or disable notifications.</string>
+    <string name="pk_serv_comm_title">My Discussions check interval</string>
+    <string name="pk_serv_comm_summ">My Discussions.</string>
 
     <!-- Misc -->
     <string name="app_name">Flucso</string>
@@ -171,6 +175,7 @@
     <string name="title_subscr">Subscribed in:</string>
     <string name="notif_dm_new">You have a new direct message</string>
     <string name="notif_dm_upd">A conversation has been updated</string>
+    <string name="notif_cm_new">New comments/likes on</string>
 
     <!-- Test -->
     <string name="test_version">1.25</string>

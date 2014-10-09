@@ -110,6 +110,24 @@
             android:summary="@string/pk_serv_msgs_summ"
             android:title="@string/pk_serv_msgs_title" />
         
+        <net.esorciccio.flucso.IntListPreference
+            android:key="pk_serv_notc"
+            android:defaultValue="0"
+            android:dialogTitle="@string/pk_serv_notc_title"
+            android:entries="@array/pk_serv_notc_names"
+            android:entryValues="@array/pk_serv_notc_values"
+            android:summary="@string/pk_serv_notc_summ"
+            android:title="@string/pk_serv_notc_title" />
+        
+        <net.esorciccio.flucso.IntListPreference
+            android:key="pk_serv_comm"
+            android:defaultValue="10"
+            android:dialogTitle="@string/pk_serv_comm_title"
+            android:entries="@array/pk_serv_comm_names"
+            android:entryValues="@array/pk_serv_comm_values"
+            android:summary="@string/pk_serv_comm_summ"
+            android:title="@string/pk_serv_comm_title" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

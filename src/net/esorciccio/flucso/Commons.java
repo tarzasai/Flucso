@@ -35,9 +35,12 @@ public class Commons {
 		public static final String SERV_PROF = "pk_serv_prof";
 		public static final String SERV_NOTF = "pk_serv_notf";
 		public static final String SERV_MSGS = "pk_serv_msgs";
+		public static final String SERV_NOTC = "pk_serv_notc";
+		public static final String SERV_COMM = "pk_serv_comm";		
 		public static final String SERV_PROR = "pk_serv_pror";
 		//
 		public static final String SERV_MSGS_CURS = "pk_serv_msgs_cursor";
+        public static final String SERV_DSCS_CURS = "pk_serv_dscs_cursor";
 	}
 	
 	public static boolean isConnected(Context context) {
