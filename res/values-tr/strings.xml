@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Activities -->
+    <string name="action_post">Mesaj</string>
+    <string name="action_search">Ara</string>
+    <string name="action_refresh">Gezgini yenile</string>
+    <string name="action_settings">Ayarlar</string>
+    <string name="action_about">Hakkında</string>
+    <string name="post_title">FriendFeed\'e mesaj gönder</string>
+    <string name="post_title_new">Yeni mesaj</string>
+    <string name="post_title_edit">Mesajı düzenle</string>
+    <string name="post_geo">Konum</string>
+    <string name="post_tos">Alıcılar (kişi/grup)</string>
+    <string name="post_body">Mesajınızı buraya yazınız</string>
+    <string name="post_comment">İlk yorumunuzu buraya yazınız</string>
+    <string name="search_title">FriendFeed\'te Ara</string>
+    <string name="search_tabf">Abonelikleriniz</string>
+    <string name="search_tabp">Mesajlar (FF araması)</string>
+    <string name="search_fwhat">Ara</string>
+    <string name="search_fhint">Kişi ya da grup adı</string>
+    <string name="search_fwher">İçinde ara</string>
+    <string name="search_sect1">Şu girişler dahil:</string>
+    <string name="search_sect2">Kelime/özellik filtreleri:</string>
+    <string name="search_words">Başlık ya da yorumlardaki kelimeler</string>
+    <string name="search_wotit">Sadece başlıktaki kelimeler</string>
+    <string name="search_wocom">Yorumlardaki kelimeler</string>
+    <string name="search_comby">Şu kişinin yorumlarında</string>
+    <string name="search_likby">Şu kişi tarafından beğenilen</string>
+    <string name="search_numst">En az:</string>
+    <string name="search_numsc">yorum</string>
+    <string name="search_numsl">beğeni</string>
+    <string name="search_scop1">Bütün FriendFeed kullanıcıları</string>
+    <string name="search_scop2">Arkadaşlarım ve gruplarım</string>
+    <string name="search_scop3">Arkadaş listesi:</string>
+    <string name="search_s3hin">listen</string>
+    <string name="search_scop4">Belirli kullanıcı(lar):</string>
+    <string name="search_s4hin">kullanıcılar</string>
+    <string name="search_scop5">Belirli grup(lar):</string>
+    <string name="search_s5hin">gruplar</string>
+    <string name="search_btngo">Aramayı yap</string>
+    <string name="search_error">Arama için gerekli bir alan eksik</string>
+    <string name="subscr_title">Aboneliği yönet</string>
+
+    <!-- Fragments -->
+    <string name="action_popup_none">Henüz bir eylem yok</string>
+    <string name="action_search_send">Ara</string>
+    <string name="action_post_send">Gönder</string>
+    <string name="action_feed_post">Mesaj</string>
+    <string name="action_post_file">Dosya ekle</string>
+    <string name="action_post_snap">Fotoğraf ekle</string>
+    <string name="action_post_home">Profiline ekle</string>
+    <string name="action_post_wimg">Bağlantılı site görüntüsü</string>
+    <string name="action_feed_dm">Direkt Mesaj</string>
+    <string name="action_feed_autoups">Otomatik güncelleme</string>
+    <string name="action_feed_stopups">Güncellemeyi duraklat</string>
+    <string name="action_feed_subscr">Aboneliği ayarla</string>
+    <string name="action_feed_admin">Yönetici</string>
+    <string name="action_feed_scrollup">Yeni mesajlar var! (yukarı gitmek için dokunun)</string>
+    <string name="action_entry_speedc">Anlık yorum</string>
+    <string name="action_entry_summ">Özetini ver</string>
+    <string name="action_entry_like">Beğen</string>
+    <string name="action_entry_unlike">Beğeni kaldır</string>
+    <string name="action_entry_hide">Gizle</string>
+    <string name="action_entry_unhide">Gizlemeyi kaldır</string>
+    <string name="action_entry_share">İleri</string>
+    <string name="action_entry_edit">Mesajı düzenle</string>
+    <string name="action_entry_delete">Mesajı sil</string>
+    <string name="action_entry_web">Tarayıcıda aç</string>
+    <string name="action_gall_prior">Önceki</string>
+    <string name="action_gall_next">Sonraki</string>
+    <string name="action_comm_edit">Yorumu düzenle</string>
+    <string name="action_comm_delete">Yorumu sil</string>
+    <string name="entry_tab_dests">To</string>
+    <string name="entry_tab_files">dosyalar</string>
+    <string name="entry_tab_likes">beğeniler</string>
+    <string name="entry_tab_comms">yorumlar</string>
+    <string name="entry_cant_comm">yorumları engelle</string>
+    <string name="entry_new_comm1">yeni yorum</string>
+    <string name="entry_new_comm2">yorumunu buraya yaz</string>
+    <string name="fetching_wait">öğeler alınıyor, lütfen bekleyin&#8230;</string>
+    <string name="fetching_none">Hepsi burada, zevkini çıkarın :)</string>
+
+    <!-- Drawer -->
+    <string name="drawer_close">Çekmeceyi kapat</string>
+    <string name="drawer_open">Çekmeceyi aç</string>
+    <string name="noaccount_name">FriendFeed\'te oturum açın</string>
+    <string name="noaccount_login">Aktif bir hesap gereklidir</string>
+    <string name="waiting_profile">Profilin bekleniyor&#8230;</string>
+    <string name="waiting_entry">Girişler yükleniyor&#8230;</string>
+
+    <!-- Simple responses -->
+    <string name="ask_delete_entry">Bu girdiyi silecek misin?</string>
+    <string name="ask_subscr_open">Bu akışa abone olacak mısın?</string>
+    <string name="ask_subscr_private">Bu akışa abone olacak mısın? (özel)</string>
+    <string name="res_rfcall_failed">İstek başarısız oldu</string>
+    <string name="res_intent_failed">Amaç başarısız oldu</string>
+    <string name="res_imcrea_failed">Yeni resim başarısız oldu</string>
+    <string name="res_impath_failed">Geçersiz yol (buluttaki resimleri ekleyemezsiniz)</string>
+    <string name="res_immime_failed">Dosya türü bilinmiyor</string>
+    <string name="res_imdupe_failed">Dosya zaten ekli</string>
+    <string name="res_wparse_failed">0 resim bulundu, özür dilerim</string>
+    <string name="res_delentr_ok">Giriş silindi</string>
+    <string name="res_inscomm_ok">Yorum eklendi</string>
+    <string name="res_updcomm_ok">Yorum yenilendi</string>
+    <string name="res_delcomm_ok">Yorum silindi</string>
+    <string name="res_inslike_ok">Beğeni eklendi</string>
+    <string name="res_dellike_ok">Beğeni kaldırıldı</string>
+    <string name="res_hidden_ok">Mesaj gizlendi</string>
+    <string name="res_unhide_ok">Mesaj artık gizli değil</string>
+
+    <!-- Login dialog -->
+    <string name="login_username">Kullanıcı adı</string>
+    <string name="login_remotekey">Uzak anahtar</string>
+    <string name="login_showremkey">Uzak anahtar görünsün</string>
+    <string name="login_browseremkey">Uzak anahtarını bul</string>
+
+    <!-- Comment dialog -->
+    <string name="comment_body">Yorum alanı</string>
+
+    <!-- settings -->
+    <string name="settings_title">Flucso ayarları</string>
+    <string name="pd_login_title">FriendFeed oturum aç</string>
+    <string name="pd_login_summ">Kullanıcı adınız ve uzak anahtar kombinasyonunuz</string>
+    <string name="pk_startup_title">Başlangıç sayfası</string>
+    <string name="pk_startup_summ">Açılırken görmek istediğiniz ilk girdi.</string>
+    <string name="pk_locale_title">Yerelleştirme</string>
+    <string name="pk_locale_summ">FriendFeed\'te çıkan grup isimleri ve diğer şeyler için dil.</string>
+    <string name="pc_feed_title">Girdi ayarları</string>
+    <string name="pk_feed_upd_title">Otomatik güncelleme</string>
+    <string name="pk_feed_upd_summ">Ön plandaki girdiler otomatik güncellenecektir.</string>
+    <string name="pk_feed_fof_title">\"Arkadaşımın Arkadaşını\" İçerir</string>
+    <string name="pk_feed_fof_summ">Arkadaşlarınızın yorumlarına ya da beğenilerine sahip girdiler.</string>
+    <string name="pk_feed_hid_title">Gizli mesajları içerir</string>
+    <string name="pk_feed_hid_summ">(eğer gizlediğiniz mesajları görünür yapmak isterseniz)</string>
+    <string name="pk_feed_elc_title">Son yorumu görüntüle</string>
+    <string name="pk_feed_elc_summ">Girdideki son yorumu girdi altında görüntüler.</string>
+    <string name="pk_feed_hbk_title">Engelli kelimeler</string>
+    <string name="pk_feed_hbk_summ">Bu kelimeleri içeren girdileri gizle (kelimeleri virgülle ayırın).</string>
+    <string name="pk_feed_hbf_title">Engelli girdiler</string>
+    <string name="pk_feed_hbf_summ">Bu girdideki çapraz bağlı yorumları gizle (girdilerin kimliklerini virgülle ayırın, isim kullanmayın).</string>
+    <string name="pc_entry_title">Yorum seçenekleri</string>
+    <string name="pk_entry_imco_title">Yorumlardaki resimler</string>
+    <string name="pk_entry_imco_summ">Yorumlardaki resimler ne zaman görüntelenecek.</string>
+    <string name="pc_serv_title">Servis ayarları</string>
+    <string name="pk_serv_prof_title">Profil güncelleme aralığı</string>
+    <string name="pk_serv_prof_summ">Kullanıcı bilgileri, abonelikleri, aboneleri v.b.</string>
+    <string name="pk_serv_notf_title">Direkt mesaj bildirimleri</string>
+    <string name="pk_serv_notf_summ">Ne tür mesajlardan bildirim istiyorsun</string>
+    <string name="pk_serv_msgs_title">Direkt mesaj kontrol aralığı</string>
+    <string name="pk_serv_msgs_summ">Özel mesajlar.</string>
+
+    <!-- Misc -->
+    <string name="app_name">Flucso</string>
+    <string name="app_label">Bir FriendFeed programıdır.</string>
+    <string name="app_descr">Android için bir FriendFeed (http://friendfeed.com) programıdır. Giorgio Gelardi (ggelardi@gmail.com) tarafından yazılmıştır</string>
+    <string name="app_author">Giorgio Gelardi, ggelardi@gmail.com</string>
+    <string name="label_author">Sahibi:</string>
+    <string name="label_credits">Teşekkürler:</string>
+    <string name="yourname">Sen</string>
+    <string name="yourfeed">Senin girdin</string>
+    <string name="empty_text"></string>
+    <string name="warning_dm">Bu, şu anda direkt bir mesajdır.</string>
+    <string name="comms_summary">Basitçe şunları söylüyorlar:</string>
+    <string name="dlg_btn_ok">Tamam</string>
+    <string name="dlg_btn_cancel">İptal</string>
+    <string name="dlg_btn_retry">Tekrar dene</string>
+    <string name="title_loading">Yükleniyor&#8230;</string>
+    <string name="title_posting">Gönderiliyor&#8230;</string>
+    <string name="title_hidden">Gizli mesaj tarafından</string>
+    <string name="title_subscr">Aboneliklerin:</string>
+    <string name="notif_dm_new">Yeni bir direkt mesajın var</string>
+    <string name="notif_dm_upd">Bir konuşma güncellendir</string>
+
+    <!-- Test -->
+    <string name="test_version">1.25</string>
+    <string name="test_username">Pippo Baudo</string>
+    <string name="test_to_line">Feed di Pippo Baudo, Slucchettati</string>
+    <string name="test_fof_line">(Pietro Gambadilegno, Pippo Baudo and Paolino Paperino liked this)</string>
+    <string name="test_time_1">11 minuti fa</string>
+    <string name="test_time_2">alle 12\:25 del 21/7</string>
+    <string name="test_body_short">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</string>
+    <string name="test_body_long">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</string>
+    <string name="test_nums_1">3</string>
+    <string name="test_nums_2">65</string>
+    <string name="test_nums_3">196</string>
+    <string name="test_type">group</string>
+    <string name="test_link">www.pizzipazzi.com/asd/asdrubale.html</string>
+
+</resources>

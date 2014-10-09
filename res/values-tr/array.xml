@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    
+    <string-array name="search_feed_scopes">
+        <item>abonelikler ve aboneler</item>
+        <item>sadece abonelikler</item>
+        <item>sadece aboneler</item>
+    </string-array>
+    
+    <string-array name="speed_comments">
+        <item>...</item>
+        <item>+1</item>
+        <item>&lt;3</item>
+        <item>:(</item>
+        <item>:)</item>
+        <item>ooyysshh</item>
+        <item>ehueehue</item>
+        <item>ahahahaha</item>
+        <item>kdjfhdsjkdsf</item>
+        <item>günaydın</item>
+        <item>iyi geceler</item>
+        <item>küçüktür üç</item>
+        <item>hayd!</item>
+        <item>bilok!</item>
+        <item>layk!</item>
+        <item>up</item>
+        <item>yukarı</item>
+        <item>uppa gangam style</item>
+        <item>ben değil kuzenim yazmış</item>
+        <item>aeo</item>
+        <item>aro</item>
+        <item>abv</item>
+        <item>avm</item>
+        <item>arv</item>
+        <item>nyse sn msglsn glba!</item>
+        <item>biri caps alsın</item>
+        <item>#takozff</item>
+        <item>#paralelff</item>
+        <item>#deviçerik</item>
+        <item>#devanket</item>
+        <item>#bunuizle</item>
+        <item>#bunudinle</item>
+        <item>#bunuoku</item>
+        <item>#bunugor</item>
+        <item>#yay</item>
+        <item>#liste</item>
+    </string-array>
+    
+    <string-array name="pk_locale_values">
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fa</item>
+        <item>fr</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>zh-cn</item>
+    </string-array>
+    
+    <string-array name="pk_locale_names">
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>فارسی</item>
+        <item>Français</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>русский язык</item>
+        <item>Türkçe</item>
+        <item>中文(简体)</item>
+    </string-array>
+    
+    <string-array name="pk_startup_names">
+        <item>Ana sayfa</item>
+        <item>Direkt mesaj</item>
+        <item>Görüş alışverişlerim</item>
+        <item>Günün en iyileri</item>
+        <item>Başlangıç</item>
+    </string-array>
+    
+    <string-array name="pk_startup_values">
+        <item>ev</item>
+        <item>filtre/direkt</item>
+        <item>filtre/Görüş alışverişlerim</item>
+        <item>özet/1</item>
+        <item>liste/başlangıç</item>
+    </string-array>
+    
+    <string-array name="pk_entry_imco_names">
+        <item>Asla</item>
+        <item>Sadece WiFi</item>
+        <item>Her zaman</item>
+    </string-array>
+    
+    <string-array name="pk_entry_imco_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
+    <string-array name="pk_serv_prof_names">
+        <item>Asla</item>
+        <item>5 dakika</item>
+        <item>10 dakika</item>
+        <item>15 dakika</item>
+        <item>30 dakika</item>
+    </string-array>
+    
+    <string-array name="pk_serv_prof_values">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+    </string-array>
+    
+    <string-array name="pk_serv_notf_names">
+        <item>Bildirimleri durdur</item>
+        <item>Sadece görüntülediğimi bildir</item>
+        <item>Bütün direkt mesajları bildir</item>
+    </string-array>
+    
+    <string-array name="pk_serv_notf_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
+    <string-array name="pk_serv_msgs_names">
+        <item>2 dakika</item>
+        <item>5 dakika</item>
+        <item>10 dakika</item>
+        <item>15 dakika</item>
+        <item>30 dakika</item>
+    </string-array>
+    
+    <string-array name="pk_serv_msgs_values">
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+    </string-array>
+    
+</resources>
