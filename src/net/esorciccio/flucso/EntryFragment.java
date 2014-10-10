@@ -39,7 +39,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -91,7 +91,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	private MenuItem miBrowse;
 	
 	private OnClickListener onClickFrom;
-	private OnItemClickListener[] onClickItem;
+	private OnItemLongClickListener[] onLongClickItem;
 	private PopupMenu.OnDismissListener onDismissPopup;
 	private DialogInterface.OnDismissListener onDismissDialog;
 	
@@ -132,39 +132,45 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			}
 		};
 		
-		onClickItem = new OnItemClickListener[] {
-			new AdapterView.OnItemClickListener() {
+		onLongClickItem = new OnItemLongClickListener[] {
+			new OnItemLongClickListener() {
 				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 					BaseFeed f = (BaseFeed) adapters[0].getItem(position - 1);
 					mContainer.openFeed(f.name, f.id, null);
+					return true;
 				}
 			},
-			new AdapterView.OnItemClickListener() {
+			new OnItemLongClickListener() {
 				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 					session.cachedEntry = entry;
 					mContainer.openGallery(entry.id, position - 1);
+					return true;
 				}
 			},
-			new AdapterView.OnItemClickListener() {
+			new OnItemLongClickListener() {
 				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 					Like l = (Like) adapters[2].getItem(position - 1);
 					if (!l.placeholder) {
 						BaseFeed f = l.from;
 						mContainer.openFeed(f.name, f.id, null);
+						return true;
 					}
+					return false;
 				}
 			},
-			new AdapterView.OnItemClickListener() {
+			new OnItemLongClickListener() {
 				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 					Comment c = (Comment) adapters[3].getItem(position - 1);
 					if (!c.placeholder) {
 						BaseFeed f = c.from;
 						mContainer.openFeed(f.name, f.id, null);
+						return true;
 					}
+					return false;
 				}
 			}
 		};
@@ -265,7 +271,8 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			public void onTabChanged(String tabId) {
 				int idx = tids.indexOf(tabId);
 				listView.setAdapter(adapters[idx]);
-				listView.setOnItemClickListener(onClickItem[idx]);
+				//listView.setOnItemClickListener(onClickItem[idx]);
+				listView.setOnItemLongClickListener(onLongClickItem[idx]);
 				currentTab = idx;
 				checkFloatingStuff();
 			}
