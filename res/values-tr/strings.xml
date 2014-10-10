@@ -63,7 +63,7 @@
     <string name="action_entry_unlike">Beğeni kaldır</string>
     <string name="action_entry_hide">Gizle</string>
     <string name="action_entry_unhide">Gizlemeyi kaldır</string>
-    <string name="action_entry_share">İleri</string>
+    <string name="action_entry_share">Paylaş</string>
     <string name="action_entry_edit">Mesajı düzenle</string>
     <string name="action_entry_delete">Mesajı sil</string>
     <string name="action_entry_web">Tarayıcıda aç</string>
@@ -86,13 +86,13 @@
     <string name="drawer_open">Çekmeceyi aç</string>
     <string name="noaccount_name">FriendFeed\'te oturum açın</string>
     <string name="noaccount_login">Aktif bir hesap gereklidir</string>
-    <string name="waiting_profile">Profilin bekleniyor&#8230;</string>
+    <string name="waiting_profile">Profiliniz bekleniyor&#8230;</string>
     <string name="waiting_entry">Girişler yükleniyor&#8230;</string>
 
     <!-- Simple responses -->
-    <string name="ask_delete_entry">Bu girdiyi silecek misin?</string>
-    <string name="ask_subscr_open">Bu akışa abone olacak mısın?</string>
-    <string name="ask_subscr_private">Bu akışa abone olacak mısın? (özel)</string>
+    <string name="ask_delete_entry">Bu girdiyi silecek misiniz?</string>
+    <string name="ask_subscr_open">Bu akışa abone olacak mısınız?</string>
+    <string name="ask_subscr_private">Bu akışa abone olacak mısınız? (özel)</string>
     <string name="res_rfcall_failed">İstek başarısız oldu</string>
     <string name="res_intent_failed">Amaç başarısız oldu</string>
     <string name="res_imcrea_failed">Yeni resim başarısız oldu</string>
@@ -123,7 +123,7 @@
     <string name="pd_login_title">FriendFeed oturum aç</string>
     <string name="pd_login_summ">Kullanıcı adınız ve uzak anahtar kombinasyonunuz</string>
     <string name="pk_startup_title">Başlangıç sayfası</string>
-    <string name="pk_startup_summ">Açılırken görmek istediğiniz ilk girdi.</string>
+    <string name="pk_startup_summ">Açılırken görmek istediğiniz ilk sayfa.</string>
     <string name="pk_locale_title">Yerelleştirme</string>
     <string name="pk_locale_summ">FriendFeed\'te çıkan grup isimleri ve diğer şeyler için dil.</string>
     <string name="pc_feed_title">Girdi ayarları</string>
@@ -141,13 +141,13 @@
     <string name="pk_feed_hbf_summ">Bu girdideki çapraz bağlı yorumları gizle (girdilerin kimliklerini virgülle ayırın, isim kullanmayın).</string>
     <string name="pc_entry_title">Yorum seçenekleri</string>
     <string name="pk_entry_imco_title">Yorumlardaki resimler</string>
-    <string name="pk_entry_imco_summ">Yorumlardaki resimler ne zaman görüntelenecek.</string>
+    <string name="pk_entry_imco_summ">Yorumlardaki resimlerin görüntülenme zamanı.</string>
     <string name="pc_serv_title">Servis ayarları</string>
     <string name="pk_serv_prof_title">Profil güncelleme aralığı</string>
     <string name="pk_serv_prof_summ">Kullanıcı bilgileri, abonelikleri, aboneleri v.b.</string>
     <string name="pk_serv_notf_title">Direkt mesaj bildirimleri</string>
-    <string name="pk_serv_notf_summ">Ne tür mesajlardan bildirim istiyorsun</string>
-    <string name="pk_serv_msgs_title">Direkt mesaj kontrol aralığı</string>
+    <string name="pk_serv_notf_summ">Bildirimlerin istendiği mesajların türleri</string>
+    <string name="pk_serv_msgs_title">Direkt mesajların kontrol sıklığı</string>
     <string name="pk_serv_msgs_summ">Özel mesajlar.</string>
 
     <!-- Misc -->
@@ -170,7 +170,7 @@
     <string name="title_hidden">Gizli mesaj tarafından</string>
     <string name="title_subscr">Aboneliklerin:</string>
     <string name="notif_dm_new">Yeni bir direkt mesajın var</string>
-    <string name="notif_dm_upd">Bir konuşma güncellendir</string>
+    <string name="notif_dm_upd">Bir konuşma güncellendi</string>
 
     <!-- Test -->
     <string name="test_version">1.25</string>
