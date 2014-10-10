@@ -149,6 +149,10 @@
     <string name="pk_serv_notf_summ">Per quali tipi di messaggi diretti inoltrare le notifiche.</string>
     <string name="pk_serv_msgs_title">Aggiornamento messaggi diretti</string>
     <string name="pk_serv_msgs_summ">Ogni quanto tempo controllare se ci sono nuovi messaggi diretti.</string>
+    <string name="pk_serv_notc_title">Notifica mie discussioni</string>
+    <string name="pk_serv_notc_summ">Abilita/disabilita notifiche</string>
+    <string name="pk_serv_comm_title">Aggiornamento mie discussioni</string>
+    <string name="pk_serv_comm_summ">Ogni quanto tempo controllare se ci sono nuovi messaggi sulle mie discussioni.</string>
 
     <!-- Misc -->
     <string name="app_name">Flucso</string>
@@ -171,6 +175,8 @@
     <string name="title_subscr">Sottoscritto in:</string>
     <string name="notif_dm_new">Hai ricevuto nuovi messaggi diretti</string>
     <string name="notif_dm_upd">Ci sono nuovi commenti nei messaggi diretti</string>
+    <string name="notif_cm_new">Nuovi commenti/like su</string>
+    <string name="notif_cms_new">Nuovi commenti/like sulle tue discussioni</string>
 
     <!-- Test -->
     <string name="test_version">1.25</string>
