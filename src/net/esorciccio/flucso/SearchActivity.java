@@ -2,7 +2,6 @@ package net.esorciccio.flucso;
 
 import net.esorciccio.flucso.FFAPI.FeedList.SectionItem;
 import net.esorciccio.flucso.SubscrAllAdapter.Scope;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,9 +23,8 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.Toast;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends BaseActivity {
 	
-	private FFSession session;
 	private SubscrAllAdapter feeds;
 	private TabHost tabs;
 	private EditText edtFWhat;
@@ -55,7 +53,6 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		
-		session = FFSession.getInstance(this);
 		feeds = new SubscrAllAdapter(this);
 		
 		tabs = (TabHost) findViewById(android.R.id.tabhost);
@@ -195,5 +192,10 @@ public class SearchActivity extends Activity {
 				finish();
 			}
 		});
+	}
+	
+	@Override
+	protected void profileReady() {
+		// nothing here
 	}
 }

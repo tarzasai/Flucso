@@ -18,9 +18,7 @@ import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedFile;
 import retrofit.mime.TypedString;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,7 +40,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.webkit.MimeTypeMap;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -59,19 +55,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PostActivity extends Activity implements OnClickListener {
+public class PostActivity extends BaseActivity implements OnClickListener {
 	private static final int BODYCHARS = 350;
 	private static final int REQ_SELECT_FILE = 1;
 	private static final int REQ_SNAP_PHOTO = 10;
-	
-	private FFSession session;
-	private WaitProfileTask checker;
 	
 	private String eid;
 	private String link;
 	private String[] dsts;
 	private String body;
+	private String comm;
 	private String[] tmbs;
+	private Uri[] uris;
 	
 	private Uri snapFileUri;
 	
@@ -79,7 +74,6 @@ public class PostActivity extends Activity implements OnClickListener {
 	private PostThmbAdapter aTmbs;
 	private PostFileAdapter aImgs;
 	
-	private ProgressDialog pBar;
 	private ScrollView svMain;
 	private LinearLayout lDsts;
 	private LinearLayout lAtts;
@@ -100,18 +94,11 @@ public class PostActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_post);
-		
-		session = FFSession.getInstance(this);
 		
 		aDsts = new PostDSelAdapter(this);
 		aTmbs = new PostThmbAdapter(this);
 		aImgs = new PostFileAdapter(this);
-		
-		pBar = new ProgressDialog(PostActivity.this);
-		pBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		pBar.setIndeterminate(true);
 		
 		svMain = (ScrollView) findViewById(R.id.sv_post_main);
 		lDsts = (LinearLayout) findViewById(R.id.l_post_sez_dsts);
@@ -140,8 +127,51 @@ public class PostActivity extends Activity implements OnClickListener {
 		eid = "";
 		link = "";
 		dsts = new String[] {};
-		body = "";
+		body = savedInstanceState != null ? savedInstanceState.getString("body", "") : "";
+		comm = savedInstanceState != null ? savedInstanceState.getString("comment", "") : "";
 		tmbs = new String[] {};
+		uris = new Uri[] {};
+		
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		if (action.equals(Intent.ACTION_INSERT)) {
+			Bundle params = intent.getExtras();
+			link = params.getString("link", "");
+			body = params.getString("body", body);
+			dsts = params.getStringArray("dsts");
+			tmbs = params.getStringArray("tmbs");
+		} else if (action.equals(Intent.ACTION_EDIT)) {
+			Bundle params = intent.getExtras();
+			eid = params.getString("eid");
+			//link = params.getString("link", "");
+			body = params.getString("body", body);
+			//dsts = params.getStringArray("dsts");
+			//tmbs = params.getStringArray("tmbs");
+		} else if (action.equals(Intent.ACTION_SEND)) {
+			String typ = intent.getType();
+			if (typ.equals("text/plain")) {
+				String txt = intent.getStringExtra(Intent.EXTRA_TEXT).trim();
+				String sub = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+				if (Patterns.WEB_URL.matcher(txt).matches()) {
+					link = txt;
+					if (!TextUtils.isEmpty(sub))
+						body = sub;
+				} else {
+					String[] chk = txt.split("\\s+");
+					for (String s : chk)
+						if (Patterns.WEB_URL.matcher(s).matches())
+							link = s;
+					body = TextUtils.isEmpty(link) ? txt : txt.replace(link, "");
+				}
+			} else if (typ.startsWith("image/")) {
+				uris = new Uri[] { (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM) };
+			}
+		} else if (action.equals(Intent.ACTION_SEND_MULTIPLE)) {
+			ArrayList<Uri> imgs = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+			uris = new Uri[imgs.size()];
+			for (int i=0; i<imgs.size(); i++)
+				uris[i] = imgs.get(i);
+		}
 		
 		ExpandableHeightGridView gvDsts = (ExpandableHeightGridView) findViewById(R.id.gv_post_dsts);
 		gvDsts.setExpanded(true);
@@ -198,8 +228,7 @@ public class PostActivity extends Activity implements OnClickListener {
 					String txt = s.toString();
 					int before = txt.lastIndexOf(' ', BODYCHARS);
 					int after = txt.indexOf(' ', BODYCHARS + 1);
-					int middle = before == -1 || after != -1 && BODYCHARS - before >= after - BODYCHARS ? after
-						: before;
+					int middle = before == -1 || after != -1 && BODYCHARS - before >= after - BODYCHARS ? after : before;
 					s.delete(middle, s.length());
 					if (s.length() <= BODYCHARS - 3)
 						s.append("...");
@@ -211,57 +240,16 @@ public class PostActivity extends Activity implements OnClickListener {
 				checkMenu();
 			}
 		});
-
-		startService(new Intent(this, FFService.class));
 		
-		if (session.hasProfile())
-			setup();
-		else {
-			pBar.setTitle(R.string.waiting_profile);
-			pBar.show();
-			checker = new WaitProfileTask();
-			checker.execute((Void) null);
-		}
+		// I've moved these here from profileReady, otherwise switching fast to home and back would clear both
+		// (the activity steps in the onRestoreInstanceState only if the system destroy it)
+		txtChNo.setText(Integer.toString(BODYCHARS));
+		edtBody.setText(body);
+		edtComm.setText(comm);
 	}
 	
-	private void setup() {
-		Intent intent = getIntent();
-		String action = intent.getAction();
-		if (action == null) {
-			// internal
-			Bundle params = intent.getExtras();
-			if (params != null) {
-				eid = params.getString("eid");
-				link = params.getString("link", "");
-				body = params.getString("body", "");
-				dsts = params.getStringArray("dsts");
-				tmbs = params.getStringArray("tmbs");
-			}
-		} else if (action.equals(Intent.ACTION_SEND)) {
-			String typ = intent.getType();
-			if (typ.equals("text/plain")) {
-				String txt = intent.getStringExtra(Intent.EXTRA_TEXT).trim();
-				String sub = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-				if (Patterns.WEB_URL.matcher(txt).matches()) {
-					link = txt;
-					if (!TextUtils.isEmpty(sub))
-						body = sub;
-				} else {
-					String[] chk = txt.split("\\s+");
-					for (String s : chk)
-						if (Patterns.WEB_URL.matcher(s).matches())
-							link = s;
-					body = TextUtils.isEmpty(link) ? txt : txt.replace(link, "");
-				}
-				dsts = new String[] { session.profile.id };
-			} else if (typ.startsWith("image/")) {
-				attachImage((Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM), false);
-			}
-		} else if (action.equals(Intent.ACTION_SEND_MULTIPLE)) {
-			ArrayList<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-			for (Uri img : uris)
-				attachImage(img, false);
-		}
+	@Override
+	protected void profileReady() {
 		if (!isNew())
 			setTitle(R.string.post_title_edit);
 		else {
@@ -287,22 +275,38 @@ public class PostActivity extends Activity implements OnClickListener {
 		if (tmbs != null)
 			for (String s: tmbs)
 				aTmbs.append(s);
+		if (uris != null)
+			for (Uri u: uris)
+				attachImage(u, false);
 		txtToNo.setText(Integer.toString(aDsts.getCount()));
 		txtAtNo.setText(Integer.toString(0));
+		/*
 		txtChNo.setText(Integer.toString(BODYCHARS));
 		edtBody.setText(body);
-		if (pBar.isShowing())
-			pBar.dismiss();
+		edtComm.setText(comm);
+		*/
 	}
 	
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+
+		body = savedInstanceState.getString("body", "");
+		comm = savedInstanceState.getString("comment", "");
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		String text = edtBody.getText().toString();
+		if (!TextUtils.isEmpty(text))
+			outState.putString("body", text);
+		
+		text = edtComm.getText().toString();
+		if (!TextUtils.isEmpty(text))
+			outState.putString("comment", text);
+		
 	}
 	
 	@Override
@@ -564,12 +568,11 @@ public class PostActivity extends Activity implements OnClickListener {
 	}
 	
 	private void sendPost() {
-		pBar.setMessage(getString(R.string.title_posting));
-		pBar.show();
+		showWaitingBox(R.string.title_posting);
 		Callback<Entry> callback = new Callback<Entry>() {
 			@Override
 			public void success(Entry result, Response response) {
-				pBar.dismiss();
+				hideWaitingBox();
 				session.cachedEntry = result;
 				Intent intent = new Intent();
 				intent.putExtra("eid", result.id);
@@ -578,7 +581,7 @@ public class PostActivity extends Activity implements OnClickListener {
 			}
 			@Override
 			public void failure(RetrofitError error) {
-				pBar.dismiss();
+				hideWaitingBox();
 				new AlertDialog.Builder(PostActivity.this).setTitle(R.string.res_rfcall_failed).setMessage(
 					Commons.retrofitErrorText(error)).setPositiveButton(R.string.dlg_btn_retry,
 					new DialogInterface.OnClickListener() {
@@ -613,35 +616,5 @@ public class PostActivity extends Activity implements OnClickListener {
 		} else
 			mto.addPart("id", new TypedString(eid));
 		FFAPI.client_write(session).ins_entry(mto, callback);
-	}
-	
-	private class WaitProfileTask extends AsyncTask<Void, Void, Boolean> {
-		
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			while (!session.hasProfile()) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					cancel(true);
-					return false;
-				}
-			}
-			return true;
-		}
-		
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			if (success)
-				setup();
-			else
-				finish();
-		}
-		
-		@Override
-		protected void onCancelled() {
-			checker = null;
-			finish();
-		}
 	}
 }

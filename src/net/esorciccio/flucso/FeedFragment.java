@@ -182,8 +182,6 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		Log.v("feed", this.getClass().getName() + ".onActivityCreated");
-		
 		if (savedInstanceState == null)
 			return;
 
@@ -196,15 +194,11 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		//Log.v("stack", this.getClass().getName() + ".onResume");
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		//Log.v("stack", this.getClass().getName() + ".onPause");
 		
 		pauseUpdates(false);
 	}
@@ -212,8 +206,6 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
-		//Log.v("feed", this.getClass().getName() + ".onSaveInstanceState");
 		
 		outState.putString("eid", lvFeed != null && adapter.feed != null && adapter.feed.entries.size() > 0 ?
 			adapter.getItem(lvFeed.getFirstVisiblePosition()).id : "");
@@ -366,7 +358,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	}
 	
 	private void pauseUpdates(boolean showHourglass) {
-		Log.v("stack", this.getClass().getName() + ".pauseUpdates");
+		Log.v(logTag(), "pauseUpdates");
 		paused = true;
 		if (timer != null)
 			timer.cancel();
@@ -376,7 +368,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	}
 	
 	private void resumeUpdates(boolean removeHourglass, boolean reload) {
-		Log.v("stack", this.getClass().getName() + ".resumeUpdates");
+		Log.v(logTag(), "resumeUpdates");
 		paused = false;
 		reload = reload || adapter.feed == null || TextUtils.isEmpty(cursor);
 		if (timer != null)
@@ -521,7 +513,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 			final Activity context = getActivity();
 			try {
 				srl.setRefreshing(true);
-				Log.v("test", "(loader) fetching " + Integer.toString(amount) + " items...");
+				Log.v(logTag(), "(loader) fetching " + Integer.toString(amount) + " items...");
 				// According to API documentation, when cursor="" we should get all the entries, but we don't. FF
 				// returns an empty feed (with the cursor we'll use for the next call), so we have to make a call
 				// for a complete feed anyway.
@@ -591,7 +583,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		public void run() {
 			final Activity context = getActivity();
 			if (TextUtils.isEmpty(cursor)) {
-				Log.v("test", "(updater) invalid cursor, rescheduling...");
+				Log.v(logTag(), "invalid cursor, rescheduling...");
 				context.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -602,7 +594,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 				return;
 			}
 			try {
-				Log.v("test", "(updater) fetching " + Integer.toString(amount) + " items...");
+				Log.v(logTag(), "fetching " + Integer.toString(amount) + " items...");
 				final Feed updates;
 				if (TextUtils.isEmpty(fquery))
 					updates = FFAPI.client_feed(session).get_feed_updates(fid, amount, cursor, 0, 1);
@@ -621,9 +613,6 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 						int offset = lvFeed.getFirstVisiblePosition();
 						adapter.notifyDataSetChanged();
 						if (added > 0) {
-							
-							Log.v("feed", "updater move: " + Integer.toString(added + offset));
-							
 							lvFeed.smoothScrollToPosition(added + offset);
 							if (imgGoUp.getVisibility() == View.VISIBLE)
 								imgGoUp.startAnimation(blink);
@@ -655,13 +644,13 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		public void run() {
 			final Activity context = getActivity();
 			try {
-				Log.v("test", "(extender) fetching more items starting from " + Integer.toString(amount + 1) + "...");
+				Log.v(logTag(), "fetching more items starting from " + Integer.toString(amount + 1) + "...");
 				final Feed olders;
 				if (TextUtils.isEmpty(fquery))
 					olders = FFAPI.client_feed(session).get_feed_normal(fid, amount + 1, AMOUNT_INCR);
 				else
 					olders = FFAPI.client_feed(session).get_search_normal(fquery, amount + 1, AMOUNT_INCR);
-				Log.v("test", "got " + Integer.toString(olders.entries.size()));
+				Log.v(logTag(), "got " + Integer.toString(olders.entries.size()));
 				context.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -669,12 +658,11 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 							return;
 						lastext = adapter.feed.append(olders);
 						amount = adapter.feed.entries.size();
-						Log.v("test", "appended " + Integer.toString(lastext));
+						Log.v(logTag(), "appended " + Integer.toString(lastext));
 						int y = lvFeed.getScrollY();
 						adapter.notifyDataSetChanged();
 						lvFeed.scrollTo(0, y);
 						extender = null;
-						Log.v("test", "Extender deleted.");
 						checkAutoUpdMenuItems();
 					}
 				});

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -23,6 +24,8 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.v(logTag(), "onCreate");
 		
 		session = FFSession.getInstance(getActivity());
 		
@@ -40,6 +43,8 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		Log.v(logTag(), "onResume");
 
 		if (session.hasProfile())
 			initFragment();
@@ -64,12 +69,32 @@ public abstract class BaseFragment extends Fragment {
 	public void onPause() {
 		super.onPause();
 		
+		Log.v(logTag(), "onPause");
+		
 		mProgress.dismiss();
+		if (mReceiver != null)
+			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		Log.v(logTag(), "onSaveInstanceState");
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		Log.v(logTag(), "onActivityCreated");
 	}
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		
+		Log.v(logTag(), "onAttach");
 		
 		try {
 			mContainer = (OnFFReqsListener) activity;
@@ -82,7 +107,13 @@ public abstract class BaseFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		
+		Log.v(logTag(), "onDetach");
+		
 		mContainer = null;
+	}
+	
+	protected String logTag() {
+		return this.getClass().getSimpleName();
 	}
 	
 	protected abstract void initFragment();

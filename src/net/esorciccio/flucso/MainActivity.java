@@ -8,30 +8,23 @@ import net.esorciccio.flucso.FFAPI.SimpleResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,12 +32,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnFFReqsListener {
+public class MainActivity extends BaseActivity implements OnFFReqsListener {
 
 	private static final int REQ_SEARCH = 100;
 	private static final int REQ_NEWPOST = 110;
 	
-	private FFSession session;
+	private String lastFeed;
 	private DrawerAdapter adapter;
 	private CharSequence mTitle;
 	private CharSequence mDrawerTitle;
@@ -63,23 +56,15 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 	private MenuItem miConfig;
 	private MenuItem miAboutD;
 	
-	private BroadcastReceiver srvMsgsReceiver;
-	private IntentFilter srvMsgsFilters;
-	
-	private String lastFeed;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 		
-		Log.v("stack", this.getClass().getName() + ".onCreate");
-		
-		session = FFSession.getInstance(this);
-		adapter = new DrawerAdapter(this);
-		
 		lastFeed = session.getPrefs().getString(PK.STARTUP, "home");
+		lastFeed = savedInstanceState != null ? savedInstanceState.getString("lastFeed", lastFeed) : lastFeed;
+		
+		adapter = new DrawerAdapter(this);
 		
 		mTitle = mDrawerTitle = getTitle();
 		
@@ -118,58 +103,14 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 		
 		// Commons.picasso(getApplicationContext()).setIndicatorsEnabled(true);
 		
-		srvMsgsReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				String msg = intent.getStringExtra("message");
-				switch (intent.getAction()) {
-					case FFService.SERVICE_ERROR:
-						Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-						break;
-					case FFService.PROFILE_READY:
-						profileReady();
-						loadNavigation();
-						break;
-					/*case FFService.DM_BASE_NOTIF:
-						String fid = "filter/direct";
-						SectionItem si = session.navigation != null ? session.navigation.getSectionByFeed(fid) : null;
-						openFeed(si != null ? si.name : "Direct Messages", fid, null);
-						break;*/
-					default:
-						Toast.makeText(MainActivity.this, "Unknown intent from service: " + intent.getAction(),
-							Toast.LENGTH_SHORT).show();
-						break;
-				}
-			}
-		};
-		srvMsgsFilters = new IntentFilter();
-		srvMsgsFilters.addAction(FFService.SERVICE_ERROR);
-		srvMsgsFilters.addAction(FFService.PROFILE_READY);
-		
-		startService(new Intent(this, FFService.class));
-		
 		Intent intent = getIntent();
 		if (!intent.getAction().equals(Intent.ACTION_MAIN))
 			onNewIntent(intent);
 	}
 	
 	@Override
-	protected void onDestroy() {
-		
-		Log.v("stack", this.getClass().getName() + ".onDestroy");
-		
-		//LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceMessages);
-		
-		super.onDestroy();
-	}
-	
-	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		//Log.v("stack", this.getClass().getName() + ".onResume");
-
-		LocalBroadcastManager.getInstance(this).registerReceiver(srvMsgsReceiver, srvMsgsFilters);
 		
 		if (!session.hasAccount()) {
 			mUserIcon.setImageResource(R.drawable.nomugshot);
@@ -182,7 +123,6 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 				}
 			});
 		} else if (!session.hasProfile()) {
-			setProgressBarIndeterminateVisibility(true);
 			mUserLogin.setText(session.getUsername());
 			mUserName.setText(R.string.waiting_profile);
 			mUserBox.setOnClickListener(new View.OnClickListener() {
@@ -194,23 +134,12 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 					mDrawerLayout.closeDrawer(mDrawerView);
 				}
 			});
-		} else if (session.navigation == null) {
-			profileReady();
-			loadNavigation();
-		} else {
-			profileReady();
-			navigationReady();
 		}
-		adapter.notifyDataSetChanged();
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
-		//Log.v("stack", this.getClass().getName() + ".onPause");
-		
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(srvMsgsReceiver);
 	}
 	
 	@Override
@@ -376,22 +305,25 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 		getFragmentManager().beginTransaction().replace(R.id.content_frame,
 			GalleryFragment.newInstance(entry_id, position), GalleryFragment.FRAGMENT_TAG).addToBackStack(null).commit();
 	}
-
+	
 	@Override
 	public void openPostNew(String[] dsts, String body, String link, String[] tmbs) {
 		Intent intent = new Intent(this, PostActivity.class);
+		intent.setAction(Intent.ACTION_INSERT);
 		Bundle prms = new Bundle();
 		prms.putStringArray("dsts", dsts);
-		prms.putString("body", body);
+		if (!TextUtils.isEmpty(body))
+			prms.putString("body", body);
 		prms.putString("link", link);
 		prms.putStringArray("tmbs", tmbs);
 		intent.putExtras(prms);
 		startActivityForResult(intent, REQ_NEWPOST);
 	}
-
+	
 	@Override
 	public void openPostEdit(String entry_id, String body) {
 		Intent intent = new Intent(this, PostActivity.class);
+		intent.setAction(Intent.ACTION_EDIT);
 		Bundle prms = new Bundle();
 		prms.putString("eid", entry_id);
 		prms.putString("body", body);
@@ -399,7 +331,8 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 		startActivity(intent);
 	}
 	
-	private void profileReady() {
+	@Override
+	protected void profileReady() {
 		Commons.picasso(getApplicationContext()).load(session.profile.getAvatarUrl()).placeholder(
 			R.drawable.nomugshot).into(mUserIcon);
 		mUserLogin.setText(session.getUsername());
@@ -414,7 +347,10 @@ public class MainActivity extends Activity implements OnFFReqsListener {
 				mDrawerLayout.closeDrawer(mDrawerView);
 			}
 		});
-		setProgressBarIndeterminateVisibility(false);
+		if (session.navigation == null)
+			loadNavigation();
+		else
+			navigationReady();
 	}
 	
 	private void navigationReady() {

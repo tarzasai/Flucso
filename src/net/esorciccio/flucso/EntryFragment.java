@@ -132,48 +132,43 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			}
 		};
 		
-		onLongClickItem = new OnItemLongClickListener[] {
-			new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-					BaseFeed f = (BaseFeed) adapters[0].getItem(position - 1);
+		onLongClickItem = new OnItemLongClickListener[] { new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				BaseFeed f = (BaseFeed) adapters[0].getItem(position - 1);
+				mContainer.openFeed(f.name, f.id, null);
+				return true;
+			}
+		}, new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				session.cachedEntry = entry;
+				mContainer.openGallery(entry.id, position - 1);
+				return true;
+			}
+		}, new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				Like l = (Like) adapters[2].getItem(position - 1);
+				if (!l.placeholder) {
+					BaseFeed f = l.from;
 					mContainer.openFeed(f.name, f.id, null);
 					return true;
 				}
-			},
-			new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-					session.cachedEntry = entry;
-					mContainer.openGallery(entry.id, position - 1);
+				return false;
+			}
+		}, new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				Comment c = (Comment) adapters[3].getItem(position - 1);
+				if (!c.placeholder) {
+					BaseFeed f = c.from;
+					mContainer.openFeed(f.name, f.id, null);
 					return true;
 				}
-			},
-			new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-					Like l = (Like) adapters[2].getItem(position - 1);
-					if (!l.placeholder) {
-						BaseFeed f = l.from;
-						mContainer.openFeed(f.name, f.id, null);
-						return true;
-					}
-					return false;
-				}
-			},
-			new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-					Comment c = (Comment) adapters[3].getItem(position - 1);
-					if (!c.placeholder) {
-						BaseFeed f = c.from;
-						mContainer.openFeed(f.name, f.id, null);
-						return true;
-					}
-					return false;
-				}
+				return false;
 			}
-		};
+		} };
 		
 		onDismissPopup = new PopupMenu.OnDismissListener() {
 			@Override
@@ -226,7 +221,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtFromS.setText(from);
 		txtBodyB.setText(Html.fromHtml(body));
 		txtBodyS.setText(Html.fromHtml(body));
-
+		
 		txtToB.setVisibility(View.GONE);
 		txtToS.setVisibility(View.GONE);
 		imgIsDM.setVisibility(View.GONE);
@@ -271,7 +266,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			public void onTabChanged(String tabId) {
 				int idx = tids.indexOf(tabId);
 				listView.setAdapter(adapters[idx]);
-				//listView.setOnItemClickListener(onClickItem[idx]);
+				// listView.setOnItemClickListener(onClickItem[idx]);
 				listView.setOnItemLongClickListener(onLongClickItem[idx]);
 				currentTab = idx;
 				checkFloatingStuff();
@@ -283,6 +278,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				// nothing to do.
 			}
+			
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				checkFloatingStuff();
@@ -295,15 +291,11 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		//Log.v("stack", this.getClass().getName() + ".onResume");
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		//Log.v("stack", this.getClass().getName() + ".onPause");
 		
 		pauseUpdates(false);
 	}
@@ -321,7 +313,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.entry, menu);
-
+		
 		miLike = menu.findItem(R.id.action_entry_like);
 		miUnlike = menu.findItem(R.id.action_entry_unlike);
 		miSpeedC = menu.findItem(R.id.action_entry_speedc);
@@ -335,7 +327,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		boolean ctx = (entry != null);
-
+		
 		miEdit.setVisible(ctx && entry.canEdit());
 		miDelete.setVisible(ctx && entry.canDelete());
 		miLike.setVisible(ctx && entry.canLike());
@@ -435,9 +427,8 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 							final View view = inflater.inflate(R.layout.dialog_comm_edit, null);
 							final EditText edt = (EditText) view.findViewById(R.id.edt_comment);
 							final AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle(
-								R.string.action_comm_edit).setView(view).setOnDismissListener(
-								onDismissDialog).setPositiveButton(R.string.dlg_btn_ok,
-								new DialogInterface.OnClickListener() {
+								R.string.action_comm_edit).setView(view).setOnDismissListener(onDismissDialog).setPositiveButton(
+								R.string.dlg_btn_ok, new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
 										doUpdComment(comm.id, edt.getText().toString());
@@ -464,8 +455,8 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 								R.drawable.nomugshot).into((ImageView) view.findViewById(R.id.img_comm_from));
 							((TextView) view.findViewById(R.id.txt_comm_from)).setText(comm.from.getName());
 							((TextView) view.findViewById(R.id.txt_comm_body)).setText(Html.fromHtml(comm.body));
-							new AlertDialog.Builder(getActivity()).setTitle(R.string.action_comm_delete).setView(
-								view).setOnDismissListener(onDismissDialog).setPositiveButton(R.string.dlg_btn_ok,
+							new AlertDialog.Builder(getActivity()).setTitle(R.string.action_comm_delete).setView(view).setOnDismissListener(
+								onDismissDialog).setPositiveButton(R.string.dlg_btn_ok,
 								new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
@@ -505,22 +496,22 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				updateView();
 				resumeUpdates(false);
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				mProgress.dismiss();
 				new AlertDialog.Builder(getActivity()).setTitle(R.string.res_rfcall_failed).setMessage(
 					Commons.retrofitErrorText(error)).setOnDismissListener(new OnDismissListener() {
-						@Override
-						public void onDismiss(DialogInterface dialog) {
-							getActivity().getFragmentManager().popBackStack();
-						}
-					}).setPositiveButton(
-					R.string.dlg_btn_retry, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							loadEntry();
-						}
-					}).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true).create().show();
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						getActivity().getFragmentManager().popBackStack();
+					}
+				}).setPositiveButton(R.string.dlg_btn_retry, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						loadEntry();
+					}
+				}).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true).create().show();
 			}
 		};
 		FFAPI.client_entry(session).get_entry_async(eid, callback);
@@ -559,12 +550,12 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		if (entry.canComment()) {
 			edtNewCom.setEnabled(true);
 			edtNewCom.setOnEditorActionListener(new OnEditorActionListener() {
-			    @Override
-			    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			        if (actionId == EditorInfo.IME_ACTION_SEND && !TextUtils.isEmpty(edtNewCom.getText().toString()))
-			            doInsComment(edtNewCom.getText().toString());
-			        return false;
-			    }
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					if (actionId == EditorInfo.IME_ACTION_SEND && !TextUtils.isEmpty(edtNewCom.getText().toString()))
+						doInsComment(edtNewCom.getText().toString());
+					return false;
+				}
 			});
 		} else {
 			edtNewCom.setEnabled(false);
@@ -592,10 +583,10 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	private void updateView() {
 		if (getActivity() == null)
 			return; // wtf?
-		
+			
 		Commons.picasso(getActivity()).load(entry.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(imgFromB);
 		Commons.picasso(getActivity()).load(entry.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(imgFromS);
-
+		
 		from = entry.from.getName();
 		getActivity().setTitle(from);
 		txtFromB.setText(from);
@@ -625,7 +616,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		
 		int y = listView.getScrollY();
 		int n = listView.getCount();
-		boolean last = (listView.getLastVisiblePosition() == n-1);
+		boolean last = (listView.getLastVisiblePosition() == n - 1);
 		setTabButton(0, adapters[0].setEntry(entry) != 0);
 		setTabButton(1, adapters[1].setEntry(entry) != 0);
 		setTabButton(2, adapters[2].setEntry(entry) != 0);
@@ -653,6 +644,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				getActivity().setProgressBarIndeterminateVisibility(false);
 				getActivity().getFragmentManager().popBackStack();
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
@@ -678,6 +670,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				resumeUpdates(true);
 				Toast.makeText(getActivity(), getString(R.string.res_inslike_ok), Toast.LENGTH_SHORT).show();
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
@@ -707,6 +700,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				resumeUpdates(true);
 				Toast.makeText(getActivity(), getString(R.string.res_dellike_ok), Toast.LENGTH_SHORT).show();
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
@@ -736,6 +730,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				resumeUpdates(true);
 				Toast.makeText(getActivity(), getString(R.string.res_inscomm_ok), Toast.LENGTH_SHORT).show();
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
@@ -767,6 +762,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				resumeUpdates(true);
 				Toast.makeText(getActivity(), getString(R.string.res_updcomm_ok), Toast.LENGTH_SHORT).show();
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
@@ -798,6 +794,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				resumeUpdates(true);
 				Toast.makeText(getActivity(), getString(R.string.res_delcomm_ok), Toast.LENGTH_SHORT).show();
 			}
+			
 			@Override
 			public void failure(RetrofitError error) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
