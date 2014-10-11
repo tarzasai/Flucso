@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -155,9 +156,14 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			if (news || upds) {
 				PendingIntent rpi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).setAction(DM_BASE_NOTIF),
 					PendingIntent.FLAG_UPDATE_CURRENT);
-				NotificationCompat.Builder ncb = new NotificationCompat.Builder(this).setSmallIcon(
-					R.drawable.ic_launcher).setContentTitle(getResources().getString(R.string.app_name)).setContentText(
-					getResources().getString(news ? R.string.notif_dm_new : R.string.notif_dm_upd)).setContentIntent(rpi);
+				NotificationCompat.Builder ncb = new NotificationCompat.Builder(this)
+					.setSmallIcon(R.drawable.ic_stat_ff)
+					.setContentTitle(getResources().getString(R.string.app_name))
+					.setContentText(getResources().getString(news ? R.string.notif_dm_new : R.string.notif_dm_upd))
+					.setContentIntent(rpi)
+					// Big view (expanded notification)
+					.setStyle(new NotificationCompat.BigTextStyle()
+						.bigText(getResources().getString(news ? R.string.notif_dm_new : R.string.notif_dm_upd)));
 				NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 				nmg.notify(NOTIFICATION_ID, ncb.build());
 			}
