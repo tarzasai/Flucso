@@ -19,6 +19,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -426,7 +427,9 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 							LayoutInflater inflater = getActivity().getLayoutInflater();
 							final View view = inflater.inflate(R.layout.dialog_comm_edit, null);
 							final EditText edt = (EditText) view.findViewById(R.id.edt_comment);
-							final AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle(
+							final Context ctx = getActivity();
+							ctx.setTheme(android.R.style.Theme_Holo_Light); // setting the theme again to fix invisible CAB icons
+							final AlertDialog dlg = new AlertDialog.Builder(ctx).setTitle(
 								R.string.action_comm_edit).setView(view).setOnDismissListener(onDismissDialog).setPositiveButton(
 								R.string.dlg_btn_ok, new DialogInterface.OnClickListener() {
 									@Override
