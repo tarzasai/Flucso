@@ -14,10 +14,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
@@ -152,18 +154,16 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 			}
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				if (timer != null && extender == null && adapter.feed != null) {
-					if (firstVisibleItem <= 0)
-						imgGoUp.setVisibility(View.GONE);
-					else
-						imgGoUp.setVisibility(View.VISIBLE);
-					if (firstVisibleItem + visibleItemCount >= totalItemCount && lastext != 0) {
+				if (adapter.feed == null)
+					return;
+				imgGoUp.setVisibility(firstVisibleItem > 0 ? View.VISIBLE : View.GONE);
+				if (firstVisibleItem + visibleItemCount >= totalItemCount && lastext != 0) {
+					if (extender == null) {
 						txtFooter.setText(R.string.fetching_wait);
-						extender = new ExtenderTask();
-						timer.schedule(extender, 200);
-					} else
-						txtFooter.setText(R.string.fetching_none);
-				}
+						extender = (ExtenderTask) new ExtenderTask().execute();
+					}
+				} else
+					txtFooter.setText(R.string.fetching_none);
 			}
 		});
 		
@@ -639,47 +639,47 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		}
 	}
 	
-	private class ExtenderTask extends TimerTask {
+	private class ExtenderTask extends AsyncTask<Void, Void, Feed> {
+		private String error = null;
+        @Override
+        protected void onPreExecute() {
+        	srl.setRefreshing(true);
+        	Log.v(logTag(), "fetching more items starting from " + Integer.toString(amount + 1) + "...");
+        }
 		@Override
-		public void run() {
-			final Activity context = getActivity();
+		protected Feed doInBackground(Void... params) {
 			try {
-				Log.v(logTag(), "fetching more items starting from " + Integer.toString(amount + 1) + "...");
-				final Feed olders;
-				if (TextUtils.isEmpty(fquery))
-					olders = FFAPI.client_feed(session).get_feed_normal(fid, amount + 1, AMOUNT_INCR);
-				else
-					olders = FFAPI.client_feed(session).get_search_normal(fquery, amount + 1, AMOUNT_INCR);
-				Log.v(logTag(), "got " + Integer.toString(olders.entries.size()));
-				context.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if (!FeedFragment.this.isVisible() || FeedFragment.this.isRemoving())
-							return;
-						lastext = adapter.feed.append(olders);
-						amount = adapter.feed.entries.size();
-						Log.v(logTag(), "appended " + Integer.toString(lastext));
-						int y = lvFeed.getScrollY();
-						adapter.notifyDataSetChanged();
-						lvFeed.scrollTo(0, y);
-						extender = null;
-						checkAutoUpdMenuItems();
-					}
-				});
-			} catch (Exception error) {
-				final String text = error instanceof RetrofitError ? Commons.retrofitErrorText((RetrofitError) error)
-					: error.getMessage();
-				context.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if (!FeedFragment.this.isVisible() || FeedFragment.this.isRemoving())
-							return;
-						srl.setRefreshing(false);
-						new AlertDialog.Builder(context).setTitle("ExtenderTask").setMessage(text).setIcon(
-							android.R.drawable.ic_dialog_alert).show();
-					}
-				});
+				return TextUtils.isEmpty(fquery) ?
+					FFAPI.client_feed(session).get_feed_normal(fid, amount + 1, AMOUNT_INCR) :
+					FFAPI.client_feed(session).get_search_normal(fquery, amount + 1, AMOUNT_INCR);
+			} catch (Exception e) {
+				error = e instanceof RetrofitError ? Commons.retrofitErrorText((RetrofitError) e) : e.getMessage();
+				return null;
 			}
 		}
+        @Override
+        protected void onPostExecute(Feed result) {
+			Context context = getActivity();
+			if (context == null || !isAdded() || isDetached() || !isVisible() || isRemoving())
+				return;
+			try {
+				srl.setRefreshing(false);
+	        	if (!TextUtils.isEmpty(error))
+	        		new AlertDialog.Builder(context).setTitle("ExtenderTask").setMessage(error).setIcon(
+						android.R.drawable.ic_dialog_alert).show();
+	        	else {
+	        		Log.v(logTag(), "got " + Integer.toString(result.entries.size()));
+	        		lastext = adapter.feed.append(result);
+					amount = adapter.feed.entries.size();
+					Log.v(logTag(), "appended " + Integer.toString(lastext));
+					int y = lvFeed.getScrollY();
+					adapter.notifyDataSetChanged();
+					lvFeed.scrollTo(0, y);
+					checkAutoUpdMenuItems();
+	        	}
+			} finally {
+				extender = null;
+			}
+        }
 	}
 }
