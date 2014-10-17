@@ -4,7 +4,6 @@ import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.Entry;
 import net.esorciccio.flucso.FFAPI.FeedList;
 import net.esorciccio.flucso.FFAPI.FeedList.SectionItem;
-import net.esorciccio.flucso.FFAPI.SimpleResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -421,6 +420,7 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 			FeedFragment.FRAGMENT_TAG).commit(); // no backstack
 	}
 	
+	/*
 	public void subscribe(final String feed_id, final String list_id) {
 		setProgressBarIndeterminateVisibility(true);
 		Callback<SimpleResponse> callback = new Callback<SimpleResponse>() {
@@ -470,6 +470,7 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 		};
 		FFAPI.client_write(session).unsubscribe(feed_id, list_id, callback);
 	}
+	*/
 	
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override

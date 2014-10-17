@@ -66,8 +66,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	private LinearLayout llFooter;
 	private ImageView imgGoUp;
 	private TextView txtFooter;
-	private MenuItem miPostF;
-	private MenuItem miPostU;
+	private MenuItem miWrite;
 	private MenuItem miAutoU;
 	private MenuItem miPause;
 	private MenuItem miSubsc;
@@ -219,8 +218,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.feed, menu);
 		
-		miPostF = menu.findItem(R.id.action_feed_post);
-		miPostU = menu.findItem(R.id.action_feed_dm);
+		miWrite = menu.findItem(R.id.action_feed_post);
 		miAutoU = menu.findItem(R.id.action_feed_auto);
 		miPause = menu.findItem(R.id.action_feed_pause);
 		miSubsc = menu.findItem(R.id.action_feed_subscr);
@@ -228,25 +226,12 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		if (adapter.feed == null) {
-			miPostU.setVisible(false);
-			miAutoU.setVisible(false);
-			miPause.setVisible(false);
-			miSubsc.setVisible(false);
-		} else {
-			miPostU.setVisible(adapter.feed.canDM());
-			miSubsc.setVisible(adapter.feed.canSetSubscriptions());
-		}
-		checkAutoUpdMenuItems();
+		checkMenu();
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item == miPostF) {
-			mContainer.openPostNew(new String[] { session.getUsername(), fid }, null, null, null);
-			return true;
-		}
-		if (item == miPostU) {
+		if (item == miWrite) {
 			mContainer.openPostNew(new String[] { fid }, null, null, null);
 			return true;
 		}
@@ -288,7 +273,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	
 	@Override
 	public void onRefresh() {
-		checkAutoUpdMenuItems();
+		checkMenu();
 		if ((updater != null && updater.scheduledExecutionTime() >= new Date().getTime()) ||
 			(loader != null && loader.scheduledExecutionTime() >= new Date().getTime()))
 			return;
@@ -349,6 +334,17 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		resumeUpdates(false, false);
 	}
 	
+	private void checkMenu() {
+		if (miWrite == null || miAutoU == null || miPause == null || miSubsc == null)
+			return;
+		boolean fl = adapter != null && adapter.feed != null;
+		miWrite.setVisible(fl);
+		miWrite.setIcon(fl && adapter.feed.canDM() ? R.drawable.menu_dm : R.drawable.menu_post);
+		miAutoU.setVisible(fl && !isAutoUpdGoing());
+		miPause.setVisible(fl && !miAutoU.isVisible());
+		miSubsc.setVisible(fl && adapter.feed.canSetSubscriptions());
+	}
+	
 	private boolean isAutoUpdSet() {
 		return session.getPrefs().getBoolean(PK.FEED_UPD, true);
 	}
@@ -362,7 +358,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		paused = true;
 		if (timer != null)
 			timer.cancel();
-		checkAutoUpdMenuItems();
+		checkMenu();
 		if (showHourglass)
 			getActivity().setProgressBarIndeterminateVisibility(true);
 	}
@@ -380,16 +376,9 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 			timer.schedule(loader, 500);
 		if (isAutoUpdGoing())
 			timer.schedule(updater, reload ? 30000 : 500, 30000);
-		checkAutoUpdMenuItems();
+		checkMenu();
 		if (removeHourglass)
 			getActivity().setProgressBarIndeterminateVisibility(false);
-	}
-	
-	private void checkAutoUpdMenuItems() {
-		if (miAutoU != null && miPause != null) {
-			miAutoU.setVisible(!isAutoUpdGoing());
-			miPause.setVisible(!miAutoU.isVisible());
-		}
 	}
 	
 	private void doLike(final Entry entry) {
@@ -540,7 +529,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 						int i = TextUtils.isEmpty(eid) ? 0 : adapter.feed.indexOf(eid);
 						lvFeed.smoothScrollToPosition(i > 0 ? i : 0);
 						context.setTitle(fname);
-						checkAutoUpdMenuItems();
+						checkMenu();
 						lastext = -1; // reset the extender task.
 						eid = null; // reset the saved pos.
 					}
@@ -619,7 +608,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 							lastext = -1; // reset the extender task.
 						}
 						context.setTitle(fname);
-						checkAutoUpdMenuItems();
+						checkMenu();
 					}
 				});
 			} catch (Exception error) {
@@ -675,7 +664,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 					int y = lvFeed.getScrollY();
 					adapter.notifyDataSetChanged();
 					lvFeed.scrollTo(0, y);
-					checkAutoUpdMenuItems();
+					checkMenu();
 	        	}
 			} finally {
 				extender = null;

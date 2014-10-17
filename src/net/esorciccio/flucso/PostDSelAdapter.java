@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.esorciccio.flucso.FFAPI.BaseFeed;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,12 +73,14 @@ public class PostDSelAdapter extends BaseAdapter {
 		for (BaseFeed f : feedlist)
 			if (f.isIt(item.id))
 				return;
+		Log.v(getClass().getSimpleName(), "append: " + item.id);
 		feedlist.add(item);
 		notifyDataSetChanged();
 	}
 	
 	public void remove(int position) {
 		if (position >= 0 && position < feedlist.size()) {
+			Log.v(getClass().getSimpleName(), "remove: " + getItem(position).id);
 			feedlist.remove(position);
 			notifyDataSetChanged();
 		}

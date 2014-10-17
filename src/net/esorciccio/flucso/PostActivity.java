@@ -143,10 +143,7 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 		} else if (action.equals(Intent.ACTION_EDIT)) {
 			Bundle params = intent.getExtras();
 			eid = params.getString("eid");
-			//link = params.getString("link", "");
 			body = params.getString("body", body);
-			//dsts = params.getStringArray("dsts");
-			//tmbs = params.getStringArray("tmbs");
 		} else if (action.equals(Intent.ACTION_SEND)) {
 			String typ = intent.getType();
 			if (typ.equals("text/plain")) {

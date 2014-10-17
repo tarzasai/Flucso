@@ -13,15 +13,6 @@
         app:showAsAction="always"/>
     
     <item
-        android:id="@+id/action_feed_dm"
-        android:title="@string/action_feed_dm"
-        android:icon="@drawable/menu_dm"
-        android:menuCategory="container"
-        android:orderInCategory="30"
-        android:showAsAction="ifRoom"
-        app:showAsAction="ifRoom"/>
-    
-    <item
         android:id="@+id/action_feed_auto"
         android:title="@string/action_feed_autoups"
         android:icon="@drawable/menu_play"
