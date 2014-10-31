@@ -21,4 +21,31 @@
         android:showAsAction="always"
         app:showAsAction="always"/>
     
+    <item
+        android:id="@+id/action_rotl"
+        android:title="@string/action_gall_rotl"
+        android:icon="@drawable/menu_rotate_left"
+        android:menuCategory="container"
+        android:orderInCategory="10"
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
+    
+    <item
+        android:id="@+id/action_rotr"
+        android:title="@string/action_gall_rotr"
+        android:icon="@drawable/menu_rotate_right"
+        android:menuCategory="container"
+        android:orderInCategory="11"
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
+    
+    <item
+        android:id="@+id/action_rot0"
+        android:title="@string/action_gall_rot0"
+        android:icon="@drawable/menu_refresh"
+        android:menuCategory="container"
+        android:orderInCategory="12"
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
+    
 </menu>

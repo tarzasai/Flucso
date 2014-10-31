@@ -40,6 +40,9 @@ public class GalleryFragment extends BaseFragment {
 	private WebView web;
 	private MenuItem miPrior;
 	private MenuItem miNext;
+	private MenuItem miRotL;
+	private MenuItem miRotR;
+	private MenuItem miRot0;
 	
 	public static GalleryFragment newInstance(String entry_id, int position) {
 		GalleryFragment fragment = new GalleryFragment();
@@ -111,12 +114,14 @@ public class GalleryFragment extends BaseFragment {
 		
 		miPrior = menu.findItem(R.id.action_previous);
 		miNext = menu.findItem(R.id.action_next);
+		miRotL = menu.findItem(R.id.action_rotl);
+		miRotR = menu.findItem(R.id.action_rotr);
+		miRot0 = menu.findItem(R.id.action_rot0);
 	}
 	
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		miPrior.setVisible(entry != null && entry.getFilesCount() > 1);
-		miNext.setVisible(entry != null && miPrior.isVisible());
+		checkMenu();
 	}
 	
 	@Override
@@ -129,6 +134,21 @@ public class GalleryFragment extends BaseFragment {
 			setPosition((position + 1) % entry.getFilesCount());
 			return true;
 		}
+		if (item == miRotL) {
+			entry.thumbnails[position - entry.files.length].rotation = -90;
+			setPosition(position);
+			return true;
+		}
+		if (item == miRotR) {
+			entry.thumbnails[position - entry.files.length].rotation = 90;
+			setPosition(position);
+			return true;
+		}
+		if (item == miRot0) {
+			entry.thumbnails[position - entry.files.length].rotation = 0;
+			setPosition(position);
+			return true;
+		}
 		return false;
 	}
 	
@@ -139,6 +159,19 @@ public class GalleryFragment extends BaseFragment {
 			loadEntry();
 		else
 			setPosition(position);
+	}
+	
+	private void checkMenu() {
+		if (miPrior == null)
+			return;
+		miPrior.setVisible(entry != null && entry.getFilesCount() > 1);
+		miNext.setVisible(miPrior.isVisible());
+		// rotation
+		Thumbnail pic = entry != null && entry.getFilesCount() > 0 && position >= entry.files.length ?
+			entry.thumbnails[position - entry.files.length] : null;
+		miRotL.setVisible(pic != null && pic.rotation >= 0);
+		miRotR.setVisible(pic != null && pic.rotation <= 0);
+		miRot0.setVisible(pic != null && pic.rotation != 0);
 	}
 	
 	private void loadEntry() {
@@ -179,6 +212,7 @@ public class GalleryFragment extends BaseFragment {
 			showFile(entry.files[position]);
 		else
 			showThmb(entry.thumbnails[position - entry.files.length]);
+		checkMenu();
 	}
 	
 	private void showFile(Attachment att) {
@@ -224,10 +258,13 @@ public class GalleryFragment extends BaseFragment {
 		txt.setVisibility(View.GONE);
 		web.setVisibility(View.VISIBLE);
 		web.loadUrl("about:blank");
+		String rot = pic.rotation == 0 ? "" :
+			" -webkit-transform: rotate(@deg); -moz-transform: rotate(@deg);".replace("@", Integer.toString(pic.rotation));
+		String css = "style='position: absolute; top:0; bottom:0; margin: auto;" + rot + "'";
 		String img;
 		if (pic.link.indexOf("/m.friendfeed-media.com/") > 0
 			|| (pic.link.endsWith(".jpg") || pic.link.endsWith(".jpeg") || pic.link.endsWith(".png") || pic.link.endsWith(".gif")))
-			img = "<img style='position: absolute; top:0; bottom:0; margin: auto' width='100%' src='" + pic.link + "'>";
+			img = "<img " + css + " width='100%' src='" + pic.link + "'>";
 		else {
 			String lnk = "<a href='" + pic.link + "'>";
 			if (!TextUtils.isEmpty(pic.player)) {
@@ -241,8 +278,7 @@ public class GalleryFragment extends BaseFragment {
 					lnk = "<a href='" + src + "'>";
 				}
 			}
-			img = lnk + "<img style='position: absolute; top:0; bottom:0; margin: auto' width='100%' src='" + pic.url
-				+ "'></a>";
+			img = lnk + "<img " + css + " width='100%' src='" + pic.url + "'></a>";
 		}
 		Log.v("gallery", img);
 		String html = "<html><body style='margin: 0; padding: 0;' ><div style='height: 100vh; position: relative'>"
