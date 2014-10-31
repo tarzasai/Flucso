@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -96,6 +97,13 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		setHasOptionsMenu(true);
 		
 		adapter = new FeedAdapter(getActivity(), this);
+		adapter.registerDataSetObserver(new DataSetObserver() {
+			@Override
+			public void onChanged() {
+				if (fquery == "")
+					session.cachedFeed = adapter.feed;
+			}
+		});
 		
 		Bundle args = getArguments();
 		fid = args.getString("id");
@@ -329,6 +337,11 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	
 	@Override
 	protected void initFragment() {
+		if (adapter != null && session.cachedFeed != null && session.cachedFeed.isIt(fid)) {
+			adapter.feed = session.cachedFeed;
+			adapter.notifyDataSetChanged();
+			cursor = adapter.feed.realtime.cursor;
+		}
 		if (adapter != null && adapter.feed != null)
 			adapter.feed.setLocalHide();
 		resumeUpdates(false, false);
@@ -583,7 +596,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 				return;
 			}
 			try {
-				Log.v(logTag(), "fetching " + Integer.toString(amount) + " items...");
+				Log.v(logTag(), "(updater) fetching " + Integer.toString(amount) + " items...");
 				final Feed updates;
 				if (TextUtils.isEmpty(fquery))
 					updates = FFAPI.client_feed(session).get_feed_updates(fid, amount, cursor, 0, 1);
@@ -633,7 +646,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         @Override
         protected void onPreExecute() {
         	srl.setRefreshing(true);
-        	Log.v(logTag(), "fetching more items starting from " + Integer.toString(amount + 1) + "...");
+        	Log.v(logTag(), "(extender) fetching more items starting from " + Integer.toString(amount + 1) + "...");
         }
 		@Override
 		protected Feed doInBackground(Void... params) {

@@ -97,6 +97,9 @@ public class FFAPI {
 		@GET("/feedinfo/{feed_id}")
 		FeedInfo get_profile_sync(@Path("feed_id") String feed_id);
 		
+		@GET("/feedlist")
+		FeedList get_navigation_sync();
+		
 		@GET("/feed/{feed_id}")
 		Feed get_feed_normal(@EncodedPath("feed_id") String feed_id, @Query("start") int start, @Query("num") int num);
 		
@@ -222,6 +225,7 @@ public class FFAPI {
 		}
 		
 		public int update(Feed feed) {
+			realtime = feed.realtime;
 			timestamp = feed.timestamp;
 			int res = 0;
 			for (Entry e : feed.entries)

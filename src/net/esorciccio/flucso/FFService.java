@@ -69,6 +69,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 					waitTime = 5000;
 					checkProfile();
 					checkMessages();
+					checkFeedCache();
 				}
 				try {
 					Thread.sleep(waitTime);
@@ -117,17 +118,12 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			session.profile = FFAPI.client_profile(session).get_profile_sync("me");
 			session.initProfile();
 			prlast = new Date().getTime();
+			if (session.navigation == null)
+				session.navigation = FFAPI.client_profile(session).get_navigation_sync();
 			notifier.sendBroadcast(new Intent(PROFILE_READY));
 		} catch (Exception error) {
 			notifyError(error);
 		}
-	}
-	
-	private static boolean replied(Entry e) {
-		for (Comment c: e.comments)
-			if ((c.created || c.updated) && !c.from.isMe())
-				return true;
-		return false;
 	}
 	
 	private void checkMessages() {
@@ -165,6 +161,34 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		} catch (Exception error) {
 			notifyError(error);
 		}
+	}
+	
+	private void checkFeedCache() {
+		if (!Commons.isOnWIFI(this) || (session.cachedFeed != null && session.cachedFeed.getAge() < 10*60*1000))
+			return;
+		Log.v("FFService", "checkFeedCache()");
+		try {
+			String fid = session.cachedFeed != null ? session.cachedFeed.id :
+				session.getPrefs().getString(PK.STARTUP, "home");
+			String cur = session.cachedFeed != null && session.cachedFeed.realtime != null ?
+				session.cachedFeed.realtime.cursor : "";
+			if (cur == "") {
+				session.cachedFeed = FFAPI.client_feed(session).get_feed_normal(fid, 0, 20);
+				session.cachedFeed.realtime = FFAPI.client_feed(session).get_feed_updates(fid, 20, "", 0, 1).realtime;
+			} else {
+				session.cachedFeed.update(FFAPI.client_feed(session).get_feed_updates(fid,
+					session.cachedFeed.entries.size(), session.cachedFeed.realtime.cursor, 0, 1));
+			}
+		} catch (Exception error) {
+			notifyError(error);
+		}
+	}
+	
+	private static boolean replied(Entry e) {
+		for (Comment c: e.comments)
+			if ((c.created || c.updated) && !c.from.isMe())
+				return true;
+		return false;
 	}
 
 	@Override

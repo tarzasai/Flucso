@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.Entry;
+import net.esorciccio.flucso.FFAPI.Feed;
 import net.esorciccio.flucso.FFAPI.FeedInfo;
 import net.esorciccio.flucso.FFAPI.FeedList;
 import net.esorciccio.flucso.FFAPI.IdentItem;
@@ -59,6 +60,7 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 	
 	public FeedInfo profile;
 	public FeedList navigation;
+	public Feed cachedFeed;
 	public Entry cachedEntry;
 	
 	public SharedPreferences getPrefs() {
