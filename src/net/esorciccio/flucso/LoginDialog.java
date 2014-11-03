@@ -35,6 +35,7 @@ public class LoginDialog extends DialogPreference {
 		
 		CheckBox mShowRKey = (CheckBox) view.findViewById(R.id.chkPwdVisible);
 		mShowRKey.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
 					mPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -46,6 +47,7 @@ public class LoginDialog extends DialogPreference {
 		
 		Button mGoToRKey = (Button) view.findViewById(R.id.btnRemoteKey);
 		mGoToRKey.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				Intent browse = new Intent(Intent.ACTION_VIEW, Uri.parse("http://friendfeed.com/remotekey"));
 				v.getContext().startActivity(browse);
@@ -60,7 +62,7 @@ public class LoginDialog extends DialogPreference {
 		super.onBindDialogView(view);
 		
 		mUsername.setText(session.getUsername());
-		mPassword.setText(session.getRemoteKey());
+		mPassword.setText(session.getPassword());
 	}
 	
 	@Override

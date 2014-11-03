@@ -6,6 +6,7 @@ import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.Entry;
 import net.esorciccio.flucso.FFAPI.Entry.Comment;
 import net.esorciccio.flucso.FFAPI.Feed;
+import net.esorciccio.flucso.FFOAuth.Token;
 import retrofit.RetrofitError;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -65,7 +66,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			while (!terminated) {
 				if (!session.hasAccount())
 					waitTime = 2000;
-				else {
+				else if (checkAuth()) {
 					waitTime = 5000;
 					checkProfile();
 					checkMessages();
@@ -96,6 +97,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		//terminated = true;
 		
 		session.getPrefs().unregisterOnSharedPreferenceChangeListener(this);
+		session.clearAccessToken();
 		
 		super.onDestroy();
 	}
@@ -108,6 +110,21 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			text = "Unknown error";
 		}
 		notifier.sendBroadcast(new Intent().setAction(SERVICE_ERROR).putExtra("message", text));
+	}
+	
+	private boolean checkAuth() {
+		if (session.hasAccess())
+			return true;
+		Log.v("FFService", "checkAuth()");
+		try {
+			Token token = FFOAuth.get_access_token(session.getUsername(), session.getPassword());
+			session.saveAccessToken(token);
+			return true;
+		} catch (Exception error) {
+			notifyError(error);
+			terminated = true;
+			return false;
+		}
 	}
 	
 	private void checkProfile() {

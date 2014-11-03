@@ -10,6 +10,7 @@ import net.esorciccio.flucso.FFAPI.Feed;
 import net.esorciccio.flucso.FFAPI.FeedInfo;
 import net.esorciccio.flucso.FFAPI.FeedList;
 import net.esorciccio.flucso.FFAPI.IdentItem;
+import net.esorciccio.flucso.FFOAuth.Token;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -71,16 +72,39 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 		return prefs.getString(PK.USERNAME, "");
 	}
 	
-	public String getRemoteKey() {
-		return prefs.getString(PK.REMOTEKEY, "");
+	public String getPassword() {
+		return prefs.getString(PK.PASSWORD, "");
+	}
+	
+	public String getAuthKey() {
+		return prefs.getString(PK.AUTH_KEY, "");
+	}
+	
+	public String getAuthSecret() {
+		return prefs.getString(PK.AUTH_SEC, "");
+	}
+	
+	public Token getAccessToken() {
+		String k = prefs.getString(PK.AUTH_KEY, "");
+		String s = prefs.getString(PK.AUTH_SEC, "");
+		return k != "" && s != "" ? new Token(k, s) : null;
 	}
 	
 	public boolean hasAccount() {
-		return !(TextUtils.isEmpty(getUsername()) || TextUtils.isEmpty(getRemoteKey()));
+		return !(TextUtils.isEmpty(getUsername()) || TextUtils.isEmpty(getPassword()));
+	}
+	
+	public boolean hasAccess() {
+		return !(TextUtils.isEmpty(getAuthKey()) || TextUtils.isEmpty(getAuthSecret()));
 	}
 	
 	public boolean hasProfile() {
 		return profile != null;
+	}
+	
+	public void initProfile() {
+		if (hasProfile())
+			IdentItem.accountID = profile.id;
 	}
 	
 	public void updateProfile() {
@@ -92,18 +116,29 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 	public void saveAccount(String username, String password) {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(PK.USERNAME, username.toLowerCase(Locale.getDefault()));
-		editor.putString(PK.REMOTEKEY, password);
+		editor.putString(PK.PASSWORD, password);
+		editor.remove(PK.AUTH_KEY);
+		editor.remove(PK.AUTH_SEC);
 		editor.commit();
 	}
 	
-	public void initProfile() {
-		if (hasProfile())
-			IdentItem.accountID = profile.id;
+	public void saveAccessToken(Token token) {
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(PK.AUTH_KEY, token.key);
+		editor.putString(PK.AUTH_SEC, token.secret);
+		editor.commit();
+	}
+	
+	public void clearAccessToken() {
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(PK.AUTH_KEY);
+		editor.remove(PK.AUTH_SEC);
+		editor.commit();
 	}
 	
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if (key.equals(PK.USERNAME) || key.equals(PK.REMOTEKEY)) {
+		if (key.equals(PK.USERNAME) || key.equals(PK.PASSWORD)) {
 			profile = null;
 			navigation = null;
 			FFAPI.dropClients();

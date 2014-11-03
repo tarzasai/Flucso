@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.Entry.Comment;
 import net.esorciccio.flucso.FFAPI.Entry.Like;
+import net.esorciccio.flucso.FFOAuth.Token;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -20,9 +21,10 @@ import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.mime.MultipartTypedOutput;
+import se.akerfeldt.signpost.retrofit.RetrofitHttpOAuthConsumer;
+import se.akerfeldt.signpost.retrofit.SigningOkClient;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Base64;
 import android.util.Patterns;
 
 import com.google.gson.annotations.SerializedName;
@@ -30,8 +32,7 @@ import com.google.gson.annotations.SerializedName;
 public class FFAPI {
 	private static final String API_URL = "http://friendfeed-api.com/v2";
 	private static final String API_KEY = "c914bd31ea024b9bade1365cefa8b989";
-	
-	// private static final String API_SEC = "d5d5e78a0ced4a1da49230fe09696353078d9f37b0a841a888e24c064e88212d";
+	private static final String API_SEC = "d5d5e78a0ced4a1da49230fe09696353078d9f37b0a841a888e24c064e88212d";
 	
 	interface FF {
 		
@@ -94,6 +95,9 @@ public class FFAPI {
 		
 		// sync
 		
+		@GET("/request_token")
+		AuthResponse get_access_token(@Query("ff_username") String ff_username, @Query("ff_password") String ff_password);
+		
 		@GET("/feedinfo/{feed_id}")
 		FeedInfo get_profile_sync(@Path("feed_id") String feed_id);
 		
@@ -121,6 +125,11 @@ public class FFAPI {
 	static class SimpleResponse {
 		boolean success = false; // unlike & unsubscribe?
 		String status = ""; // subscribe & unsubscribe?
+	}
+	
+	static class AuthResponse {
+		String oauth_token;
+		String oauth_token_secret;
 	}
 	
 	static class IdentItem {
@@ -639,18 +648,23 @@ public class FFAPI {
 	private static FF CLIENT_WRITER;
 	
 	public static FF client_profile(final FFSession session) {
-		if (CLIENT_PROFILE == null)
+		if (CLIENT_PROFILE == null) {
+			
+			Token tcns = FFOAuth.consumer_token;
+			Token tacc = session.getAccessToken();
+			RetrofitHttpOAuthConsumer oAuthConsumer = new RetrofitHttpOAuthConsumer(tcns.key, tcns.secret);
+			oAuthConsumer.setTokenWithSecret(tacc.key, tacc.secret);
+			
 			CLIENT_PROFILE = new RestAdapter.Builder().setEndpoint(API_URL).setRequestInterceptor(
 				new RequestInterceptor() {
 					@Override
 					public void intercept(RequestFacade request) {
-						String authText = session.getUsername() + ":" + session.getRemoteKey();
-						String authData = "Basic " + Base64.encodeToString(authText.getBytes(), 0);
-						request.addHeader("Authorization", authData);
 						request.addHeader("User-Agent", Commons.USER_AGENT);
 						request.addQueryParam("locale", session.getPrefs().getString(PK.LOCALE, "en"));
 					}
-				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+				}).setLogLevel(RestAdapter.LogLevel.FULL).setClient(new SigningOkClient(oAuthConsumer)).build().create(FF.class);
+			
+		}
 		return CLIENT_PROFILE;
 	}
 	
@@ -660,9 +674,6 @@ public class FFAPI {
 				new RequestInterceptor() {
 					@Override
 					public void intercept(RequestFacade request) {
-						String authText = session.getUsername() + ":" + session.getRemoteKey();
-						String authData = "Basic " + Base64.encodeToString(authText.getBytes(), 0);
-						request.addHeader("Authorization", authData);
 						request.addHeader("User-Agent", Commons.USER_AGENT);
 						request.addQueryParam("locale", session.getPrefs().getString(PK.LOCALE, "en"));
 						request.addQueryParam("maxcomments", "auto");
@@ -683,9 +694,6 @@ public class FFAPI {
 				new RequestInterceptor() {
 					@Override
 					public void intercept(RequestFacade request) {
-						String authText = session.getUsername() + ":" + session.getRemoteKey();
-						String authData = "Basic " + Base64.encodeToString(authText.getBytes(), 0);
-						request.addHeader("Authorization", authData);
 						request.addHeader("User-Agent", Commons.USER_AGENT);
 						request.addQueryParam("locale", session.getPrefs().getString(PK.LOCALE, "en"));
 						request.addQueryParam("raw", "1");
@@ -700,9 +708,6 @@ public class FFAPI {
 				new RequestInterceptor() {
 					@Override
 					public void intercept(RequestFacade request) {
-						String authText = session.getUsername() + ":" + session.getRemoteKey();
-						String authData = "Basic " + Base64.encodeToString(authText.getBytes(), 0);
-						request.addHeader("Authorization", authData);
 						request.addQueryParam("appid", API_KEY);
 					}
 				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);

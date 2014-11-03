@@ -51,6 +51,7 @@ public abstract class BaseActivity extends Activity {
 			public void onReceive(Context context, Intent intent) {
 				switch (intent.getAction()) {
 					case FFService.SERVICE_ERROR:
+						hideWaitingBox();
 						Toast.makeText(BaseActivity.this, intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
 						break;
 					case FFService.PROFILE_READY:

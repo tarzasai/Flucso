@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 	protected void onResume() {
 		super.onResume();
 		
-		if (!session.hasAccount()) {
+		if (!(session.hasAccount() && session.hasAccess())) {
 			mUserIcon.setImageResource(R.drawable.nomugshot);
 			mUserName.setText(R.string.noaccount_name);
 			mUserLogin.setText(R.string.noaccount_login);

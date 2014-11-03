@@ -22,7 +22,9 @@ public class Commons {
 	
 	static class PK {
 		public static final String USERNAME = "Username";
-		public static final String REMOTEKEY = "RemoteKey";
+		public static final String PASSWORD = "Password";
+		public static final String AUTH_KEY = "AccessToken";
+		public static final String AUTH_SEC = "AccessSecret";
 		public static final String STARTUP = "pk_startup";
 		public static final String LOCALE = "pk_locale";
 		public static final String FEED_UPD = "pk_feed_upd";
