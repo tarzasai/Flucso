@@ -103,6 +103,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	}
 	
 	private void notifyError(Throwable error) {
+		Log.e("FFService", "notifyError", error);
 		String text;
 		try {
 			text = error instanceof RetrofitError ? Commons.retrofitErrorText((RetrofitError) error) : error.getMessage();

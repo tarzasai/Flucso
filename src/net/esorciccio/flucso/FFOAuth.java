@@ -7,9 +7,10 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,6 +24,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 
 public class FFOAuth {
@@ -51,42 +53,26 @@ public class FFOAuth {
 		}
 	}
 	
-	private final static char[] hexArray = "0123456789abcdef".toCharArray();
-	
-	private static String bytesToHex(byte[] bytes) {
-		char[] hexChars = new char[bytes.length * 2];
-		int v;
-		for (int j = 0; j < bytes.length; j++) {
-			v = bytes[j] & 0xFF;
-			hexChars[j * 2] = hexArray[v >>> 4];
-			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-		}
-		return new String(hexChars);
-	}
-	
 	private static String hmacSha1(String value, String key) throws UnsupportedEncodingException,
 		NoSuchAlgorithmException, InvalidKeyException {
-		String type = "HmacSHA1";
-		SecretKeySpec secret = new SecretKeySpec(key.getBytes(), type);
-		Mac mac = Mac.getInstance(type);
+		Mac mac = Mac.getInstance("HmacSHA1");
+		SecretKeySpec secret = new SecretKeySpec(key.getBytes(), mac.getAlgorithm());
 		mac.init(secret);
-		byte[] bytes = mac.doFinal(value.getBytes());
-		return bytesToHex(bytes);
+		byte[] digest = mac.doFinal(value.getBytes());
+		return enc(Base64.encodeToString(digest, Base64.NO_WRAP));
 	}
 	
 	public static String get_signature(String method, String url, List<String> params, Token token) {
 		try {
-			String value = "GET&" + enc(url) + "&" + TextUtils.join("&", params);
-			String key = consumer_token.secret;
-			if (token != null)
-				key += "&" + token.secret;
-			//return hmacSha1(value, key);
-
+			String value = "GET&" + enc(url) + "&" + enc(TextUtils.join("&", params));
+			String key = consumer_token.secret + "&" + (token != null ? token.secret : "");
+			return hmacSha1(value, key);
+			/*
 			String res = hmacSha1(value, key);
 			Log.v("FFOAuth", "get_signature: value=" + value);
 			Log.v("FFOAuth", "get_signature: sign=" + res);
 			return res;
-			
+			*/
 		} catch (Exception e) {
 			Log.e("FFOAuth", "get_signature", e);
 			return e.toString();
@@ -96,13 +82,14 @@ public class FFOAuth {
 	public static String get_access_token_url(String user, String pass) {
 		String url = BASE_URL + "/ia_access_token";
 		List<String> args = new ArrayList<String>();
-		args.add("ff_username=" + user);
 		args.add("ff_password=" + pass);
-		args.add("oauth_version=1.0");
-		args.add("oauth_signature_method=HMAC-SHA1");
+		args.add("ff_username=" + user);
 		args.add("oauth_consumer_key=" + enc(consumer_token.key));
+		args.add("oauth_signature_method=HMAC-SHA1");
 		args.add("oauth_timestamp=" + Long.toString((new Date().getTime()) / 1000));
-		args.add("oauth_nonce=" + Long.toString(Math.abs(new Random(System.nanoTime()).nextLong())));
+		args.add("oauth_version=1.0");
+		args.add("oauth_nonce=" + UUID.randomUUID().toString().replace("-", ""));
+		Collections.sort(args, String.CASE_INSENSITIVE_ORDER); // required!
 		args.add("oauth_signature=" + get_signature("GET", url, args, null)); // must be the last one!
 		return url + "?" + TextUtils.join("&", args);
 	}
