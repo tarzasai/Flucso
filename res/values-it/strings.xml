@@ -163,6 +163,7 @@
     <string name="yourname">Tu</string>
     <string name="yourfeed">Il tuo feed</string>
     <string name="empty_text"></string>
+    <string name="source_prefix">da</string>
     <string name="warning_dm">Ora questo è un messaggio diretto.</string>
     <string name="comms_summary">Stanno dicendo, in sostanza:</string>
     <string name="dlg_btn_ok">OK</string>

@@ -610,8 +610,12 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			txtToS.setText(tmp);
 			txtToS.setVisibility(View.VISIBLE);
 		}
-		
-		txtTimeB.setText(entry.getFuzzyTime());
+
+		String tl = entry.getFuzzyTime();
+		if (entry.via != null && !TextUtils.isEmpty(entry.via.name.trim()))
+			tl += new StringBuilder().append(" ").append(getString(R.string.source_prefix)).append(" ").append(
+				entry.via.name.trim()).toString();
+		txtTimeB.setText(tl);
 		
 		body = entry.body;
 		txtBodyB.setText(Html.fromHtml(body));

@@ -74,7 +74,11 @@ public class EntryCommsAdapter extends EntryBaseAdapter {
 			Commons.picasso(context).load(comm.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(vh.imgFrom);
 			vh.txtFrom.setCompoundDrawablesWithIntrinsicBounds(comm.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 			vh.txtFrom.setText(comm.from.getName());
-			vh.txtTime.setText(comm.getFuzzyTime());
+			String tl = comm.getFuzzyTime();
+			if (comm.via != null && !TextUtils.isEmpty(comm.via.name.trim()))
+				tl += new StringBuilder().append(" ").append(context.getString(R.string.source_prefix)).append(
+					" ").append(comm.via.name.trim()).toString();
+			vh.txtTime.setText(tl);
 			if (comm.canEdit() || comm.canDelete())
 				vh.imgMenu.setVisibility(View.VISIBLE);
 			// picture in comment

@@ -504,14 +504,21 @@ public class FFAPI {
 			}
 			
 			public String getFirstImage() {
-				if (TextUtils.isEmpty(rawBody))
-					return null;
-				String[] chk = rawBody.split("\\s+");
-				for (String s : chk) {
-					s = s.toLowerCase(Locale.getDefault());
-					if (Patterns.WEB_URL.matcher(s).matches() && (s.indexOf("/m.friendfeed-media.com/") > 0 ||
-						(s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".png") || s.endsWith(".gif"))))
-						return s;
+				String res = findImageLink(rawBody);
+				if (res == null)
+					res = findImageLink(body);
+				return res;
+			}
+			
+			private static String findImageLink(String text) {
+				if (!TextUtils.isEmpty(text)) {
+					String[] chk = text.split("\\s+");
+					for (String s : chk) {
+						s = s.toLowerCase(Locale.getDefault());
+						if (Patterns.WEB_URL.matcher(s).matches() && (s.indexOf("/m.friendfeed-media.com/") > 0 ||
+							(s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".png") || s.endsWith(".gif"))))
+							return s;
+					}
 				}
 				return null;
 			}
