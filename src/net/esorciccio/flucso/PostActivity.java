@@ -150,14 +150,14 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 				String txt = intent.getStringExtra(Intent.EXTRA_TEXT).trim();
 				String sub = intent.getStringExtra(Intent.EXTRA_SUBJECT);
 				if (Patterns.WEB_URL.matcher(txt).matches()) {
-					link = txt;
+					link = Commons.convertYoutubeLinks(txt);
 					if (!TextUtils.isEmpty(sub))
 						body = sub;
 				} else {
 					String[] chk = txt.split("\\s+");
 					for (String s : chk)
 						if (Patterns.WEB_URL.matcher(s).matches())
-							link = s;
+							link = Commons.convertYoutubeLinks(s);
 					body = TextUtils.isEmpty(link) ? txt : txt.replace(link, "");
 				}
 			} else if (typ.startsWith("image/")) {

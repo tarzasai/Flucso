@@ -111,4 +111,9 @@ public class Commons {
 		Log.v("RPC", error.getUrl());
 		return msg;
 	}
+	
+	public static String convertYoutubeLinks(String link) {
+		// friendfeed add a screenshot on youtube shared links, but only for the original domain:
+		return link.startsWith("http://youtu.be/") ? "http://www.youtube.com/watch?v=" + link.substring(16) : link;
+	}
 }
