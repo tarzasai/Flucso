@@ -56,9 +56,11 @@
 
     <ImageView
         android:id="@+id/img_entry_dm"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="-3dp"
+        android:layout_marginTop="-6dp"
         android:contentDescription="@string/empty_text"
         android:src="@drawable/entry_dm" />
 

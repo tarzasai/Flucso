@@ -157,7 +157,17 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		lvFeed.setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// nothing to do.
+				switch (scrollState) {
+					case OnScrollListener.SCROLL_STATE_IDLE:
+						imgGoUp.setAlpha((float) 1.0);
+						break;
+					case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+						imgGoUp.setAlpha((float) 0.5);
+						break;
+					case OnScrollListener.SCROLL_STATE_FLING:
+						imgGoUp.setAlpha((float) 0.2);
+						break;
+				}
 			}
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
