@@ -60,22 +60,23 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		
 		session.getPrefs().registerOnSharedPreferenceChangeListener(this);
 		
-		int waitTime = 5000;
+		int waitTime = 500;
 		try {
 			while (!terminated) {
-				if (!session.hasAccount())
-					waitTime = 2000;
-				else {
-					waitTime = 5000;
-					checkProfile();
-					checkMessages();
-					checkFeedCache();
-				}
 				try {
 					Thread.sleep(waitTime);
 				} catch (InterruptedException e) {
 					terminated = true;
 					notifyError(e);
+				}
+				if (!session.hasAccount())
+					waitTime = 2000;
+				else if (!checkProfile())
+					terminated = true;
+				else {
+					checkMessages();
+					checkFeedCache();
+					waitTime = 5000;
 				}
 			}
 		} finally {
@@ -110,9 +111,9 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		notifier.sendBroadcast(new Intent().setAction(SERVICE_ERROR).putExtra("message", text));
 	}
 	
-	private void checkProfile() {
+	private boolean checkProfile() {
 		if (session.hasProfile() && (printv == 0 || printv > (new Date().getTime() - prlast) / (60 * 1000) % 60))
-			return;
+			return true;
 		Log.v("FFService", "checkProfile()");
 		try {
 			session.profile = FFAPI.client_profile(session).get_profile_sync("me");
@@ -121,8 +122,10 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			if (session.navigation == null)
 				session.navigation = FFAPI.client_profile(session).get_navigation_sync();
 			notifier.sendBroadcast(new Intent(PROFILE_READY));
+			return true;
 		} catch (Exception error) {
 			notifyError(error);
+			return false;
 		}
 	}
 	
