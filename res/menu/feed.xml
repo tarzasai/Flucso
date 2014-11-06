@@ -36,5 +36,13 @@
         android:orderInCategory="95"
         android:showAsAction="never"
         app:showAsAction="never"/>
+    
+    <item
+        android:id="@+id/action_feed_filter"
+        android:title="@string/action_feed_filter"
+        android:menuCategory="container"
+        android:orderInCategory="96"
+        android:showAsAction="never"
+        app:showAsAction="never"/>
 
 </menu>

@@ -1,6 +1,7 @@
 package net.esorciccio.flucso;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,6 +17,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -71,6 +73,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	private MenuItem miAutoU;
 	private MenuItem miPause;
 	private MenuItem miSubsc;
+	private MenuItem miHideF;
 
 	public String fid;
 	public String fname;
@@ -240,6 +243,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		miAutoU = menu.findItem(R.id.action_feed_auto);
 		miPause = menu.findItem(R.id.action_feed_pause);
 		miSubsc = menu.findItem(R.id.action_feed_subscr);
+		miHideF = menu.findItem(R.id.action_feed_filter);
 	}
 	
 	@Override
@@ -283,6 +287,18 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 				public void onBitmapFailed(Drawable arg0) {
 				}
 			});
+			return true;
+		}
+		if (item == miHideF) {
+			pauseUpdates(false);
+			String flt = session.getPrefs().getString(PK.FEED_HBF, "").toLowerCase(Locale.getDefault());
+			if (!flt.contains(adapter.feed.id)) {
+				flt += (flt != "" ? ", " : "") + adapter.feed.id;
+				SharedPreferences.Editor editor = session.getPrefs().edit();
+				editor.putString(PK.FEED_HBF, flt);
+				editor.commit();
+			}
+			getActivity().getFragmentManager().popBackStack();
 			return true;
 		}
 		Toast.makeText(getActivity(), item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -358,7 +374,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	}
 	
 	private void checkMenu() {
-		if (miWrite == null || miAutoU == null || miPause == null || miSubsc == null)
+		if (miWrite == null || miAutoU == null || miPause == null || miSubsc == null || miHideF == null)
 			return;
 		boolean fl = adapter != null && adapter.feed != null;
 		miWrite.setVisible(fl);
@@ -366,6 +382,7 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 		miAutoU.setVisible(fl && !isAutoUpdGoing());
 		miPause.setVisible(fl && !miAutoU.isVisible());
 		miSubsc.setVisible(fl && adapter.feed.canSetSubscriptions());
+		miHideF.setVisible(fl && (adapter.feed.isGroup() || adapter.feed.isUser()));
 	}
 	
 	private boolean isAutoUpdSet() {

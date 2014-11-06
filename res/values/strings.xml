@@ -55,7 +55,7 @@
     <string name="action_feed_autoups">Auto updates</string>
     <string name="action_feed_stopups">Pause updates</string>
     <string name="action_feed_subscr">Set subscription</string>
-    <string name="action_feed_admin">Admin</string>
+    <string name="action_feed_filter">Hide all posts from this feed</string>
     <string name="action_feed_scrollup">New posts available! (tap to go up)</string>
     <string name="action_entry_speedc">Instant comment</string>
     <string name="action_entry_summ">Gimme a summary</string>

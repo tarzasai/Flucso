@@ -55,7 +55,7 @@
     <string name="action_feed_autoups">Aggiornamento automatico</string>
     <string name="action_feed_stopups">Pausa aggiornamento</string>
     <string name="action_feed_subscr">Imposta sottoscrizione</string>
-    <string name="action_feed_admin">Amministra</string>
+    <string name="action_feed_filter">Nascondi i post di questo feed</string>
     <string name="action_feed_scrollup">Nuovi posts disponibili!</string>
     <string name="action_entry_speedc">Commenti rapidi</string>
     <string name="action_entry_summ">Fammi un riassunto</string>
