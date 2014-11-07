@@ -111,6 +111,8 @@
     <string name="res_dellike_ok">Like removed</string>
     <string name="res_hidden_ok">Post hidden</string>
     <string name="res_unhide_ok">The post is not hidden anymore</string>
+    <string name="res_feed_hidden">Feed \"@\" added to the banned feeds list.</string>
+    <string name="res_feed_unhidden">Feed \"@\" removed from the banned feeds list.</string>
 
     <!-- Login dialog -->
     <string name="login_username">Username</string>

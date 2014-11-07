@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.BaseFeed;
 import net.esorciccio.flucso.FFAPI.Entry;
 import net.esorciccio.flucso.FFAPI.Entry.Comment;
@@ -23,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -410,6 +412,26 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			return; // wtf?
 		}
 		switch (v.getId()) {
+			case R.id.img_recp_fv:
+				BaseFeed recp = (BaseFeed) adapters[0].getItem(pos);
+				String msg;
+				if (Entry.bFeeds.contains(recp.id)) {
+					Entry.bFeeds.remove(recp.id);
+					msg = getString(R.string.res_feed_unhidden);
+				} else {
+					Entry.bFeeds.add(recp.id);
+					msg = getString(R.string.res_feed_hidden);
+				}
+				String flt = TextUtils.join(", ", Entry.bFeeds);
+				SharedPreferences.Editor editor = session.getPrefs().edit();
+				if (TextUtils.isEmpty(flt))
+					editor.remove(PK.FEED_HBF);
+				else
+					editor.putString(PK.FEED_HBF, flt);
+				editor.commit();
+				Toast.makeText(getActivity(), msg.replace("@", recp.id), Toast.LENGTH_LONG).show();
+				adapters[0].notifyDataSetChanged();
+				break;
 			case R.id.img_comm_popup:
 				pauseUpdates(false);
 				final Comment comm = (Comment) adapters[3].getItem(pos);

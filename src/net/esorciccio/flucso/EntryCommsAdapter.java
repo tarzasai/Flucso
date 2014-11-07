@@ -17,14 +17,10 @@ import com.squareup.picasso.Callback;
 
 public class EntryCommsAdapter extends EntryBaseAdapter {
 	
-	final FFSession session;
-	
 	public EntryCommsAdapter(Context context, OnClickListener clickListener) {
 		super(context, clickListener);
-		
-		session = FFSession.getInstance(context);
 	}
-	
+
 	@Override
 	public int getCount() {
 		return entry != null ? entry.comments.size() : 0;

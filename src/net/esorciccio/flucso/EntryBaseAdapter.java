@@ -7,7 +7,8 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 
 public abstract class EntryBaseAdapter extends BaseAdapter {
-
+	
+	protected FFSession session;
 	protected Entry entry;
 	protected Context context;
 	protected OnClickListener listener;
@@ -15,6 +16,8 @@ public abstract class EntryBaseAdapter extends BaseAdapter {
 	
 	public EntryBaseAdapter(Context context, OnClickListener clickListener) {
 		super();
+		
+		session = FFSession.getInstance(context);
 		
 		this.context = context;
 		this.listener = clickListener;

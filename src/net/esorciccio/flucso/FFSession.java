@@ -1,5 +1,6 @@
 package net.esorciccio.flucso;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -50,12 +51,12 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 		if (TextUtils.isEmpty(chk))
 			Entry.bWords.clear();
 		else
-			Entry.bWords = Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+"));
+			Entry.bWords = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
 		chk = prefs.getString(PK.FEED_HBF, "").toLowerCase(Locale.getDefault()).trim();
 		if (TextUtils.isEmpty(chk))
 			Entry.bFeeds.clear();
 		else
-			Entry.bFeeds = Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+"));
+			Entry.bFeeds = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
 	}
 	
 	public FeedInfo profile;

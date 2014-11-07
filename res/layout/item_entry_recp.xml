@@ -3,27 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingBottom="6dp"
-    android:paddingTop="6dp" >
+    android:orientation="horizontal" >
 
     <ImageView
-        android:id="@+id/img_to"
+        android:id="@+id/img_recp_to"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:contentDescription="@string/empty_text"
         android:src="@drawable/nomugshot" />
 
     <TextView
-        android:id="@+id/txt_to"
-        android:layout_width="match_parent"
+        android:id="@+id/txt_recp_to"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/entry_private"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/entry_private"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/test_username"
         android:textColor="@color/entry_name_text"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/img_recp_fv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_text"
+        android:src="@drawable/feed_visible" />
 
 </LinearLayout>

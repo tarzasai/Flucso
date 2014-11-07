@@ -111,6 +111,8 @@
     <string name="res_dellike_ok">Like rimosso</string>
     <string name="res_hidden_ok">Post nascosto</string>
     <string name="res_unhide_ok">Il post non è più nascosto</string>
+    <string name="res_feed_hidden">Tutti i post del feed \"@\" saranno nascosti.</string>
+    <string name="res_feed_unhidden">Tutti i post del feed \"@\" saranno di nuovo visibili.</string>
 
     <!-- Login dialog -->
     <string name="login_username">Nome utente</string>

@@ -281,8 +281,8 @@ public class FFAPI {
 		boolean updated;
 		boolean banned = false; // local
 
-		static List<String> bFeeds = new ArrayList<String>();
-		static List<String> bWords = new ArrayList<String>();
+		static ArrayList<String> bFeeds = new ArrayList<String>();
+		static ArrayList<String> bWords = new ArrayList<String>();
 		
 		public void setLocalHide() {
 			banned = false;

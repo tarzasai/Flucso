@@ -1,6 +1,7 @@
 package net.esorciccio.flucso;
 
 import net.esorciccio.flucso.FFAPI.BaseFeed;
+import net.esorciccio.flucso.FFAPI.Entry;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,8 +21,8 @@ public class EntryRecpsAdapter extends EntryBaseAdapter {
 	}
 	
 	@Override
-	public Object getItem(int position) {
-		return (position < 0 || position >= getCount()) ? null : entry.to[position];
+	public BaseFeed getItem(int position) {
+		return entry.to[position];
 	}
 	
 	@Override
@@ -31,28 +32,34 @@ public class EntryRecpsAdapter extends EntryBaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
+		ViewHolder vh;
 		View view = convertView;
 		if (view == null) {
 			view = inflater.inflate(R.layout.item_entry_recp, parent, false);
-			holder = new ViewHolder();
-			holder.img = (ImageView) view.findViewById(R.id.img_to);
-			holder.txt = (TextView) view.findViewById(R.id.txt_to);
-			view.setTag(holder);
+			vh = new ViewHolder();
+			vh.img = (ImageView) view.findViewById(R.id.img_recp_to);
+			vh.txt = (TextView) view.findViewById(R.id.txt_recp_to);
+			vh.flt = (ImageView) view.findViewById(R.id.img_recp_fv);
+			vh.flt.setOnClickListener(listener);
+			view.setTag(vh);
 		} else {
-			holder = (ViewHolder) view.getTag();
+			vh = (ViewHolder) view.getTag();
 		}
-		BaseFeed rec = (BaseFeed) getItem(position);
+		vh.flt.setTag(Integer.valueOf(position));
+		BaseFeed rec = getItem(position);
 		Commons.picasso(view.getContext().getApplicationContext()).load(rec.getAvatarUrl()).placeholder(
-			R.drawable.nomugshot).into(holder.img);
-		holder.txt.setCompoundDrawablesWithIntrinsicBounds(rec.locked ? R.drawable.entry_private : 0, 0, 0, 0);
-		holder.txt.setText(rec.getName());
+			R.drawable.nomugshot).into(vh.img);
+		vh.txt.setCompoundDrawablesWithIntrinsicBounds(rec.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+		vh.txt.setText(rec.getName());
+		vh.flt.setVisibility(rec.isGroup() || (rec.isUser() && !session.profile.isIt(rec.id)) ? View.VISIBLE : View.GONE);
+		vh.flt.setImageResource(Entry.bFeeds.contains(rec.id) ? R.drawable.feed_hidden : R.drawable.feed_visible);
 		return view;
 	}
 	
 	public static class ViewHolder {
 		public ImageView img;
 		public TextView txt;
+		public ImageView flt;
 	}
 
 	@Override
