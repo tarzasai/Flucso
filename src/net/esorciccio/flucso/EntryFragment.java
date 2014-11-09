@@ -81,7 +81,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	private EditText edtNewCom;
 	private LinearLayout llHeader;
 	private LinearLayout llFloat;
-	private ImageView imgGoLast;
+	private ImageView imgGoDn;
 	private ListView listView;
 	
 	private MenuItem miSpeedC;
@@ -198,7 +198,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtBodyS = (TextView) view.findViewById(R.id.txt_entry_body_small);
 		listView = (ListView) view.findViewById(R.id.lv_entry_items);
 		llFloat = (LinearLayout) view.findViewById(R.id.l_entry_hdr_float);
-		imgGoLast = (ImageView) view.findViewById(R.id.img_entry_last);
+		imgGoDn = (ImageView) view.findViewById(R.id.img_entry_last);
 		edtNewCom = (EditText) view.findViewById(R.id.edt_entry_comm);
 		
 		llHeader = (LinearLayout) inflater.inflate(R.layout.header_entry, null);
@@ -256,7 +256,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				checkFloatingStuff();
 			}
 		});
-		imgGoLast.setOnClickListener(new OnClickListener() {
+		imgGoDn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				listView.setSelection(listView.getCount() - 1);
@@ -279,9 +279,18 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		listView.setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// nothing to do.
+				switch (scrollState) {
+					case OnScrollListener.SCROLL_STATE_IDLE:
+						imgGoDn.setAlpha((float) 1.0);
+						break;
+					case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+						imgGoDn.setAlpha((float) 0.5);
+						break;
+					case OnScrollListener.SCROLL_STATE_FLING:
+						imgGoDn.setAlpha((float) 0.2);
+						break;
+				}
 			}
-			
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				checkFloatingStuff();
@@ -592,16 +601,16 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	private void checkFloatingStuff() {
 		if (listView.getCount() <= 0) {
 			llFloat.setVisibility(View.GONE);
-			imgGoLast.setVisibility(View.GONE);
+			imgGoDn.setVisibility(View.GONE);
 		} else {
 			if (listView.getFirstVisiblePosition() > 1)
 				llFloat.setVisibility(View.VISIBLE);
 			else
 				llFloat.setVisibility(View.GONE);
 			if (listView.getLastVisiblePosition() < listView.getCount() - 1)
-				imgGoLast.setVisibility(View.VISIBLE);
+				imgGoDn.setVisibility(View.VISIBLE);
 			else
-				imgGoLast.setVisibility(View.GONE);
+				imgGoDn.setVisibility(View.GONE);
 		}
 	}
 	

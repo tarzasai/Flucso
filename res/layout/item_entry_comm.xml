@@ -12,17 +12,17 @@
         android:id="@+id/img_comm_from"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
         android:contentDescription="@string/empty_text"
         android:src="@drawable/nomugshot" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingStart="0dp"
-        android:paddingEnd="8dp" >
+        android:paddingEnd="8dp"
+        android:paddingStart="0dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,8 +76,8 @@
 
     <ImageView
         android:id="@+id/img_comm_popup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:contentDescription="@string/empty_text"
         android:src="@drawable/btn_popup" />
 

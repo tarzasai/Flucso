@@ -87,15 +87,16 @@
 
         <ImageView
             android:id="@+id/img_entry_last"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"
-            android:alpha="0.6"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="12dp"
             android:contentDescription="@string/empty_text"
             android:src="@drawable/go_down"
             android:visibility="visible" />
+
     </RelativeLayout>
 
     <net.esorciccio.flucso.ActionEditText

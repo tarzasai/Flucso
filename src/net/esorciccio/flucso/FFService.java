@@ -76,7 +76,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 				else {
 					checkMessages();
 					checkFeedCache();
-					waitTime = 5000;
+					waitTime = 50000;
 				}
 			}
 		} finally {
