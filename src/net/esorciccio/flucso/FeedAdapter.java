@@ -99,11 +99,11 @@ public class FeedAdapter extends BaseAdapter {
 		String tmp;
 		final Entry entry = getItem(position);
 		
-		if (entry.hidden || entry.banned) {
+		if (entry.hidden || entry.banned || entry.spoiler) {
 			vh.lNormal.setVisibility(View.GONE);
 			vh.lHidden.setVisibility(View.VISIBLE);
 			vh.txtFromH.setCompoundDrawablesWithIntrinsicBounds(entry.hidden ? R.drawable.ic_action_desktop :
-				R.drawable.ic_action_phone, 0, 0, 0);
+				(entry.spoiler ? R.drawable.ic_action_spoiler_alert : R.drawable.ic_action_phone), 0, 0, 0);
 			vh.txtFromH.setText(entry.from.getName());
 			vh.txtTimeH.setText(entry.getFuzzyTime());
 			return view;

@@ -57,6 +57,7 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 			Entry.bFeeds.clear();
 		else
 			Entry.bFeeds = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
+		Entry.bSpoilers = prefs.getBoolean(PK.FEED_SPO, false);
 	}
 	
 	public FeedInfo profile;
@@ -110,7 +111,7 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 			FFAPI.dropClients();
 		} else if (key.equals(PK.LOCALE)) {
 			FFAPI.dropClients();
-		} else if (key.equals(PK.FEED_HBK) || key.equals(PK.FEED_HBF)) {
+		} else if (key.equals(PK.FEED_HBK) || key.equals(PK.FEED_HBF) || key.equals(PK.FEED_SPO)) {
 			loadLocalFilters();
 		}
 	}

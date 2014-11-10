@@ -62,6 +62,12 @@
             android:summary="@string/pk_feed_hbf_summ"
             android:title="@string/pk_feed_hbf_title" />
         
+        <CheckBoxPreference 
+            android:key="pk_feed_spo"
+            android:defaultValue="false"
+            android:summary="@string/pk_feed_spo_summ"
+            android:title="@string/pk_feed_spo_title" />
+        
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -248,9 +248,8 @@ public class FFAPI {
 		}
 		
 		public void setLocalHide() {
-			if (Entry.bFeeds.size() + Entry.bWords.size() > 0)
-				for (Entry e : entries)
-					e.setLocalHide();
+			for (Entry e : entries)
+				e.setLocalHide();
 		}
 		
 		static class Realtime {
@@ -280,18 +279,21 @@ public class FFAPI {
 		boolean created;
 		boolean updated;
 		boolean banned = false; // local
+		boolean spoiler = false; // local
 
 		static ArrayList<String> bFeeds = new ArrayList<String>();
 		static ArrayList<String> bWords = new ArrayList<String>();
+		static boolean bSpoilers = false;
 		
 		public void setLocalHide() {
 			banned = false;
+			spoiler = false;
 			for (BaseFeed bf: to)
 				if (bFeeds.contains(bf.id)) {
 					banned = true;
 					return;
 				}
-			if (!TextUtils.isEmpty(rawBody))
+			if (!(TextUtils.isEmpty(body) || TextUtils.isEmpty(rawBody))) {
 				try {
 					String chk = body.toLowerCase(Locale.getDefault()).trim() + "\n\n\n" +
 						rawBody.toLowerCase(Locale.getDefault()).trim();
@@ -302,6 +304,19 @@ public class FFAPI {
 						}
 				} catch (Exception err) {
 				}
+				if (bSpoilers && (body.contains("#spoiler") || rawBody.contains("#spoiler"))) {
+					spoiler = true;
+					return;
+				}
+			}
+			if (bSpoilers)
+				for (Comment c: comments)
+					if (!c.placeholder && (c.body.contains("#spoiler") || c.rawBody.contains("#spoiler") ||
+						c.body.toLowerCase(Locale.getDefault()).equals("spoiler") ||
+						c.rawBody.toLowerCase(Locale.getDefault()).equals("spoiler"))) {
+						spoiler = true;
+						return;
+					}
 		}
 		
 		public boolean isDM() {
@@ -442,7 +457,6 @@ public class FFAPI {
 					thumbnails = entry.thumbnails;
 					files = entry.files;
 					geo = entry.geo;
-					setLocalHide();
 				}
 				for (Comment comm : entry.comments)
 					if (comm.created)
@@ -454,8 +468,8 @@ public class FFAPI {
 				for (Like like : entry.likes)
 					if (like.created)
 						likes.add(like);
-				// Highlighting in feed's view.
 				updated = true;
+				setLocalHide();
 				return true;
 			}
 			return false;

@@ -144,6 +144,8 @@
     <string name="pk_feed_hbk_summ">Hide entries containing these words (comma delimited list).</string>
     <string name="pk_feed_hbf_title">Banned feeds</string>
     <string name="pk_feed_hbf_summ">Hide entries crossposted in these feeds (comma delimited list of feeds ID, not names).</string>
+    <string name="pk_feed_spo_title">Hide spoilers</string>
+    <string name="pk_feed_spo_summ">Hide posts containing spoiler alerts.</string>
     <string name="pc_entry_title">Posts options</string>
     <string name="pk_entry_imco_title">Images in comments</string>
     <string name="pk_entry_imco_summ">When to (try to) show images linked in comments.</string>
