@@ -73,6 +73,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	private TextView txtBodyB;
 	private ImageView imgIsDM;
 	private ImageView imgFromS;
+	private ImageView imgSpoil;
 	private TextView txtFromS;
 	private TextView txtToS;
 	private TextView txtBodyS;
@@ -209,6 +210,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtToB = (TextView) llHeader.findViewById(R.id.txt_entry_to);
 		txtTimeB = (TextView) llHeader.findViewById(R.id.txt_entry_time);
 		imgIsDM = (ImageView) llHeader.findViewById(R.id.img_entry_dm);
+		imgSpoil = (ImageView) llHeader.findViewById(R.id.img_entry_spoiler);
 		txtBodyB = (TextView) llHeader.findViewById(R.id.txt_entry_body_big);
 		tabh = (TabHost) llHeader.findViewById(android.R.id.tabhost);
 		tabw = (TabWidget) llHeader.findViewById(android.R.id.tabs);
@@ -228,6 +230,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtToB.setVisibility(View.GONE);
 		txtToS.setVisibility(View.GONE);
 		imgIsDM.setVisibility(View.GONE);
+		imgSpoil.setVisibility(View.GONE);
 		
 		tabh.setup();
 		
@@ -424,14 +427,14 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			case R.id.img_recp_fv:
 				BaseFeed recp = (BaseFeed) adapters[0].getItem(pos);
 				String msg;
-				if (Entry.bFeeds.contains(recp.id)) {
-					Entry.bFeeds.remove(recp.id);
+				if (Commons.bFeeds.contains(recp.id)) {
+					Commons.bFeeds.remove(recp.id);
 					msg = getString(R.string.res_feed_unhidden);
 				} else {
-					Entry.bFeeds.add(recp.id);
+					Commons.bFeeds.add(recp.id);
 					msg = getString(R.string.res_feed_hidden);
 				}
-				String flt = TextUtils.join(", ", Entry.bFeeds);
+				String flt = TextUtils.join(", ", Commons.bFeeds);
 				SharedPreferences.Editor editor = session.getPrefs().edit();
 				if (TextUtils.isEmpty(flt))
 					editor.remove(PK.FEED_HBF);
@@ -630,6 +633,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtFromS.setCompoundDrawablesWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 		
 		imgIsDM.setVisibility(entry.isDM() ? View.VISIBLE : View.GONE);
+		imgSpoil.setVisibility(entry.hasSpoilers() ? View.VISIBLE : View.GONE);
 		
 		String tmp = entry.getToLine();
 		if (tmp == null) {
@@ -864,6 +868,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 						if (!EntryFragment.this.isVisible() || EntryFragment.this.isRemoving())
 							return;
 						entry = upd;
+						entry.checkLocalHide(); // we always replace the whole entry, so...
 						updateView();
 					}
 				});

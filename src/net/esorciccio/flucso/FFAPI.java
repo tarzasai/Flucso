@@ -23,7 +23,6 @@ import retrofit.mime.MultipartTypedOutput;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Base64;
-import android.util.Patterns;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -218,7 +217,7 @@ public class FFAPI {
 			for (Entry e : feed.entries)
 				if (find(e.id) == null) {
 					entries.add(e);
-					e.setLocalHide();
+					e.checkLocalHide();
 					res++;
 				}
 			return res;
@@ -231,12 +230,14 @@ public class FFAPI {
 			for (Entry e : feed.entries)
 				if (e.created) {
 					entries.add(0, e);
-					e.setLocalHide();
+					e.checkLocalHide();
 					res++;
 				} else
 					for (Entry old : entries)
-						if (old.update(e))
+						if (old.isIt(e.id)) {
+							old.update(e);
 							break;
+						}
 			if (!TextUtils.isEmpty(lastDeletedEntry))
 				for (int n = 0; n < entries.size(); n++)
 					if (entries.get(n).id.equals(lastDeletedEntry)) {
@@ -247,9 +248,9 @@ public class FFAPI {
 			return res;
 		}
 		
-		public void setLocalHide() {
+		public void checkLocalHide() {
 			for (Entry e : entries)
-				e.setLocalHide();
+				e.checkLocalHide();
 		}
 		
 		static class Realtime {
@@ -257,18 +258,90 @@ public class FFAPI {
 		}
 	}
 	
-	static class Entry extends IdentItem {
-		String body;
-		Date date;
+	static class BaseEntry extends IdentItem {
 		BaseFeed from;
+		Date date;
+		String body;
+		String rawBody;
+		Origin via;
+		boolean created;
+		boolean updated;
+		boolean banned = false; // local
+		boolean spoiler = false; // local
+		
+		public boolean isMine() {
+			return from.isMe();
+		}
+		
+		public boolean canEdit() {
+			return commands.contains("edit");
+		}
+		
+		public boolean canDelete() {
+			return commands.contains("delete");
+		}
+		
+		public String getFuzzyTime() {
+			return DateUtils.getRelativeTimeSpanString(date.getTime(), new Date().getTime(),
+				DateUtils.MINUTE_IN_MILLIS).toString();
+		}
+		
+		public String getFirstImage() {
+			String res = Commons.firstImageLink(rawBody);
+			if (res == null)
+				res = Commons.firstImageLink(body);
+			return res;
+		}
+		
+		public void update(BaseEntry item) {
+			if (!isIt(item.id))
+				return;
+			timestamp = item.timestamp;
+			commands = item.commands;
+			from = item.from; // people and rooms can change name/avatar at any time.
+			via = item.via; // barely useless.
+			if (item.updated) {
+				date = item.date;
+				body = item.body;
+				rawBody = item.rawBody;
+				updated = true;
+			}
+			checkLocalHide();
+		}
+		
+		public void checkLocalHide() {
+			banned = false;
+			spoiler = false;
+			try {
+				String chk = !TextUtils.isEmpty(body) ? body.toLowerCase(Locale.getDefault()).trim() : "";
+				chk += !TextUtils.isEmpty(chk) ? "\n\n\n" : "";
+				chk += !TextUtils.isEmpty(rawBody) ? rawBody.toLowerCase(Locale.getDefault()).trim() : "";
+				if (!TextUtils.isEmpty(chk)) {
+					if (!isMine())
+						for (String bw: Commons.bWords)
+							if (chk.indexOf(bw) >= 0) {
+								banned = true;
+								break;
+							}
+					spoiler = Commons.bSpoilers && chk.contains("#spoiler");
+				}
+			} catch (Exception err) {
+			}
+		}
+		
+		static class Origin {
+			String name;
+			String url;
+		}
+	}
+	
+	static class Entry extends BaseEntry {
+		String rawLink;
+		String url;
 		List<Comment> comments = new ArrayList<Comment>();
 		List<Like> likes = new ArrayList<Like>();
-		String rawBody;
-		String rawLink;
-		Thumbnail[] thumbnails = new Thumbnail[] {};
 		BaseFeed[] to = new BaseFeed[] {};
-		String url;
-		Origin via;
+		Thumbnail[] thumbnails = new Thumbnail[] {};
 		Fof fof;
 		String fofHtml;
 		String shortId = "";
@@ -276,47 +349,57 @@ public class FFAPI {
 		Attachment[] files = new Attachment[] {};
 		Coordinates geo;
 		boolean hidden = false; // undocumented
-		boolean created;
-		boolean updated;
-		boolean banned = false; // local
-		boolean spoiler = false; // local
-
-		static ArrayList<String> bFeeds = new ArrayList<String>();
-		static ArrayList<String> bWords = new ArrayList<String>();
-		static boolean bSpoilers = false;
 		
-		public void setLocalHide() {
-			banned = false;
-			spoiler = false;
-			for (BaseFeed bf: to)
-				if (bFeeds.contains(bf.id)) {
-					banned = true;
-					return;
-				}
-			if (!(TextUtils.isEmpty(body) || TextUtils.isEmpty(rawBody))) {
-				try {
-					String chk = body.toLowerCase(Locale.getDefault()).trim() + "\n\n\n" +
-						rawBody.toLowerCase(Locale.getDefault()).trim();
-					for (String bw: bWords)
-						if (chk.indexOf(bw) >= 0) {
-							banned = true;
-							return;
+		@Override
+		public void update(BaseEntry item) {
+			super.update(item);
+			
+			if (!isIt(item.id))
+				return;
+			
+			Entry entry = (Entry) item;
+
+			url = entry.url;
+			fof = entry.fof;
+			hidden = entry.hidden;
+			rawLink = entry.rawLink;
+			fofHtml = entry.fofHtml;
+			thumbnails = entry.thumbnails;
+			files = entry.files;
+			geo = entry.geo;
+
+			for (Comment comm : entry.comments)
+				if (comm.created)
+					comments.add(comm);
+				else
+					for (Comment old : comments)
+						if (old.isIt(comm.id)) {
+							old.update(comm);
+							break;
 						}
-				} catch (Exception err) {
-				}
-				if (bSpoilers && (body.contains("#spoiler") || rawBody.contains("#spoiler"))) {
-					spoiler = true;
-					return;
-				}
-			}
-			if (bSpoilers)
-				for (Comment c: comments)
-					if (!c.placeholder && (c.body.contains("#spoiler") || c.rawBody.contains("#spoiler") ||
-						c.body.toLowerCase(Locale.getDefault()).equals("spoiler") ||
-						c.rawBody.toLowerCase(Locale.getDefault()).equals("spoiler"))) {
-						spoiler = true;
-						return;
+			
+			for (Like like : entry.likes)
+				if (like.created)
+					likes.add(like);
+			
+			updated = true;
+		}
+		
+		@Override
+		public void checkLocalHide() {
+			super.checkLocalHide();
+			
+			if (canUnlike()) {
+				banned = false;
+				spoiler = false;
+			} else
+				for (BaseFeed bf: to)
+					if (Commons.bFeeds.contains(bf.id)) {
+						banned = true;
+						break;
 					}
+			for (Comment c: comments)
+				c.checkLocalHide();
 		}
 		
 		public boolean isDM() {
@@ -326,14 +409,6 @@ public class FFAPI {
 				if (!f.isUser() || f.isIt(from.id))
 					return false;
 			return true;
-		}
-		
-		public boolean canEdit() {
-			return commands.contains("edit");
-		}
-		
-		public boolean canDelete() {
-			return commands.contains("delete");
 		}
 		
 		public boolean canComment() {
@@ -354,11 +429,6 @@ public class FFAPI {
 		
 		public boolean canUnhide() {
 			return commands.contains("unhide");
-		}
-		
-		public String getFuzzyTime() {
-			return DateUtils.getRelativeTimeSpanString(date.getTime(), new Date().getTime(),
-				DateUtils.MINUTE_IN_MILLIS).toString();
 		}
 		
 		public String getToLine() {
@@ -411,6 +481,16 @@ public class FFAPI {
 			return comments.size();
 		}
 		
+		public String[] getMediaUrls(boolean attachments) {
+			String[] res = new String[attachments ? thumbnails.length + files.length : thumbnails.length];
+			for (int i = 0; i < thumbnails.length; i++)
+				res[i] = thumbnails[i].link;
+			if (attachments)
+				for (int i = 0; i < thumbnails.length; i++)
+					res[thumbnails.length + i] = files[i].url;
+			return res;
+		}
+		
 		public int indexOfComment(String cid) {
 			Comment c;
 			for (int i = 0; i < comments.size(); i++) {
@@ -431,110 +511,22 @@ public class FFAPI {
 			return -1;
 		}
 		
-		public String[] getMediaUrls(boolean attachments) {
-			String[] res = new String[attachments ? thumbnails.length + files.length : thumbnails.length];
-			for (int i = 0; i < thumbnails.length; i++)
-				res[i] = thumbnails[i].link;
-			if (attachments)
-				for (int i = 0; i < thumbnails.length; i++)
-					res[thumbnails.length + i] = files[i].url;
-			return res;
-		}
-		
-		public boolean update(Entry entry) {
-			if (entry.id.equals(id)) {
-				commands = entry.commands;
-				fof = entry.fof;
-				hidden = entry.hidden;
-				timestamp = entry.timestamp;
-				if (entry.updated) {
-					body = entry.body;
-					date = entry.date;
-					url = entry.url;
-					rawBody = entry.rawBody;
-					rawLink = entry.rawLink;
-					fofHtml = entry.fofHtml;
-					thumbnails = entry.thumbnails;
-					files = entry.files;
-					geo = entry.geo;
-				}
-				for (Comment comm : entry.comments)
-					if (comm.created)
-						comments.add(comm);
-					else
-						for (Comment old : comments)
-							if (old.update(comm))
-								break;
-				for (Like like : entry.likes)
-					if (like.created)
-						likes.add(like);
-				updated = true;
-				setLocalHide();
-				return true;
-			}
+		public boolean hasSpoilers() {
+			for (Comment c: comments)
+				if (c.spoiler)
+					return true;
 			return false;
 		}
 		
-		static class Comment extends IdentItem {
-			String body;
-			Date date;
-			BaseFeed from;
-			String rawBody;
-			Origin via;
-			boolean created;
-			boolean updated;
+		static class Comment extends BaseEntry {
 			// compact view only (plus body):
 			Boolean placeholder = false;
 			int num;
 			
-			public boolean isMine() {
-				return from.isMe();
-			}
-			
-			public boolean canEdit() {
-				return commands.contains("edit");
-			}
-			
-			public boolean canDelete() {
-				return commands.contains("delete");
-			}
-			
-			public boolean update(Comment comm) {
-				if (id.equals(comm.id)) {
-					body = comm.body;
-					date = comm.date;
-					from = comm.from;
-					rawBody = comm.rawBody;
-					via = comm.via;
-					updated = true;
-					return true;
-				}
-				return false;
-			}
-			
-			public String getFuzzyTime() {
-				return DateUtils.getRelativeTimeSpanString(date.getTime(), new Date().getTime(),
-					DateUtils.MINUTE_IN_MILLIS).toString();
-			}
-			
-			public String getFirstImage() {
-				String res = findImageLink(rawBody);
-				if (res == null)
-					res = findImageLink(body);
-				return res;
-			}
-			
-			private static String findImageLink(String text) {
-				if (!TextUtils.isEmpty(text)) {
-					String[] chk = text.split("\\s+");
-					for (String s : chk) {
-						s = s.toLowerCase(Locale.getDefault());
-						if (Patterns.WEB_URL.matcher(s).matches() && (s.indexOf("/m.friendfeed-media.com/") > 0 ||
-							(s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".png") || s.endsWith(".gif"))))
-							return s;
-					}
-				}
-				return null;
+			@Override
+			public void checkLocalHide() {
+				if (!placeholder)
+					super.checkLocalHide();
 			}
 		}
 		
@@ -578,11 +570,6 @@ public class FFAPI {
 			String name;
 			String icon;
 			int size = 0;
-		}
-		
-		static class Origin {
-			String name;
-			String url;
 		}
 		
 		static class Coordinates {

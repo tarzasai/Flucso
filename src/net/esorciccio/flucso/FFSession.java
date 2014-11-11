@@ -49,15 +49,15 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 	private void loadLocalFilters() {
 		String chk = prefs.getString(PK.FEED_HBK, "").toLowerCase(Locale.getDefault()).trim();
 		if (TextUtils.isEmpty(chk))
-			Entry.bWords.clear();
+			Commons.bWords.clear();
 		else
-			Entry.bWords = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
+			Commons.bWords = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
 		chk = prefs.getString(PK.FEED_HBF, "").toLowerCase(Locale.getDefault()).trim();
 		if (TextUtils.isEmpty(chk))
-			Entry.bFeeds.clear();
+			Commons.bFeeds.clear();
 		else
-			Entry.bFeeds = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
-		Entry.bSpoilers = prefs.getBoolean(PK.FEED_SPO, false);
+			Commons.bFeeds = new ArrayList<String>(Arrays.asList(chk.replaceAll("^[,\\s]+", "").split("(?:,\\s*)+")));
+		Commons.bSpoilers = prefs.getBoolean(PK.FEED_SPO, false);
 	}
 	
 	public FeedInfo profile;

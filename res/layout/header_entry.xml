@@ -8,20 +8,45 @@
     android:paddingRight="8dp"
     android:paddingTop="8dp"
     android:showDividers="middle" >
-    
-    <include layout="@layout/shared_entry_header" />
 
-    <net.esorciccio.flucso.WwTextView
-        android:id="@+id/txt_entry_body_big"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <include
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            layout="@layout/shared_entry_header" />
+
+        <ImageView
+            android:id="@+id/img_entry_spoiler"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/empty_text"
+            android:paddingRight="-10dp"
+            android:src="@drawable/entry_spoiler" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_body"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:linksClickable="true"
-        android:text="@string/test_body_long" />
+        android:layout_height="wrap_content" >
+
+        <net.esorciccio.flucso.WwTextView
+            android:id="@+id/txt_entry_body_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:linksClickable="true"
+            android:text="@string/test_body_long" />
+    </LinearLayout>
 
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +87,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/empty_text" />
-
             </FrameLayout>
         </LinearLayout>
     </TabHost>

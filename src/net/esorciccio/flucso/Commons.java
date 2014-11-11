@@ -1,7 +1,9 @@
 package net.esorciccio.flucso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import retrofit.RetrofitError;
@@ -10,7 +12,9 @@ import retrofit.mime.TypedByteArray;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +44,10 @@ public class Commons {
 		//
 		public static final String SERV_MSGS_CURS = "pk_serv_msgs_cursor";
 	}
+	
+	static ArrayList<String> bFeeds = new ArrayList<String>();
+	static ArrayList<String> bWords = new ArrayList<String>();
+	static boolean bSpoilers = false;
 	
 	public static boolean isConnected(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -111,6 +119,19 @@ public class Commons {
 		Log.v("RPC", msg);
 		Log.v("RPC", error.getUrl());
 		return msg;
+	}
+	
+	public static String firstImageLink(String text) {
+		if (!TextUtils.isEmpty(text)) {
+			String[] chk = text.split("\\s+");
+			for (String s : chk) {
+				s = s.toLowerCase(Locale.getDefault());
+				if (Patterns.WEB_URL.matcher(s).matches() && (s.indexOf("/m.friendfeed-media.com/") > 0 ||
+					(s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".png") || s.endsWith(".gif"))))
+					return s;
+			}
+		}
+		return null;
 	}
 	
 	public static String convertYoutubeLinks(String link) {

@@ -1,7 +1,6 @@
 package net.esorciccio.flucso;
 
 import net.esorciccio.flucso.FFAPI.BaseFeed;
-import net.esorciccio.flucso.FFAPI.Entry;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,7 +51,7 @@ public class EntryRecpsAdapter extends EntryBaseAdapter {
 		vh.txt.setCompoundDrawablesWithIntrinsicBounds(rec.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 		vh.txt.setText(rec.getName());
 		vh.flt.setVisibility(rec.isGroup() || (rec.isUser() && !session.profile.isIt(rec.id)) ? View.VISIBLE : View.GONE);
-		vh.flt.setImageResource(Entry.bFeeds.contains(rec.id) ? R.drawable.feed_hidden : R.drawable.feed_visible);
+		vh.flt.setImageResource(Commons.bFeeds.contains(rec.id) ? R.drawable.feed_hidden : R.drawable.feed_visible);
 		return view;
 	}
 	
