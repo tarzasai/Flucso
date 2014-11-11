@@ -68,7 +68,7 @@ public class EntryCommsAdapter extends EntryBaseAdapter {
 			vh.txtFrom.setVisibility(View.VISIBLE);
 			vh.txtTime.setVisibility(View.VISIBLE);
 			Commons.picasso(context).load(comm.from.getAvatarUrl()).placeholder(R.drawable.nomugshot).into(vh.imgFrom);
-			vh.txtFrom.setCompoundDrawablesWithIntrinsicBounds(comm.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+			vh.txtFrom.setCompoundDrawablesRelativeWithIntrinsicBounds(comm.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 			vh.txtFrom.setText(comm.from.getName());
 			String tl = comm.getFuzzyTime();
 			if (comm.via != null && !TextUtils.isEmpty(comm.via.name.trim()))

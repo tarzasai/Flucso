@@ -83,6 +83,7 @@ public class FeedAdapter extends BaseAdapter {
 			vh.imgFoF1 = (ImageView) view.findViewById(R.id.img_feed_fof1);
 			vh.imgFoF2 = (ImageView) view.findViewById(R.id.img_feed_fof2);
 			vh.imgIsDM = (ImageView) view.findViewById(R.id.img_entry_dm);
+			vh.imgSpAl = (ImageView) view.findViewById(R.id.img_entry_sa);
 			vh.txtComms = (TextView) view.findViewById(R.id.txt_feed_comms);
 			view.setTag(vh);
 		} else {
@@ -102,7 +103,7 @@ public class FeedAdapter extends BaseAdapter {
 		if (entry.hidden || entry.banned || entry.spoiler) {
 			vh.lNormal.setVisibility(View.GONE);
 			vh.lHidden.setVisibility(View.VISIBLE);
-			vh.txtFromH.setCompoundDrawablesWithIntrinsicBounds(entry.hidden ? R.drawable.ic_action_desktop :
+			vh.txtFromH.setCompoundDrawablesRelativeWithIntrinsicBounds(entry.hidden ? R.drawable.ic_action_desktop :
 				(entry.spoiler ? R.drawable.ic_action_spoiler_alert : R.drawable.ic_action_phone), 0, 0, 0);
 			vh.txtFromH.setText(entry.from.getName());
 			vh.txtTimeH.setText(entry.getFuzzyTime());
@@ -116,9 +117,10 @@ public class FeedAdapter extends BaseAdapter {
 			R.drawable.nomugshot).into(vh.imgFrom);
 		
 		vh.txtFrom.setText(entry.from.getName());
-		vh.txtFrom.setCompoundDrawablesWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
-		
+		vh.txtFrom.setCompoundDrawablesRelativeWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+
 		vh.imgIsDM.setVisibility(entry.isDM() ? View.VISIBLE : View.GONE);
+		vh.imgSpAl.setVisibility(entry.hasSpoilers() ? View.VISIBLE : View.GONE);
 		
 		tmp = entry.getToLine();
 		if (tmp == null) {
@@ -163,7 +165,7 @@ public class FeedAdapter extends BaseAdapter {
 			vh.txtLC.setText(Html.fromHtml(c.body));
 		}
 		
-		vh.txtLikes.setCompoundDrawablesWithIntrinsicBounds(entry.canUnlike() ? R.drawable.entry_liked :
+		vh.txtLikes.setCompoundDrawablesRelativeWithIntrinsicBounds(entry.canUnlike() ? R.drawable.entry_liked :
 			R.drawable.entry_like, 0, 0, 0);
 		
 		int n = entry.getLikesCount();
@@ -228,6 +230,7 @@ public class FeedAdapter extends BaseAdapter {
 		public ImageView imgFoF1;
 		public ImageView imgFoF2;
 		public ImageView imgIsDM;
+		public ImageView imgSpAl;
 		public TextView txtComms;
 	}
 }

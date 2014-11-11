@@ -92,7 +92,7 @@ public class SubscrListAdapter extends BaseAdapter {
 		vh.sw.setText(item.name);
 		vh.sw.setChecked(item.active);
 		vh.sw.setEnabled(!item.checking);
-		vh.sw.setCompoundDrawablesWithIntrinsicBounds(item.checking ? R.drawable.ic_action_time : 0, 0, 0, 0);
+		vh.sw.setCompoundDrawablesRelativeWithIntrinsicBounds(item.checking ? R.drawable.ic_action_time : 0, 0, 0, 0);
 		return view;
 	}
 	

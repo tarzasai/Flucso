@@ -59,7 +59,7 @@ public class EntryLikesAdapter extends EntryBaseAdapter {
 			holder.txtBody.setVisibility(View.GONE);
 			Commons.picasso(view.getContext().getApplicationContext()).load(like.from.getAvatarUrl()).placeholder(
 				R.drawable.nomugshot).into(holder.imgFrom);
-			holder.txtFrom.setCompoundDrawablesWithIntrinsicBounds(like.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+			holder.txtFrom.setCompoundDrawablesRelativeWithIntrinsicBounds(like.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 			holder.txtFrom.setText(like.from.getName());
 			holder.txtTime.setText(like.getFuzzyTime());
 		}

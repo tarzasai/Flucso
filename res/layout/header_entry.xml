@@ -9,25 +9,10 @@
     android:paddingTop="8dp"
     android:showDividers="middle" >
 
-    <LinearLayout
+    <include
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <include
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/shared_entry_header" />
-
-        <ImageView
-            android:id="@+id/img_entry_spoiler"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/empty_text"
-            android:paddingRight="-10dp"
-            android:src="@drawable/entry_spoiler" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        layout="@layout/shared_entry_header" />
 
     <LinearLayout
         android:id="@+id/ll_body"

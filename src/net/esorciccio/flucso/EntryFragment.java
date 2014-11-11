@@ -210,7 +210,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtToB = (TextView) llHeader.findViewById(R.id.txt_entry_to);
 		txtTimeB = (TextView) llHeader.findViewById(R.id.txt_entry_time);
 		imgIsDM = (ImageView) llHeader.findViewById(R.id.img_entry_dm);
-		imgSpoil = (ImageView) llHeader.findViewById(R.id.img_entry_spoiler);
+		imgSpoil = (ImageView) llHeader.findViewById(R.id.img_entry_sa);
 		txtBodyB = (TextView) llHeader.findViewById(R.id.txt_entry_body_big);
 		tabh = (TabHost) llHeader.findViewById(android.R.id.tabhost);
 		tabw = (TabWidget) llHeader.findViewById(android.R.id.tabs);
@@ -578,7 +578,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		TextView tv = (TextView) ll.getChildAt(1);
 		tv.setText(adapters[index].getCount() > 0 ? Integer.toString(adapters[index].getCount()) : "");
 		tv.setCompoundDrawablePadding(15);
-		tv.setCompoundDrawablesWithIntrinsicBounds(adapters[index].getIcon(), 0, 0, 0);
+		tv.setCompoundDrawablesRelativeWithIntrinsicBounds(adapters[index].getIcon(), 0, 0, 0);
 		if (changed)
 			tv.startAnimation(blink);
 	}
@@ -629,8 +629,8 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		txtFromB.setText(from);
 		txtFromS.setText(from);
 		
-		txtFromB.setCompoundDrawablesWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
-		txtFromS.setCompoundDrawablesWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+		txtFromB.setCompoundDrawablesRelativeWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+		txtFromS.setCompoundDrawablesRelativeWithIntrinsicBounds(entry.from.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 		
 		imgIsDM.setVisibility(entry.isDM() ? View.VISIBLE : View.GONE);
 		imgSpoil.setVisibility(entry.hasSpoilers() ? View.VISIBLE : View.GONE);

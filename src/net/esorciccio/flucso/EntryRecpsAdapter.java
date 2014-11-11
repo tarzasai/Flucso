@@ -48,7 +48,7 @@ public class EntryRecpsAdapter extends EntryBaseAdapter {
 		BaseFeed rec = getItem(position);
 		Commons.picasso(view.getContext().getApplicationContext()).load(rec.getAvatarUrl()).placeholder(
 			R.drawable.nomugshot).into(vh.img);
-		vh.txt.setCompoundDrawablesWithIntrinsicBounds(rec.locked ? R.drawable.entry_private : 0, 0, 0, 0);
+		vh.txt.setCompoundDrawablesRelativeWithIntrinsicBounds(rec.locked ? R.drawable.entry_private : 0, 0, 0, 0);
 		vh.txt.setText(rec.getName());
 		vh.flt.setVisibility(rec.isGroup() || (rec.isUser() && !session.profile.isIt(rec.id)) ? View.VISIBLE : View.GONE);
 		vh.flt.setImageResource(Commons.bFeeds.contains(rec.id) ? R.drawable.feed_hidden : R.drawable.feed_visible);
