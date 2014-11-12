@@ -562,6 +562,7 @@ public class FFAPI {
 			int height = 0;
 			String player = "";
 			int rotation = 0; // local
+			boolean landscape = true; // local
 		}
 		
 		static class Attachment {

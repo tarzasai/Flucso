@@ -72,6 +72,7 @@
     <string name="action_gall_rotl">Ruota a sinistra</string>
     <string name="action_gall_rotr">Ruota a destra</string>
     <string name="action_gall_rot0">Ripristina verso</string>
+    <string name="action_gall_sdir">Aggiusta zoom</string>
     <string name="action_comm_edit">Modifica commento</string>
     <string name="action_comm_delete">Elimina commento</string>
     <string name="entry_tab_dests">A</string>

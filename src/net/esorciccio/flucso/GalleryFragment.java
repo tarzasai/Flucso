@@ -43,6 +43,7 @@ public class GalleryFragment extends BaseFragment {
 	private MenuItem miRotL;
 	private MenuItem miRotR;
 	private MenuItem miRot0;
+	private MenuItem miSDir;
 	
 	public static GalleryFragment newInstance(String entry_id, int position) {
 		GalleryFragment fragment = new GalleryFragment();
@@ -117,6 +118,7 @@ public class GalleryFragment extends BaseFragment {
 		miRotL = menu.findItem(R.id.action_rotl);
 		miRotR = menu.findItem(R.id.action_rotr);
 		miRot0 = menu.findItem(R.id.action_rot0);
+		miSDir = menu.findItem(R.id.action_sdir);
 	}
 	
 	@Override
@@ -149,6 +151,12 @@ public class GalleryFragment extends BaseFragment {
 			setPosition(position);
 			return true;
 		}
+		if (item == miSDir) {
+			int n = position - entry.files.length;
+			entry.thumbnails[n].landscape = !entry.thumbnails[n].landscape;
+			setPosition(position);
+			return true;
+		}
 		return false;
 	}
 	
@@ -172,6 +180,7 @@ public class GalleryFragment extends BaseFragment {
 		miRotL.setVisible(pic != null && pic.rotation >= 0);
 		miRotR.setVisible(pic != null && pic.rotation <= 0);
 		miRot0.setVisible(pic != null && pic.rotation != 0);
+		miSDir.setVisible(pic != null);
 	}
 	
 	private void loadEntry() {
@@ -260,11 +269,12 @@ public class GalleryFragment extends BaseFragment {
 		web.loadUrl("about:blank");
 		String rot = pic.rotation == 0 ? "" :
 			" -webkit-transform: rotate(@deg); -moz-transform: rotate(@deg);".replace("@", Integer.toString(pic.rotation));
+		String dir = pic.landscape ? " width='100%'" : " height='100%'";
 		String css = "style='position: absolute; top:0; bottom:0; margin: auto;" + rot + "'";
 		String img;
-		if (pic.link.indexOf("/m.friendfeed-media.com/") > 0
-			|| (pic.link.endsWith(".jpg") || pic.link.endsWith(".jpeg") || pic.link.endsWith(".png") || pic.link.endsWith(".gif")))
-			img = "<img " + css + " width='100%' src='" + pic.link + "'>";
+		if (pic.link.indexOf("/m.friendfeed-media.com/") > 0 || (pic.link.endsWith(".jpg") ||
+			pic.link.endsWith(".jpeg") || pic.link.endsWith(".png") || pic.link.endsWith(".gif")))
+			img = "<img " + css + dir + " src='" + pic.link + "'>";
 		else {
 			String lnk = "<a href='" + pic.link + "'>";
 			if (!TextUtils.isEmpty(pic.player)) {
@@ -278,7 +288,7 @@ public class GalleryFragment extends BaseFragment {
 					lnk = "<a href='" + src + "'>";
 				}
 			}
-			img = lnk + "<img " + css + " width='100%' src='" + pic.url + "'></a>";
+			img = lnk + "<img " + css + dir + " src='" + pic.url + "'></a>";
 		}
 		Log.v("gallery", img);
 		String html = "<html><body style='margin: 0; padding: 0;' ><div style='height: 100vh; position: relative'>"

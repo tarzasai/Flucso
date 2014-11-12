@@ -72,6 +72,7 @@
     <string name="action_gall_rotl">Rotate left</string>
     <string name="action_gall_rotr">Rotate right</string>
     <string name="action_gall_rot0">Restore original</string>
+    <string name="action_gall_sdir">Adjust zoom</string>
     <string name="action_comm_edit">Edit comment</string>
     <string name="action_comm_delete">Delete comment</string>
     <string name="entry_tab_dests">To</string>

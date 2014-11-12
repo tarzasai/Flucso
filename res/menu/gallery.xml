@@ -48,4 +48,12 @@
         android:showAsAction="ifRoom"
         app:showAsAction="ifRoom"/>
     
+    <item
+        android:id="@+id/action_sdir"
+        android:title="@string/action_gall_sdir"
+        android:menuCategory="container"
+        android:orderInCategory="13"
+        android:showAsAction="never"
+        app:showAsAction="never"/>
+    
 </menu>
