@@ -12,10 +12,14 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -44,6 +49,7 @@ public class GalleryFragment extends BaseFragment {
 	private MenuItem miRotR;
 	private MenuItem miRot0;
 	private MenuItem miSDir;
+	private MenuItem miDwnl;
 	
 	public static GalleryFragment newInstance(String entry_id, int position) {
 		GalleryFragment fragment = new GalleryFragment();
@@ -119,6 +125,7 @@ public class GalleryFragment extends BaseFragment {
 		miRotR = menu.findItem(R.id.action_rotr);
 		miRot0 = menu.findItem(R.id.action_rot0);
 		miSDir = menu.findItem(R.id.action_sdir);
+		miDwnl = menu.findItem(R.id.action_dwnl);
 	}
 	
 	@Override
@@ -157,6 +164,35 @@ public class GalleryFragment extends BaseFragment {
 			setPosition(position);
 			return true;
 		}
+		if (item == miDwnl) {
+			String url;
+			String name;
+			if (position < entry.files.length) {
+				url = entry.files[position].url;
+				name = entry.files[position].name;
+			} else {
+				Thumbnail pic = entry.thumbnails[position - entry.files.length];
+				boolean ffm = pic.link.indexOf("/m.friendfeed-media.com/") > 0;
+				url = ffm || (pic.link.endsWith(".jpg") || pic.link.endsWith(".jpeg") || pic.link.endsWith(".png") ||
+					pic.link.endsWith(".gif")) ? pic.link : pic.url;
+				name = URLUtil.guessFileName(url, null, null);
+				// friendfeed-media.com files don't have extension so URLUtil adds ".bin", but since it's a picture
+				// (I'm sure it is) I think it's better to use a more portable extension (jpg).
+				if (ffm)
+					name = name.replace(".bin", ".jpg");
+			}
+			Log.v(getTag(), "About to download " + url);
+			Log.v(getTag(), "With filename: " + name);
+			DownloadManager.Request req = new DownloadManager.Request(Uri.parse(url));
+			req.setTitle(name);
+			req.setDescription("A file from " + entry.from.name);
+			req.allowScanningByMediaScanner();
+			req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+			req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
+			DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+			manager.enqueue(req);
+			return true;
+		}
 		return false;
 	}
 	
@@ -180,7 +216,10 @@ public class GalleryFragment extends BaseFragment {
 		miRotL.setVisible(pic != null && pic.rotation >= 0);
 		miRotR.setVisible(pic != null && pic.rotation <= 0);
 		miRot0.setVisible(pic != null && pic.rotation != 0);
+		// resize
 		miSDir.setVisible(pic != null);
+		// download
+		miDwnl.setVisible(entry != null);
 	}
 	
 	private void loadEntry() {
