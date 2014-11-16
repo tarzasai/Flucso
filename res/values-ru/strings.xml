@@ -1,0 +1,199 @@
+<resources>
+
+    <!-- Activities -->
+    <string name="action_post">"Опубликовать"</string>
+    <string name="action_search">"Искать"</string>
+    <string name="action_refresh">"Обновить"</string>
+    <string name="action_settings">"Настройки"</string>
+    <string name="action_about">"О нас"</string>
+    <string name="post_title">"Написать во FriendFeed"</string>
+    <string name="post_title_new">"Новая запись"</string>
+    <string name="post_title_edit">"Редактировать запись"</string>
+    <string name="post_geo">"Место"</string>
+    <string name="post_tos">"Кому (люди/группы)"</string>
+    <string name="post_body">"Ваше сообщение"</string>
+    <string name="post_comment">"Первый комментарий"</string>
+    <string name="search_title">"Искать во FriendFeed"</string>
+    <string name="search_tabf">"У друзей"</string>
+    <string name="search_tabp">"В своих записях"</string>
+    <string name="search_fwhat">"Искать что"</string>
+    <string name="search_fhint">"Имя пользователя или группы"</string>
+    <string name="search_fwher">"Искать где"</string>
+    <string name="search_sect1">"Включая записи из:"</string>
+    <string name="search_sect2">"Фильтры качества и ключевые слова:"</string>
+    <string name="search_words">"Слова в тексте или комментариях"</string>
+    <string name="search_wotit">"Слова только в тексте"</string>
+    <string name="search_wocom">"Слова в комментариях"</string>
+    <string name="search_comby">"Содержит комментарии от"</string>
+    <string name="search_likby">"Оценил"</string>
+    <string name="search_numst">"Имеет как минимум:"</string>
+    <string name="search_numsc">"комментариев"</string>
+    <string name="search_numsl">"оценок"</string>
+    <string name="search_scop1">"Все пользователи FriendFeed"</string>
+    <string name="search_scop2">"Мои друзья и группы"</string>
+    <string name="search_scop3">"Отдельные друзья или группы:"</string>
+    <string name="search_s3hin">"ваш список"</string>
+    <string name="search_scop4">"Отдельные пользователи:"</string>
+    <string name="search_s4hin">"пользователи"</string>
+    <string name="search_scop5">"Отдельные группы:"</string>
+    <string name="search_s5hin">"группы"</string>
+    <string name="search_btngo">"Выполнить поиск"</string>
+    <string name="search_error">"Незаполнены обязательные поля"</string>
+    <string name="subscr_title">"Управление подписками"</string>
+
+    <!-- Fragments -->
+    <string name="action_popup_none">"Действия недоступны"</string>
+    <string name="action_search_send">"Искать"</string>
+    <string name="action_post_send">"Отправить"</string>
+    <string name="action_feed_post">"Опубликовать"</string>
+    <string name="action_post_file">"Добавить файл"</string>
+    <string name="action_post_snap">"Добавить фото"</string>
+    <string name="action_post_home">"Опубликовать в основной ленте"</string>
+    <string name="action_post_wimg">"Сделать скриншот сайта по ссылке"</string>
+    <string name="action_feed_dm">"Личное сообщение"</string>
+    <string name="action_feed_autoups">"Автообновление"</string>
+    <string name="action_feed_stopups">"Приостановить автообновление"</string>
+    <string name="action_feed_subscr">"Установить подписку"</string>
+    <string name="action_feed_filter">"Скрыть все записи этой ленты"</string>
+    <string name="action_feed_scrollup">"Есть новые записи! (прикоснитесь для перехода наверх)"</string>
+    <string name="action_entry_speedc">"Быстрый комментарий"</string>
+    <string name="action_entry_summ">"Показать сводку"</string>
+    <string name="action_entry_like">"Оценить"</string>
+    <string name="action_entry_unlike">"Отменить оценку"</string>
+    <string name="action_entry_hide">"Скрыть"</string>
+    <string name="action_entry_unhide">"Отменить скрытие"</string>
+    <string name="action_entry_share">"Разместить"</string>
+    <string name="action_entry_edit">"Редактировать запись"</string>
+    <string name="action_entry_delete">"Удалить запись"</string>
+    <string name="action_entry_web">"Открыть в браузере"</string>
+    <string name="action_gall_prior">"Назад"</string>
+    <string name="action_gall_next">"Вперёд"</string>
+    <string name="action_gall_rotl">"Повернуть влево"</string>
+    <string name="action_gall_rotr">"Повернуть вправо"</string>
+    <string name="action_gall_rot0">"Восстановить оригинал"</string>
+    <string name="action_gall_sdir">"Приблизить/отдалить"</string>
+    <string name="action_gall_dwnl">"Скачать файл"</string>
+    <string name="action_comm_edit">"Редактировать комментарий"</string>
+    <string name="action_comm_delete">"Удалить комментарий"</string>
+    <string name="entry_tab_dests">"Кому"</string>
+    <string name="entry_tab_files">"файлы"</string>
+    <string name="entry_tab_likes">"оценок"</string>
+    <string name="entry_tab_comms">"комментариев"</string>
+    <string name="entry_cant_comm">"комментарии запрещены"</string>
+    <string name="entry_new_comm1">"новый комментарий"</string>
+    <string name="entry_new_comm2">"Ваш комментарий здесь"</string>
+    <string name="fetching_wait">"Передача данных, пожалуйста подождите..."</string>
+    <string name="fetching_none">"пока это всё, наслаждайтесь :)"</string>
+
+    <!-- Drawer -->
+    <string name="drawer_close">"Закрыть ящик"</string>
+    <string name="drawer_open">"Открыть ящик"</string>
+    <string name="noaccount_name">"Вход в FriendFeed"</string>
+    <string name="noaccount_login">"Требуется активная учётная запись"</string>
+    <string name="waiting_profile">"Ожидании информации о профиле..."</string>
+    <string name="waiting_entry">"Загрузка записи..."</string>
+
+    <!-- Simple responses -->
+    <string name="ask_delete_entry">"Удалить эту запись?"</string>
+    <string name="ask_subscr_open">"Подписаться на этот канал?"</string>
+    <string name="ask_subscr_private">"Подписаться на этот закрытый канал?"</string>
+    <string name="res_rfcall_failed">"Не удалось выполнить запрос"</string>
+    <string name="res_intent_failed">"Интент не сработал"</string>
+    <string name="res_imcrea_failed">"Создание новой картинки не сраболо"</string>
+    <string name="res_impath_failed">"Неверный путь (нельзя использовать картинки из облака)"</string>
+    <string name="res_immime_failed">"Невозможно определить тип файла"</string>
+    <string name="res_imdupe_failed">"Файл уже добавлен"</string>
+    <string name="res_wparse_failed">"Найдено 0 фотографий, извините"</string>
+    <string name="res_delentr_ok">"Запись удалена"</string>
+    <string name="res_inscomm_ok">"Комментарий добавлен"</string>
+    <string name="res_updcomm_ok">"Комментарий обновлён"</string>
+    <string name="res_delcomm_ok">"Комментарий удалён"</string>
+    <string name="res_inslike_ok">"Оценка добавлена"</string>
+    <string name="res_dellike_ok">"Оценка удалена"</string>
+    <string name="res_hidden_ok">"Запись скрыта"</string>
+    <string name="res_unhide_ok">"Запись больше не является скрытой"</string>
+    <string name="res_feed_hidden">"Лента \"@\" добавлена к списку запрещённых."</string>
+    <string name="res_feed_unhidden">"Лента \"@\" удалена из списка запрещённых."</string>
+
+    <!-- Login dialog -->
+    <string name="login_username">"Имя пользователя"</string>
+    <string name="login_remotekey">"Удалённый ключ (remotekey)"</string>
+    <string name="login_showremkey">"Удалённый ключ виден"</string>
+    <string name="login_browseremkey">"Открыть в браузере удалённый ключ"</string>
+
+    <!-- Comment dialog -->
+    <string name="comment_body">"Текст комментария"</string>
+
+    <!-- settings -->
+    <string name="settings_title">"Настройки Flucso"</string>
+    <string name="pd_login_title">"FriendFeed логин"</string>
+    <string name="pd_login_summ">"Ваши имя пользователя и удалённый ключ"</string>
+    <string name="pk_startup_title">"Начальная лента"</string>
+    <string name="pk_startup_summ">"Лента, которую вы хотите видеть при запуске."</string>
+    <string name="pk_locale_title">"Локализация"</string>
+    <string name="pk_locale_summ">"Язык для названий групп и других вещей, приходящих с сервера FriendFeed."</string>
+    <string name="pc_feed_title">"Настройки ленты"</string>
+    <string name="pk_feed_upd_title">"Автоматические обновления"</string>
+    <string name="pk_feed_upd_summ">"Лента будет обновляться автоматически."</string>
+    <string name="pk_feed_fof_title">"Включить \"друзей друзей\""</string>
+    <string name="pk_feed_fof_summ">"Записи, которые прокомментировали или оценили ваши друзья."</string>
+    <string name="pk_feed_hid_title">"Включить скрытые записи"</string>
+    <string name="pk_feed_hid_summ">"(на случай, если вы хотите отменить скрытие чего-то)"</string>
+    <string name="pk_feed_elc_title">"Показывать последний комментарий"</string>
+    <string name="pk_feed_elc_summ">"Показать последний комментарий под текстом записи."</string>
+    <string name="pk_feed_hbk_title">"Запрещённые слова"</string>
+    <string name="pk_feed_hbk_summ">"Скрыть записи, содержащие эти слова (перечислите через запятую)."</string>
+    <string name="pk_feed_hbf_title">"Запрещённые ленты"</string>
+    <string name="pk_feed_hbf_summ">"Скрыть записи в этих лентах (перечислите идентификаторы лент через запятую, не названия!)"</string>
+    <string name="pk_feed_spo_title">"Скрыть спойлеры"</string>
+    <string name="pk_feed_spo_summ">"Скрыть сообщения, содержащие предупреждения о спойлерах."</string>
+    <string name="pc_entry_title">"Настройки записей"</string>
+    <string name="pk_entry_imco_title">"Картинки в комментариях"</string>
+    <string name="pk_entry_imco_summ">"Когда (пробовать) показывать картинки, упомянутые в комментариях."</string>
+    <string name="pc_serv_title">"Настройки сервиса"</string>
+    <string name="pk_serv_prof_title">"Интервал обновления профиля"</string>
+    <string name="pk_serv_prof_summ">"Пользовательские данные, подписки, подписчики и т. д."</string>
+    <string name="pk_serv_notf_title">"Уведомления о личных сообщениях"</string>
+    <string name="pk_serv_notf_summ">"О каких личных сообщениях вы хотите получать уведомления."</string>
+    <string name="pk_serv_msgs_title">"Интервал проверки личных сообщений"</string>
+    <string name="pk_serv_msgs_summ">"Личные сообщения."</string>
+
+    <!-- Misc -->
+    <string name="app_name">"Flucso"</string>
+    <string name="app_label">"Клиент FriendFeed."</string>
+    <string name="app_descr">"Клиент для FriendFeed (http://friendfeed.com), созданный Джорджио Джеларди ggelardi@gmail.com"</string>
+    <string name="app_author">"Джорджио Джеларди, ggelardi@gmail.com"</string>
+    <string name="label_author">"Автор:"</string>
+    <string name="label_credits">"Благодарности:"</string>
+    <string name="yourname">"Вы"</string>
+    <string name="yourfeed">"Ваша лента"</string>
+    <string name="empty_text">""</string>
+    <string name="source_prefix">"из"</string>
+    <string name="warning_dm">"Это личное сообщение."</string>
+    <string name="comms_summary">"В основном они говорят:"</string>
+    <string name="dlg_btn_ok">"Сохранить"</string>
+    <string name="dlg_btn_cancel">"Отменить"</string>
+    <string name="dlg_btn_retry">"Попробуйте ещё раз"</string>
+    <string name="title_loading">"Загрузка..."</string>
+    <string name="title_posting">"Отправка..."</string>
+    <string name="title_hidden">"скрытая запись от"</string>
+    <string name="title_subscr">"Подписка на:"</string>
+    <string name="notif_dm_new">"У вас есть новое личное сообщение"</string>
+    <string name="notif_dm_upd">"Обсуждение обновлено"</string>
+
+    <!-- Test -->
+    <string name="test_version">"1.25"</string>
+    <string name="test_username">"Pippo Baudo"</string>
+    <string name="test_to_line">"Feed di Pippo Baudo, Slucchettati"</string>
+    <string name="test_fof_line">"(Pietro Gambadilegno, Pippo Baudo and Paolino Paperino liked this)"</string>
+    <string name="test_time_1">"11 minuti fa"</string>
+    <string name="test_time_2">"alle 12\:25 del 21/7"</string>
+    <string name="test_body_short">"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit."</string>
+    <string name="test_body_long">"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."</string>
+    <string name="test_nums_1">"3"</string>
+    <string name="test_nums_2">"65"</string>
+    <string name="test_nums_3">"196"</string>
+    <string name="test_type">"group"</string>
+    <string name="test_link">"www.pizzipazzi.com/asd/asdrubale.html"</string>
+
+</resources>
