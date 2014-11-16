@@ -139,6 +139,8 @@
     <string name="pk_feed_hbk_summ">Bu kelimeleri içeren girdileri gizle (kelimeleri virgülle ayırın).</string>
     <string name="pk_feed_hbf_title">Engelli girdiler</string>
     <string name="pk_feed_hbf_summ">Bu girdideki çapraz bağlı yorumları gizle (girdilerin kimliklerini virgülle ayırın, isim kullanmayın).</string>
+    <string name="pk_feed_spo_title">Spoilerları Gizle</string>
+    <string name="pk_feed_spo_summ">Spoiler uyarısı olan girdileri gizle.</string>
     <string name="pc_entry_title">Yorum seçenekleri</string>
     <string name="pk_entry_imco_title">Yorumlardaki resimler</string>
     <string name="pk_entry_imco_summ">Yorumlardaki resimlerin görüntülenme zamanı.</string>
