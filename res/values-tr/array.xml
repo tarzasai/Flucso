@@ -81,11 +81,11 @@
     </string-array>
     
     <string-array name="pk_startup_values">
-        <item>ev</item>
-        <item>filtre/direkt</item>
-        <item>filtre/Görüş alışverişlerim</item>
-        <item>özet/1</item>
-        <item>liste/başlangıç</item>
+        <item>home</item>
+        <item>filter/direct</item>
+        <item>filter/discussions</item>
+        <item>summary/1</item>
+        <item>list/startup</item>
     </string-array>
     
     <string-array name="pk_entry_imco_names">
