@@ -134,6 +134,25 @@ public class Commons {
 		return null;
 	}
 	
+	static class YouTube {
+
+		public static String getId(String url) {
+			if (url.startsWith("http://youtu.be/"))
+				return url.substring(16);
+			if (url.contains("www.youtube.com/watch")) {
+				
+			}
+			return null;
+		}
+		
+		public static String getPreview(String url) {
+			String id = getId(url);
+			if (id != null)
+				return "http://img.youtube.com/vi/" + id + "/0.jpg";
+			return null;
+		}
+	}
+	
 	public static String convertYoutubeLinks(String link) {
 		// friendfeed add a screenshot on youtube shared links, but only for the original domain:
 		return link.startsWith("http://youtu.be/") ? "http://www.youtube.com/watch?v=" + link.substring(16) : link;
