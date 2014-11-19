@@ -12,6 +12,7 @@ import retrofit.mime.TypedByteArray;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -123,25 +124,32 @@ public class Commons {
 	
 	public static String firstImageLink(String text) {
 		if (!TextUtils.isEmpty(text)) {
-			String[] chk = text.split("\\s+");
-			for (String s : chk) {
-				s = s.toLowerCase(Locale.getDefault());
-				if (Patterns.WEB_URL.matcher(s).matches() && (s.indexOf("/m.friendfeed-media.com/") > 0 ||
-					(s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".png") || s.endsWith(".gif"))))
-					return s;
-			}
+			String chk;
+			String[] words = text.split("\\s+");
+			for (String s : words)
+				if (Patterns.WEB_URL.matcher(s).matches()) {
+					if (YouTube.isVideoUrl(s))
+						return YouTube.getPreview(s);
+					chk = s.toLowerCase(Locale.getDefault());
+					if (chk.indexOf("/m.friendfeed-media.com/") > 0 || (chk.endsWith(".jpg") || chk.endsWith(".jpeg") ||
+						chk.endsWith(".png") || chk.endsWith(".gif")))
+						return s;
+				}
 		}
 		return null;
 	}
 	
 	static class YouTube {
+		
+		public static boolean isVideoUrl(String url) {
+			return url.contains("www.youtube.com/watch") || url.startsWith("http://youtu.be/");
+		}
 
 		public static String getId(String url) {
 			if (url.startsWith("http://youtu.be/"))
 				return url.substring(16);
-			if (url.contains("www.youtube.com/watch")) {
-				
-			}
+			if (url.contains("www.youtube.com/watch"))
+				return Uri.parse(url).getQueryParameter("v");
 			return null;
 		}
 		
