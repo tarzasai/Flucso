@@ -65,6 +65,7 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 	private String body;
 	private int currentTab;
 	private EntryBaseAdapter[] adapters;
+	private boolean sendingComment = false;
 	
 	private ImageView imgFromB;
 	private TextView txtFromB;
@@ -589,7 +590,9 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 			edtNewCom.setOnEditorActionListener(new OnEditorActionListener() {
 				@Override
 				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-					if (actionId == EditorInfo.IME_ACTION_SEND && !TextUtils.isEmpty(edtNewCom.getText().toString()))
+					if ((actionId == EditorInfo.IME_ACTION_SEND && !TextUtils.isEmpty(edtNewCom.getText().toString())) ||
+						(actionId == EditorInfo.IME_NULL && event != null && event.getAction() == KeyEvent.ACTION_DOWN &&
+						event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
 						doInsComment(edtNewCom.getText().toString());
 					return false;
 				}
@@ -759,7 +762,9 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 		FFAPI.client_write(session).del_like(entry.id, callback);
 	}
 	
-	private void doInsCommentExt(final String entry_id, final String body) {
+	private void doInsComment(final String body) {
+		if (sendingComment)
+			return;
 		pauseUpdates(true);
 		Callback<Comment> callback = new Callback<Comment>() {
 			@Override
@@ -770,11 +775,13 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 				adapters[3].notifyDataSetChanged();
 				listView.smoothScrollToPosition(listView.getCount());
 				resumeUpdates(true);
+				sendingComment = false;
 				Toast.makeText(getActivity(), getString(R.string.res_inscomm_ok), Toast.LENGTH_SHORT).show();
 			}
 			
 			@Override
 			public void failure(RetrofitError error) {
+				sendingComment = false;
 				getActivity().setProgressBarIndeterminateVisibility(false);
 				new AlertDialog.Builder(getActivity()).setTitle(R.string.res_rfcall_failed).setMessage(
 					Commons.retrofitErrorText(error)).setOnDismissListener(onDismissDialog).setPositiveButton(
@@ -786,11 +793,8 @@ public class EntryFragment extends BaseFragment implements OnClickListener {
 					}).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true).create().show();
 			}
 		};
-		FFAPI.client_write(session).ins_comment(entry_id, body, callback);
-	}
-	
-	private void doInsComment(final String body) {
-		doInsCommentExt(entry.id, body);
+		sendingComment = true;
+		FFAPI.client_write(session).ins_comment(entry.id, body, callback);
 	}
 	
 	private void doUpdComment(final String cid, final String body) {
