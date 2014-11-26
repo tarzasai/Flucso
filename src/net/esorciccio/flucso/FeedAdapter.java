@@ -3,6 +3,7 @@ package net.esorciccio.flucso;
 import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.Entry;
 import net.esorciccio.flucso.FFAPI.Entry.Comment;
+import net.esorciccio.flucso.FFAPI.Entry.Thumbnail;
 import net.esorciccio.flucso.FFAPI.Feed;
 import android.content.Context;
 import android.text.Html;
@@ -143,7 +144,9 @@ public class FeedAdapter extends BaseAdapter {
 			vh.imgThumb.setVisibility(View.GONE);
 		else {
 			vh.imgThumb.setVisibility(View.VISIBLE);
-			Commons.picasso(context).load(entry.thumbnails[0].url).placeholder(R.drawable.ic_action_picture).into(vh.imgThumb);
+			Thumbnail pic = entry.thumbnails[0];
+			Commons.picasso(context).load(pic.isYouTube() ? pic.videoPreview() : pic.url).placeholder(
+				R.drawable.ic_action_picture).into(vh.imgThumb);
 		}
 		
 		if (entry.files.length > 0 || (entry.thumbnails.length + entry.files.length) > 1) {

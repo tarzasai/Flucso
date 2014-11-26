@@ -3,11 +3,6 @@ package net.esorciccio.flucso;
 import net.esorciccio.flucso.FFAPI.Entry;
 import net.esorciccio.flucso.FFAPI.Entry.Attachment;
 import net.esorciccio.flucso.FFAPI.Entry.Thumbnail;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -20,7 +15,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -172,13 +166,12 @@ public class GalleryFragment extends BaseFragment {
 				name = entry.files[position].name;
 			} else {
 				Thumbnail pic = entry.thumbnails[position - entry.files.length];
-				boolean ffm = pic.link.indexOf("/m.friendfeed-media.com/") > 0;
-				url = ffm || (pic.link.endsWith(".jpg") || pic.link.endsWith(".jpeg") || pic.link.endsWith(".png") ||
-					pic.link.endsWith(".gif")) ? pic.link : pic.url;
+				url = pic.isFFMediaPic() || (pic.link.endsWith(".jpg") || pic.link.endsWith(".jpeg") ||
+					pic.link.endsWith(".png") || pic.link.endsWith(".gif")) ? pic.link : pic.url;
 				name = URLUtil.guessFileName(url, null, null);
 				// friendfeed-media.com files don't have extension so URLUtil adds ".bin", but since it's a picture
 				// (I'm sure it is) I think it's better to use a more portable extension (jpg).
-				if (ffm)
+				if (pic.isFFMediaPic())
 					name = name.replace(".bin", ".jpg");
 			}
 			Log.v(getTag(), "About to download " + url);
@@ -302,36 +295,27 @@ public class GalleryFragment extends BaseFragment {
 	}
 	
 	private void showThmb(Thumbnail pic) {
+		//TODO http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_img_naturalwidth
+		
 		Log.v("gallery", "showThmb: " + pic.link);
 		txt.setVisibility(View.GONE);
 		web.setVisibility(View.VISIBLE);
 		web.loadUrl("about:blank");
 		String rot = pic.rotation == 0 ? "" :
 			" -webkit-transform: rotate(@deg); -moz-transform: rotate(@deg);".replace("@", Integer.toString(pic.rotation));
-		String dir = pic.landscape ? " width='100%'" : " height='100%'";
-		String css = "style='position: absolute; top:0; bottom:0; margin: auto;" + rot + "'";
+		String css = "style='position: absolute; top:0; bottom:0; margin: auto;" + rot +
+			(pic.landscape ? " width: 100%;" : " height: 100%;") + "'";
 		String img;
-		if (pic.link.indexOf("/m.friendfeed-media.com/") > 0 || (pic.link.endsWith(".jpg") ||
-			pic.link.endsWith(".jpeg") || pic.link.endsWith(".png") || pic.link.endsWith(".gif")))
-			img = "<img " + css + dir + " src='" + pic.link + "'>";
-		else {
-			String lnk = "<a href='" + pic.link + "'>";
-			if (!TextUtils.isEmpty(pic.player)) {
-				Document doc = Jsoup.parseBodyFragment(pic.player);
-				Elements emb = doc.getElementsByTag("embed");
-				if (emb != null && emb.size() > 0 && emb.get(0).hasAttr("src")) {
-					String src = emb.get(0).attr("src");
-					// http://www.youtube.com/v/0QgYc3dfduA&amp;autoplay=1&amp;showsearch=0&amp;ap=%2526fmt%3D18&amp;fs=1
-					if (src.indexOf("youtube") > 0 && src.indexOf("&") > 0)
-						src = src.substring(0, src.indexOf("&")); // otherwise we'd get an error 400.
-					lnk = "<a href='" + src + "'>";
-				}
-			}
-			img = lnk + "<img " + css + dir + " src='" + pic.url + "'></a>";
-		}
+		if (pic.isFFMediaPic() || pic.isSimplePic())
+			img = "<img id='pic' " + css + " src='" + pic.link + "'>";
+		else if (pic.isYouTube())
+			img = "<a href='" + pic.videoUrl + "'><img id='pic' " + css + " src='" + pic.videoPreview() + "'></a>";
+		else
+			img = "<a href='" + pic.link + "'><img id='pic' " + css + " src='" + pic.url + "'></a>";
 		Log.v("gallery", img);
-		String html = "<html><body style='margin: 0; padding: 0;' ><div style='height: 100vh; position: relative'>"
-			+ img + "</div></body></html>";
+		String html = "<html><head><meta name='viewport' content='width=device-width'></head>" +
+			"<body style='margin: 0; padding: 0;'><div style='height: 100vh; position: relative'>" +
+			img + "</div></body></html>";
 		web.loadData(html, "text/html", "UTF-8");
 	}
 }

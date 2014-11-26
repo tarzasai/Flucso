@@ -142,7 +142,7 @@ public class Commons {
 	static class YouTube {
 		
 		public static boolean isVideoUrl(String url) {
-			return url.contains("www.youtube.com/watch") || url.startsWith("http://youtu.be/");
+			return url.contains("www.youtube.com") || url.startsWith("http://youtu.be/");
 		}
 
 		public static String getId(String url) {
@@ -150,6 +150,10 @@ public class Commons {
 				return url.substring(16);
 			if (url.contains("www.youtube.com/watch"))
 				return Uri.parse(url).getQueryParameter("v");
+			if (url.contains("www.youtube.com/v/")) {
+				String id = Uri.parse(url).getLastPathSegment();
+				return id.contains("&") ? id.substring(0, id.indexOf("&")) : id;
+			}
 			return null;
 		}
 		
@@ -159,10 +163,9 @@ public class Commons {
 				return "http://img.youtube.com/vi/" + id + "/0.jpg";
 			return null;
 		}
-	}
-	
-	public static String convertYoutubeLinks(String link) {
-		// friendfeed add a screenshot on youtube shared links, but only for the original domain:
-		return link.startsWith("http://youtu.be/") ? "http://www.youtube.com/watch?v=" + link.substring(16) : link;
+		
+		public static String getFriendlyUrl(String url) {
+			return !isVideoUrl(url) ? url : "http://www.youtube.com/watch?v=" + getId(url);
+		}
 	}
 }

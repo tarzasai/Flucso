@@ -57,7 +57,8 @@ public class EntryFilesAdapter extends EntryBaseAdapter {
 			Thumbnail tmb = (Thumbnail) itm;
 			vh.img.setVisibility(View.VISIBLE);
 			vh.llf.setVisibility(View.GONE);
-			Commons.picasso(context).load(tmb.url).placeholder(R.drawable.ic_action_picture).into(vh.img);
+			Commons.picasso(context).load(tmb.isYouTube() ? tmb.videoPreview() : tmb.url).placeholder(
+				R.drawable.ic_action_picture).into(vh.img);
 		}
 		return view;
 	}

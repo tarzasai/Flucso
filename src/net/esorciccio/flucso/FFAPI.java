@@ -10,6 +10,11 @@ import java.util.regex.Pattern;
 import net.esorciccio.flucso.Commons.PK;
 import net.esorciccio.flucso.FFAPI.Entry.Comment;
 import net.esorciccio.flucso.FFAPI.Entry.Like;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -563,6 +568,38 @@ public class FFAPI {
 			String player = "";
 			int rotation = 0; // local
 			boolean landscape = true; // local
+			String videoId = null; // local
+			String videoUrl = null; // local
+			
+			public boolean isFFMediaPic() {
+				return link.indexOf("/m.friendfeed-media.com/") > 0;
+			}
+			
+			public boolean isSimplePic() {
+				return link.endsWith(".jpg") || link.endsWith(".jpeg") || link.endsWith(".png") || link.endsWith(".gif");
+			}
+			
+			public boolean isYouTube() {
+				if (TextUtils.isEmpty(player))
+					return false;
+				if (!(TextUtils.isEmpty(videoId) || TextUtils.isEmpty(videoUrl)))
+					return true;
+				Document doc = Jsoup.parseBodyFragment(player);
+				Elements emb = doc.getElementsByTag("embed");
+				if (emb != null && emb.size() > 0 && emb.get(0).hasAttr("src")) {
+					String src = emb.get(0).attr("src");
+					if (Commons.YouTube.isVideoUrl(src)) {
+						videoId = Commons.YouTube.getId(src);
+						videoUrl = Commons.YouTube.getFriendlyUrl(src);
+						return true;
+					}
+				}
+				return false;
+			}
+			
+			public String videoPreview() {
+				return isYouTube() ? Commons.YouTube.getPreview(videoUrl) : null;
+			}
 		}
 		
 		static class Attachment {
