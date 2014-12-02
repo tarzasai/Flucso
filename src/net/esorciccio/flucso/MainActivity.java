@@ -21,6 +21,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -241,7 +242,9 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
-		if (intent.getAction().equals(FFService.DM_BASE_NOTIF)) {
+		String act = intent.getAction();
+		Log.v(logTag(), "onNewIntent(): " + act);
+		if (act.equals(FFService.DM_BASE_NOTIF)) {
 			String fid = "filter/direct";
 			SectionItem si = session.navigation != null ? session.navigation.getSectionByFeed(fid) : null;
 			if (si == null) {
@@ -256,9 +259,7 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 				openFeed(si.name, fid, null);
 			NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			nmg.cancel(FFService.NOTIFICATION_ID); // remove from notification bar
-			return;
-		}
-		if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+		} else if (act.equals(Intent.ACTION_VIEW)) {
 			Uri data = intent.getData();
 			if (data.getHost().equals("ff.im")) {
 				reverseShort(data.getPath().substring(1));
@@ -269,7 +270,6 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 				return;
 			}
 			Toast.makeText(this, "Unhandled intent (data: \"" + data.toString() + "\")", Toast.LENGTH_LONG).show();
-			return;
 		}
 	}
 	

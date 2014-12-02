@@ -69,6 +69,10 @@ public class FeedAdapter extends BaseAdapter {
 			vh.txtBody = (TextView) view.findViewById(R.id.txt_feed_body);
 			vh.imgThumb = (ImageView) view.findViewById(R.id.img_feed_thumb);
 			vh.imgThumb.setOnClickListener(listener);
+			vh.imgTNext = (ImageView) view.findViewById(R.id.img_feed_tnext);
+			vh.imgTNext.setOnClickListener(listener);
+			vh.imgTPrev = (ImageView) view.findViewById(R.id.img_feed_tprev);
+			vh.imgTPrev.setOnClickListener(listener);
 			vh.lComm = (LinearLayout) view.findViewById(R.id.l_feed_lc);
 			vh.imgLC = (ImageView) view.findViewById(R.id.img_feed_lc);
 			vh.txtLC = (TextView) view.findViewById(R.id.txt_feed_lc);
@@ -93,6 +97,8 @@ public class FeedAdapter extends BaseAdapter {
 		
 		vh.imgFrom.setTag(Integer.valueOf(position));
 		vh.imgThumb.setTag(Integer.valueOf(position));
+		vh.imgTNext.setTag(Integer.valueOf(position));
+		vh.imgTPrev.setTag(Integer.valueOf(position));
 		vh.txtLikes.setTag(Integer.valueOf(position));
 		vh.txtFiles.setTag(Integer.valueOf(position));
 		vh.txtFrwd.setTag(Integer.valueOf(position));
@@ -140,11 +146,15 @@ public class FeedAdapter extends BaseAdapter {
 		vh.txtHide.setVisibility(entry.canHide() ? View.VISIBLE : View.GONE);
 		vh.txtBody.setText(Html.fromHtml(entry.body));
 
-		if (entry.thumbnails.length <= 0)
+		if (entry.thumbnails.length <= 0) {
 			vh.imgThumb.setVisibility(View.GONE);
-		else {
+			vh.imgTNext.setVisibility(View.GONE);
+			vh.imgTPrev.setVisibility(View.GONE);
+		} else {
 			vh.imgThumb.setVisibility(View.VISIBLE);
-			Thumbnail pic = entry.thumbnails[0];
+			vh.imgTNext.setVisibility(entry.thumbnails.length > 1 ? View.VISIBLE : View.GONE);
+			vh.imgTPrev.setVisibility(entry.thumbnails.length > 1 ? View.VISIBLE : View.GONE);
+			Thumbnail pic = entry.thumbnails[entry.thumbpos];
 			Commons.picasso(context).load(pic.isYouTube() ? pic.videoPreview() : pic.url).placeholder(
 				R.drawable.ic_action_picture).into(vh.imgThumb);
 		}
@@ -223,6 +233,8 @@ public class FeedAdapter extends BaseAdapter {
 		public TextView txtHide;
 		public TextView txtBody;
 		public ImageView imgThumb;
+		public ImageView imgTNext;
+		public ImageView imgTPrev;
 		public LinearLayout lComm;
 		public ImageView imgLC;
 		public TextView txtLC;

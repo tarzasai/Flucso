@@ -323,7 +323,15 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 			case R.id.img_feed_thumb:
 			case R.id.txt_feed_files:
 				session.cachedEntry = entry;
-				mContainer.openGallery(entry.id, 0);
+				mContainer.openGallery(entry.id, entry.files.length + entry.thumbpos);
+				break;
+			case R.id.img_feed_tprev:
+				entry.thumbPrior();
+				adapter.notifyDataSetChanged();
+				break;
+			case R.id.img_feed_tnext:
+				entry.thumbNext();
+				adapter.notifyDataSetChanged();
 				break;
 			case R.id.txt_feed_likes:
 				if (entry.canLike())

@@ -354,6 +354,7 @@ public class FFAPI {
 		Attachment[] files = new Attachment[] {};
 		Coordinates geo;
 		boolean hidden = false; // undocumented
+		int thumbpos = 0; // local
 		
 		@Override
 		public void update(BaseEntry item) {
@@ -521,6 +522,14 @@ public class FFAPI {
 				if (c.spoiler)
 					return true;
 			return false;
+		}
+		
+		public void thumbNext() {
+			thumbpos = thumbnails.length > 0 ? (thumbpos + 1) % thumbnails.length : 0;
+		}
+		
+		public void thumbPrior() {
+			thumbpos = thumbnails.length > 0 ? (thumbpos + (thumbnails.length - 1)) % thumbnails.length : 0;
 		}
 		
 		static class Comment extends BaseEntry {

@@ -48,13 +48,36 @@
                 android:linksClickable="true"
                 android:text="@string/test_body_short" />
 
-            <ImageView
-                android:id="@+id/img_feed_thumb"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/empty_text"
-                android:src="@drawable/ic_action_picture" />
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/img_feed_thumb"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:contentDescription="@string/empty_text"
+                    android:src="@drawable/ic_action_picture" />
+
+                <ImageView
+                    android:id="@+id/img_feed_tprev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="175dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="-10dp"
+                    android:contentDescription="@string/empty_text"
+                    android:src="@drawable/ic_action_thumb_prior" />
+
+                <ImageView
+                    android:id="@+id/img_feed_tnext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="175dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="-10dp"
+                    android:contentDescription="@string/empty_text"
+                    android:src="@drawable/ic_action_thumb_next" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -176,7 +199,7 @@
         android:background="@color/feed_foreground"
         android:gravity="center_vertical"
         android:padding="6dp"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/txt_feed_hidden_from"
