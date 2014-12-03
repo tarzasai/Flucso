@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.esorciccio.flucso.PostActivity" >
+    tools:context="net.ggelardi.flucso.PostActivity" >
     
     <ScrollView 
         android:id="@+id/sv_post_main"
@@ -74,16 +74,14 @@
 	                    <requestFocus />
 	                </AutoCompleteTextView>
 	
-	                <net.esorciccio.flucso.ExpandableHeightGridView
+	                <net.ggelardi.flucso.ExpandableHeightGridView
 	                    android:id="@+id/gv_post_dsts"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:horizontalSpacing="0dp"
 	                    android:numColumns="auto_fit"
 	                    android:stretchMode="columnWidth"
-	                    android:verticalSpacing="0dp" >
-						
-	                </net.esorciccio.flucso.ExpandableHeightGridView>
+	                    android:verticalSpacing="0dp" />
 	
 	            </LinearLayout>
 	        </LinearLayout>
@@ -110,15 +108,14 @@
 	                    android:text="@string/test_nums_1" />
 	            </LinearLayout>
 	
-	            <net.esorciccio.flucso.ExpandableHeightGridView
+	            <net.ggelardi.flucso.ExpandableHeightGridView
 	                android:id="@+id/gv_post_atts"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:horizontalSpacing="0dp"
 	                android:numColumns="3"
 	                android:stretchMode="columnWidth"
-	                android:verticalSpacing="0dp" >
-	            </net.esorciccio.flucso.ExpandableHeightGridView>
+	                android:verticalSpacing="0dp" />
 	        </LinearLayout>
 	
 	        <LinearLayout

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context="net.esorciccio.flucso.SubscrActivity" >
+    tools:context="net.ggelardi.flucso.SubscrActivity" >
 
     <TextView
         android:id="@+id/textView1"

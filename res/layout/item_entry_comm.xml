@@ -54,7 +54,7 @@
 
         </LinearLayout>
 
-        <net.esorciccio.flucso.WwTextView
+        <net.ggelardi.flucso.WwTextView
             android:id="@+id/txt_comm_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

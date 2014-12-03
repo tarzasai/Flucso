@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.esorciccio.flucso"
+    package="net.ggelardi.flucso"
     android:versionCode="33"
     android:versionName="1.31" >
 
@@ -27,7 +27,7 @@
         android:supportsRtl="true" >
         
         <activity
-            android:name=".MainActivity"
+            android:name="net.ggelardi.flucso.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>
@@ -54,25 +54,25 @@
         </activity>
         
         <activity
-            android:name=".SettingsActivity"
+            android:name="net.ggelardi.flucso.SettingsActivity"
             android:label="@string/settings_title"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.esorciccio.flucso.MainActivity" />
+                android:value="net.ggelardi.flucso.MainActivity" />
         </activity>
         
         <activity
-            android:name=".SearchActivity"
+            android:name="net.ggelardi.flucso.SearchActivity"
             android:label="@string/search_title"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.esorciccio.flucso.MainActivity" />
+                android:value="net.ggelardi.flucso.MainActivity" />
         </activity>
         
         <activity
-            android:name=".PostActivity"
+            android:name="net.ggelardi.flucso.PostActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -93,7 +93,7 @@
         </activity>
 
         <service
-            android:name=".FFService"
+            android:name="net.ggelardi.flucso.FFService"
             android:exported="false"
             android:enabled="true" >
         </service>

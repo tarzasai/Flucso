@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:showDividers="middle" >
 
-    <net.esorciccio.flucso.WwTextView
+    <net.ggelardi.flucso.WwTextView
         android:id="@+id/txt_entry_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

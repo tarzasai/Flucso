@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <net.esorciccio.flucso.WwTextView
+        <net.ggelardi.flucso.WwTextView
             android:id="@+id/txt_entry_body_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
