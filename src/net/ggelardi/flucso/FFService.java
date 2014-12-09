@@ -2,18 +2,21 @@ package net.ggelardi.flucso;
 
 import java.util.Date;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.Commons.PK;
 import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.Feed;
 import net.ggelardi.flucso.FFAPI.Entry.Comment;
+import net.ggelardi.flucso.FFAPI.Feed;
 import retrofit.RetrofitError;
+import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Build;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -64,13 +67,9 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		int waitTime = 500;
 		try {
 			while (!terminated) {
-				try {
-					Thread.sleep(waitTime);
-				} catch (InterruptedException e) {
-					terminated = true;
-					notifyError(e);
-				}
-				if (!session.hasAccount())
+				if (isLollipopPSorSO())
+					waitTime = 60000;
+				else if (!session.hasAccount())
 					waitTime = 2000;
 				else if (!checkProfile())
 					terminated = true;
@@ -79,7 +78,11 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 					checkFeedCache();
 					waitTime = 50000;
 				}
+				Thread.sleep(waitTime);
 			}
+		} catch (Exception e) {
+			terminated = true;
+			notifyError(e);
 		} finally {
 			try {
 				SharedPreferences.Editor editor = session.getPrefs().edit();
@@ -111,80 +114,75 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		}
 		notifier.sendBroadcast(new Intent().setAction(SERVICE_ERROR).putExtra("message", text));
 	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private boolean isLollipopPSorSO() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+			return false;
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		return pm.isPowerSaveMode() || !pm.isInteractive();
+	}
 	
 	private boolean checkProfile() {
 		if (session.hasProfile() && (printv == 0 || printv > (new Date().getTime() - prlast) / (60 * 1000) % 60))
 			return true;
 		Log.v("FFService", "checkProfile()");
-		try {
-			session.profile = FFAPI.client_profile(session).get_profile_sync("me");
-			session.initProfile();
-			prlast = new Date().getTime();
-			if (session.navigation == null)
-				session.navigation = FFAPI.client_profile(session).get_navigation_sync();
-			notifier.sendBroadcast(new Intent(PROFILE_READY));
-			return true;
-		} catch (Exception error) {
-			notifyError(error);
-			return false;
-		}
+		session.profile = FFAPI.client_profile(session).get_profile_sync("me");
+		session.initProfile();
+		prlast = new Date().getTime();
+		if (session.navigation == null)
+			session.navigation = FFAPI.client_profile(session).get_navigation_sync();
+		notifier.sendBroadcast(new Intent(PROFILE_READY));
+		return true;
 	}
 	
 	private void checkMessages() {
 		if (dmnotf == 0 || dmintv > (new Date().getTime() - dmlast) / (60 * 1000) % 60)
 			return;
 		Log.v("FFService", "checkMessages()");
-		try {
-			Feed data = FFAPI.client_feed(session).get_feed_updates("filter/direct", 50, cursor, 0, 1);
-			cursor = data.realtime.cursor;
-			boolean news = false;
-			boolean upds = false;
-			for (Entry e : data.entries) {
-				if (news)
-					break;
-				if (e.from.isMe()) {
-					if (!upds && replied(e))
-						upds = true;
-				} else if (dmnotf == 2 || (e.to.length == 1 && e.to[0].isMe())) {
-					if (e.created)
-						news = true;
-					else if (!upds && (e.updated || replied(e)))
-						upds = true;
-				}
+		Feed data = FFAPI.client_feed(session).get_feed_updates("filter/direct", 50, cursor, 0, 1);
+		cursor = data.realtime.cursor;
+		boolean news = false;
+		boolean upds = false;
+		for (Entry e : data.entries) {
+			if (news)
+				break;
+			if (e.from.isMe()) {
+				if (!upds && replied(e))
+					upds = true;
+			} else if (dmnotf == 2 || (e.to.length == 1 && e.to[0].isMe())) {
+				if (e.created)
+					news = true;
+				else if (!upds && (e.updated || replied(e)))
+					upds = true;
 			}
-			if (news || upds) {
-				PendingIntent rpi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).setAction(DM_BASE_NOTIF),
-					PendingIntent.FLAG_UPDATE_CURRENT);
-				NotificationCompat.Builder ncb = new NotificationCompat.Builder(this).setSmallIcon(
-					R.drawable.ic_launcher).setContentTitle(getResources().getString(R.string.app_name)).setContentText(
-					getResources().getString(news ? R.string.notif_dm_new : R.string.notif_dm_upd)).setContentIntent(rpi);
-				NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-				nmg.notify(NOTIFICATION_ID, ncb.build());
-			}
-			dmlast = new Date().getTime();
-		} catch (Exception error) {
-			notifyError(error);
 		}
+		if (news || upds) {
+			PendingIntent rpi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).setAction(DM_BASE_NOTIF),
+				PendingIntent.FLAG_UPDATE_CURRENT);
+			NotificationCompat.Builder ncb = new NotificationCompat.Builder(this).setSmallIcon(
+				R.drawable.ic_launcher).setContentTitle(getResources().getString(R.string.app_name)).setContentText(
+				getResources().getString(news ? R.string.notif_dm_new : R.string.notif_dm_upd)).setContentIntent(rpi);
+			NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+			nmg.notify(NOTIFICATION_ID, ncb.build());
+		}
+		dmlast = new Date().getTime();
 	}
 	
 	private void checkFeedCache() {
 		if (!Commons.isOnWIFI(this) || (session.cachedFeed != null && session.cachedFeed.getAge() < 10*60*1000))
 			return;
 		Log.v("FFService", "checkFeedCache()");
-		try {
-			String fid = session.cachedFeed != null ? session.cachedFeed.id :
-				session.getPrefs().getString(PK.STARTUP, "home");
-			String cur = session.cachedFeed != null && session.cachedFeed.realtime != null ?
-				session.cachedFeed.realtime.cursor : "";
-			if (cur == "") {
-				session.cachedFeed = FFAPI.client_feed(session).get_feed_normal(fid, 0, 20);
-				session.cachedFeed.realtime = FFAPI.client_feed(session).get_feed_updates(fid, 20, "", 0, 1).realtime;
-			} else {
-				session.cachedFeed.update(FFAPI.client_feed(session).get_feed_updates(fid,
-					session.cachedFeed.entries.size(), session.cachedFeed.realtime.cursor, 0, 1));
-			}
-		} catch (Exception error) {
-			notifyError(error);
+		String fid = session.cachedFeed != null ? session.cachedFeed.id :
+			session.getPrefs().getString(PK.STARTUP, "home");
+		String cur = session.cachedFeed != null && session.cachedFeed.realtime != null ?
+			session.cachedFeed.realtime.cursor : "";
+		if (cur == "") {
+			session.cachedFeed = FFAPI.client_feed(session).get_feed_normal(fid, 0, 20);
+			session.cachedFeed.realtime = FFAPI.client_feed(session).get_feed_updates(fid, 20, "", 0, 1).realtime;
+		} else {
+			session.cachedFeed.update(FFAPI.client_feed(session).get_feed_updates(fid,
+				session.cachedFeed.entries.size(), session.cachedFeed.realtime.cursor, 0, 1));
 		}
 	}
 	
