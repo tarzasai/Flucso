@@ -1,11 +1,9 @@
 package net.ggelardi.flucso;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.Commons.PK;
 import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.Feed;
 import net.ggelardi.flucso.FFAPI.Entry.Comment;
-import net.ggelardi.flucso.FFAPI.Entry.Thumbnail;
+import net.ggelardi.flucso.FFAPI.Feed;
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
@@ -146,19 +144,18 @@ public class FeedAdapter extends BaseAdapter {
 		
 		vh.txtHide.setVisibility(entry.canHide() ? View.VISIBLE : View.GONE);
 		vh.txtBody.setText(Html.fromHtml(entry.body));
-
-		if (entry.thumbnails.length <= 0) {
+		
+		String img = entry.thumbnails.length > 0 ? entry.thumbnails[entry.thumbpos].url : entry.getFirstImage();
+		if (TextUtils.isEmpty(img))
 			vh.imgThumb.setVisibility(View.GONE);
-			vh.imgTNext.setVisibility(View.GONE);
-			vh.imgTPrev.setVisibility(View.GONE);
-		} else {
+		else {
 			vh.imgThumb.setVisibility(View.VISIBLE);
-			vh.imgTNext.setVisibility(entry.thumbnails.length > 1 ? View.VISIBLE : View.GONE);
-			vh.imgTPrev.setVisibility(entry.thumbnails.length > 1 ? View.VISIBLE : View.GONE);
-			Thumbnail pic = entry.thumbnails[entry.thumbpos];
-			Commons.picasso(context).load(pic.isYouTube() ? pic.videoPreview() : pic.url).placeholder(
-				R.drawable.ic_action_picture).into(vh.imgThumb);
+			if (Commons.YouTube.isVideoUrl(img))
+				img = Commons.YouTube.getPreview(img);
+			Commons.picasso(context).load(img).placeholder(R.drawable.ic_action_picture).into(vh.imgThumb);
 		}
+		vh.imgTNext.setVisibility(entry.thumbnails.length > 1 ? View.VISIBLE : View.GONE);
+		vh.imgTPrev.setVisibility(entry.thumbnails.length > 1 ? View.VISIBLE : View.GONE);
 		
 		if (entry.files.length > 0 || (entry.thumbnails.length + entry.files.length) > 1) {
 			vh.txtFiles.setVisibility(View.VISIBLE);

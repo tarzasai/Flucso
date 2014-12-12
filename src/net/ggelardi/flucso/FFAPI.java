@@ -291,10 +291,17 @@ public class FFAPI {
 				DateUtils.MINUTE_IN_MILLIS).toString();
 		}
 		
-		public String getFirstImage() {
-			String res = Commons.firstImageLink(rawBody);
+		public String getFirstUrl() {
+			String res = Commons.firstUrl(rawBody);
 			if (res == null)
-				res = Commons.firstImageLink(body);
+				res = Commons.firstUrl(body);
+			return res;
+		}
+		
+		public String getFirstImage() {
+			String res = Commons.firstImage(rawBody);
+			if (res == null)
+				res = Commons.firstImage(body);
 			return res;
 		}
 		
@@ -539,8 +546,14 @@ public class FFAPI {
 			
 			@Override
 			public void checkLocalHide() {
-				if (!placeholder)
-					super.checkLocalHide();
+				if (placeholder)
+					return;
+				super.checkLocalHide();
+				if (body.toLowerCase(Locale.getDefault()).equals("sp") ||
+					body.toLowerCase(Locale.getDefault()).equals("spoiler") ||
+					rawBody.toLowerCase(Locale.getDefault()).equals("sp") ||
+					rawBody.toLowerCase(Locale.getDefault()).equals("spoiler"))
+					spoiler = true;
 			}
 		}
 		

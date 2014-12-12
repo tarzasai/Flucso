@@ -122,7 +122,15 @@ public class Commons {
 		return msg;
 	}
 	
-	public static String firstImageLink(String text) {
+	public static String firstUrl(String text) {
+		if (!TextUtils.isEmpty(text))
+			for (String s : text.split("\\s+"))
+				if (Patterns.WEB_URL.matcher(s).matches())
+					return s;
+		return null;
+	}
+	
+	public static String firstImage(String text) {
 		if (!TextUtils.isEmpty(text)) {
 			String chk;
 			String[] words = text.split("\\s+");
@@ -142,12 +150,14 @@ public class Commons {
 	static class YouTube {
 		
 		public static boolean isVideoUrl(String url) {
-			return url.contains("www.youtube.com") || url.startsWith("http://youtu.be/");
+			return url.contains("www.youtube.com") || url.contains("://youtu.be/");
 		}
-
+		
 		public static String getId(String url) {
 			if (url.startsWith("http://youtu.be/"))
 				return url.substring(16);
+			if (url.startsWith("https://youtu.be/"))
+				return url.substring(17);
 			if (url.contains("www.youtube.com/watch"))
 				return Uri.parse(url).getQueryParameter("v");
 			if (url.contains("www.youtube.com/v/")) {

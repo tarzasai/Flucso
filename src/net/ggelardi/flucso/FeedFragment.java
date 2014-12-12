@@ -4,12 +4,11 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.Commons.PK;
 import net.ggelardi.flucso.FFAPI.Entry;
+import net.ggelardi.flucso.FFAPI.Entry.Like;
 import net.ggelardi.flucso.FFAPI.Feed;
 import net.ggelardi.flucso.FFAPI.SimpleResponse;
-import net.ggelardi.flucso.FFAPI.Entry.Like;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -17,10 +16,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -322,6 +323,13 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 				mContainer.openFeed(entry.from.name, entry.from.id, null);
 				break;
 			case R.id.img_feed_thumb:
+				if (entry.thumbnails.length <= 0)
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(entry.getFirstUrl())));
+				else {
+					session.cachedEntry = entry;
+					mContainer.openGallery(entry.id, entry.files.length + entry.thumbpos);
+				}
+				break;
 			case R.id.txt_feed_files:
 				session.cachedEntry = entry;
 				mContainer.openGallery(entry.id, entry.files.length + entry.thumbpos);
