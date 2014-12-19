@@ -1,5 +1,7 @@
 package net.ggelardi.flucso;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,8 @@ import org.jsoup.select.Elements;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.Request;
+import retrofit.client.UrlConnectionClient;
 import retrofit.http.Body;
 import retrofit.http.EncodedPath;
 import retrofit.http.GET;
@@ -773,7 +777,17 @@ public class FFAPI {
 						request.addHeader("Authorization", authData);
 						request.addQueryParam("appid", API_KEY);
 					}
-				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+				}).setLogLevel(RestAdapter.LogLevel.NONE).setClient(new WaitingUCC()).build().create(FF.class);
 		return CLIENT_WRITER;
+	}
+	
+	static class WaitingUCC extends UrlConnectionClient {
+		@Override
+		protected HttpURLConnection openConnection(Request request) throws IOException {
+			HttpURLConnection connection = super.openConnection(request);
+			connection.setConnectTimeout(20 * 1000); // 20 sec
+			connection.setReadTimeout(60 * 1000); // 60 sec
+			return connection;
+		}
 	}
 }

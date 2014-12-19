@@ -52,7 +52,7 @@
 	                    android:id="@+id/txt_post_dsts_count"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:drawableTop="@drawable/ic_action_forward"
+	                    android:drawableTop="@drawable/ic_action_group"
 	                    android:gravity="center_horizontal"
 	                    android:text="@string/test_nums_1" />
 						
@@ -167,7 +167,7 @@
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:contentDescription="@string/empty_text"
-	                    android:src="@drawable/ic_action_new_event" />
+	                    android:src="@drawable/ic_action_comment" />
 	
 	                <EditText
 	                    android:id="@+id/edt_post_comm"
