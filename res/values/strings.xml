@@ -14,6 +14,7 @@
     <string name="post_tos">Recipients (people/rooms)</string>
     <string name="post_body">Your message here</string>
     <string name="post_comment">First comment here</string>
+    <string name="post_grabweb">Scroll to the portion of page you want to grab and confirm the screenshot, or hit BACK to cancel</string>
     <string name="search_title">Search on FriendFeed</string>
     <string name="search_tabf">Your feeds</string>
     <string name="search_tabp">Posts (FF search)</string>

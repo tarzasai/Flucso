@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.FFAPI.BaseFeed;
 import net.ggelardi.flucso.FFAPI.Entry;
 import net.ggelardi.flucso.PostFileAdapter.ImageRef;
@@ -21,6 +20,7 @@ import retrofit.mime.TypedString;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,7 +41,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -51,6 +53,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -68,22 +71,24 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 	private String comm;
 	private String[] tmbs;
 	private Uri[] uris;
-	
-	private Uri snapFileUri;
+	private Uri snap;
 	
 	private PostDSelAdapter aDsts;
 	private PostThmbAdapter aTmbs;
 	private PostFileAdapter aImgs;
 	
 	private ScrollView svMain;
+	private LinearLayout lLink;
 	private LinearLayout lDsts;
 	private LinearLayout lAtts;
 	private LinearLayout lComm;
 	private WebView wScreen;
+	private ImageView imgWImg;
 	private TextView txtLink;
 	private TextView txtToNo;
 	private TextView txtAtNo;
 	private TextView txtChNo;
+	private AutoCompleteTextView edtDsts;
 	private EditText edtBody;
 	private EditText edtComm;
 	private MenuItem miPost;
@@ -102,34 +107,39 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 		aImgs = new PostFileAdapter(this);
 		
 		svMain = (ScrollView) findViewById(R.id.sv_post_main);
+		lLink = (LinearLayout) findViewById(R.id.l_post_sez_link);
 		lDsts = (LinearLayout) findViewById(R.id.l_post_sez_dsts);
 		lAtts = (LinearLayout) findViewById(R.id.l_post_sez_atts);
 		lComm = (LinearLayout) findViewById(R.id.l_post_sez_comm);
+		imgWImg = (ImageView) findViewById(R.id.img_post_grab);
 		txtLink = (TextView) findViewById(R.id.txt_post_link);
 		txtToNo = (TextView) findViewById(R.id.txt_post_dsts_count);
 		txtAtNo = (TextView) findViewById(R.id.txt_post_atts_count);
 		txtChNo = (TextView) findViewById(R.id.txt_post_body_count);
+		edtDsts = (AutoCompleteTextView) findViewById(R.id.edt_post_actv);
 		edtBody = (EditText) findViewById(R.id.edt_post_body);
 		edtComm = (EditText) findViewById(R.id.edt_post_comm);
 		wScreen = (WebView) findViewById(R.id.wv_post_screen);
 		
+		WebSettings ws = wScreen.getSettings();
+		ws.setLoadsImagesAutomatically(true);
+		ws.setAllowContentAccess(false);
+		ws.setGeolocationEnabled(false);
+		ws.setJavaScriptEnabled(false);
+		ws.setSaveFormData(false);
+		
+		lLink.setVisibility(View.GONE);
 		lDsts.setVisibility(View.GONE);
 		lAtts.setVisibility(View.GONE);
 		lComm.setVisibility(View.GONE);
-		txtLink.setVisibility(View.GONE);
 		edtComm.setText("");
-		
-		WebSettings webSettings = wScreen.getSettings();
-		webSettings.setAllowContentAccess(false);
-		webSettings.setGeolocationEnabled(false);
-		webSettings.setJavaScriptEnabled(false);
-		webSettings.setSaveFormData(false);
 		
 		eid = "";
 		link = "";
 		dsts = new String[] {};
 		body = savedInstanceState != null ? savedInstanceState.getString("body", "") : "";
 		comm = savedInstanceState != null ? savedInstanceState.getString("comment", "") : "";
+		snap = savedInstanceState != null ? (Uri) savedInstanceState.getParcelable("photo") : null;
 		tmbs = new String[] {};
 		uris = new Uri[] {};
 		
@@ -171,6 +181,23 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 				uris[i] = imgs.get(i);
 		}
 		
+		imgWImg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setProgressBarIndeterminateVisibility(true);
+				// hide the keyboard
+				InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(edtDsts.getWindowToken(), 0);
+				imm.hideSoftInputFromWindow(edtBody.getWindowToken(), 0);
+				imm.hideSoftInputFromWindow(edtComm.getWindowToken(), 0);
+				// load the page
+				wScreen.setTag(Integer.valueOf(0));
+				wScreen.setVisibility(View.VISIBLE);
+				wScreen.loadUrl(link);
+				checkMenu();
+			}
+		});
+		
 		ExpandableHeightGridView gvDsts = (ExpandableHeightGridView) findViewById(R.id.gv_post_dsts);
 		gvDsts.setExpanded(true);
 		gvDsts.setAdapter(aDsts);
@@ -186,15 +213,14 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 			}
 		});
 		
-		final AutoCompleteTextView macDsts = (AutoCompleteTextView) findViewById(R.id.edt_post_actv);
-		macDsts.setThreshold(1);
-		macDsts.setAdapter(new PostDSrcAdapter(this));
-		macDsts.setOnItemClickListener(new OnItemClickListener() {
+		edtDsts.setThreshold(1);
+		edtDsts.setAdapter(new PostDSrcAdapter(this));
+		edtDsts.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				BaseFeed item = (BaseFeed) parent.getAdapter().getItem(position);
 				aDsts.append(item);
-				macDsts.setText("");
+				edtDsts.setText("");
 			}
 		});
 		
@@ -239,6 +265,33 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 			}
 		});
 		
+		wScreen.setWebChromeClient(new WebChromeClient());
+		wScreen.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+		        return true;
+		    }
+			@Override
+	        public void onLoadResource(WebView view, String url) {
+				int pos;
+				try {
+					pos = (Integer) view.getTag();
+				} catch (Exception err) {
+					return; // wtf?
+				}
+				if (pos == 1)
+					view.stopLoading();
+	        }
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				setProgressBarIndeterminateVisibility(false);
+				if (!url.equals("about:blank")) {
+					wScreen.setTag(Integer.valueOf(1));
+					Toast.makeText(PostActivity.this, R.string.post_grabweb, Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
 		// I've moved these here from profileReady, otherwise switching fast to home and back would clear both
 		// (the activity steps in the onRestoreInstanceState only if the system destroy it)
 		txtChNo.setText(Integer.toString(BODYCHARS));
@@ -254,7 +307,7 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 			setTitle(R.string.post_title_new);
 			if (!TextUtils.isEmpty(link)) {
 				txtLink.setText(link);
-				txtLink.setVisibility(View.VISIBLE);
+				lLink.setVisibility(View.VISIBLE);
 			}
 			lDsts.setVisibility(View.VISIBLE);
 			BaseFeed to;
@@ -291,6 +344,7 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 
 		body = savedInstanceState.getString("body", "");
 		comm = savedInstanceState.getString("comment", "");
+		snap = savedInstanceState.getParcelable("photo");
 	}
 	
 	@Override
@@ -305,6 +359,8 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 		if (!TextUtils.isEmpty(text))
 			outState.putString("comment", text);
 		
+		if (snap != null)
+			outState.putParcelable("photo", snap);
 	}
 	
 	@Override
@@ -329,7 +385,28 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.equals(miPost)) {
-			sendPost();
+			if (wScreen.getVisibility() != View.VISIBLE)
+				sendPost();
+			else try {
+				File screenFile = createImageFile();
+				if (screenFile != null) {
+					Bitmap screenShot;
+					wScreen.setDrawingCacheEnabled(true);
+					screenShot = Bitmap.createBitmap(wScreen.getDrawingCache());
+					wScreen.setDrawingCacheEnabled(false);
+					try {
+						FileOutputStream fos = new FileOutputStream(screenFile);
+						screenShot.compress(Bitmap.CompressFormat.PNG, 90, fos);
+						fos.close();
+						Uri screenUri = Uri.fromFile(screenFile);
+						attachImage(screenUri, true);
+					} catch (Exception e) {
+						Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+					}
+				}
+			} finally {
+				hideWebView();
+			}
 			return true;
 		}
 		if (item.equals(miFile)) {
@@ -346,8 +423,8 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				File photoFile = createImageFile();
 				if (photoFile != null) {
-					snapFileUri = Uri.fromFile(photoFile);
-					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, snapFileUri);
+					snap = Uri.fromFile(photoFile);
+					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, snap);
 					startActivityForResult(takePictureIntent, REQ_SNAP_PHOTO);
 				}
 			}
@@ -359,37 +436,16 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 		}
 		if (item.equals(miWImg)) {
 			setProgressBarIndeterminateVisibility(true);
+			// hide the keyboard
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(edtDsts.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(edtBody.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(edtComm.getWindowToken(), 0);
+			// load the page
+			wScreen.setTag(Integer.valueOf(0));
 			wScreen.setVisibility(View.VISIBLE);
 			wScreen.loadUrl(link);
-			wScreen.setWebViewClient(new WebViewClient() {
-				@Override
-				public void onPageFinished(WebView view, String url) {
-					try {
-						File screenFile = createImageFile();
-						if (screenFile != null) {
-							Bitmap screenShot;
-							view.setDrawingCacheEnabled(true);
-							screenShot = Bitmap.createBitmap(view.getDrawingCache());
-							view.setDrawingCacheEnabled(false);
-							try {
-								FileOutputStream fos = new FileOutputStream(screenFile);
-								screenShot.compress(Bitmap.CompressFormat.PNG, 90, fos);
-								fos.close();
-							} catch (Exception e) {
-								Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-								return;
-							}
-							Uri screenUri = Uri.fromFile(screenFile);
-							attachImage(screenUri, true);
-						}
-						wScreen.setWebViewClient(null);
-						view.loadUrl("about:blank");
-					} finally {
-						view.setVisibility(View.GONE);
-						setProgressBarIndeterminateVisibility(false);
-					}
-				}
-			});
+			checkMenu();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -402,7 +458,15 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 		if (requestCode == REQ_SELECT_FILE && resultCode == RESULT_OK)
 			attachImage(intent.getData(), false);
 		else if (requestCode == REQ_SNAP_PHOTO && resultCode == RESULT_OK)
-			attachImage(snapFileUri, true);
+			attachImage(snap, true);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (isWebViewVisible())
+			hideWebView();
+		else
+			super.onBackPressed();
 	}
 	
 	@Override
@@ -426,13 +490,30 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 		return TextUtils.isEmpty(eid);
 	}
 	
+	private boolean isWebViewVisible() {
+		return wScreen != null && wScreen.getVisibility() == View.VISIBLE;
+	}
+	
+	private void hideWebView() {
+		wScreen.loadUrl("about:blank");
+		wScreen.clearCache(true);
+		wScreen.setVisibility(View.GONE);
+		wScreen.setTag(null);
+		checkMenu();
+	}
+	
 	private void checkMenu() {
+		boolean wvv = wScreen != null && wScreen.getVisibility() == View.VISIBLE;
 		if (miPost != null)
 			miPost.setVisible((!isNew() || aDsts.getCount() > 0) && !TextUtils.isEmpty(edtBody.getText().toString()));
 		if (miFile != null)
-			miFile.setVisible(isNew());
+			miFile.setVisible(isNew() && !wvv);
 		if (miSnap != null)
-			miSnap.setVisible(isNew());
+			miSnap.setVisible(isNew() && !wvv);
+		if (miHome != null)
+			miHome.setVisible(!wvv);
+		if (miWImg != null)
+			miWImg.setVisible(!wvv);
 	}
 	
 	private void checkDM() {

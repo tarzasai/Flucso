@@ -14,6 +14,7 @@
     <string name="post_tos">Destinatari (persone/gruppi)</string>
     <string name="post_body">Testo del messaggio</string>
     <string name="post_comment">Primo commento</string>
+    <string name="post_grabweb">Centra la porzione di pagina che ti interessa e conferma per scattare, oppure vai INDIETRO per annullare</string>
     <string name="search_title">Cerca su FriendFeed</string>
     <string name="search_tabf">I tuoi feed</string>
     <string name="search_tabp">Post (ricerca di FF)</string>
