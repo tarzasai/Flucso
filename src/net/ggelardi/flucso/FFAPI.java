@@ -138,10 +138,10 @@ public class FFAPI {
 		
 		String id = "";
 		List<String> commands = new ArrayList<String>();
-		long timestamp = new Date().getTime();
+		long timestamp = System.currentTimeMillis();
 		
 		public long getAge() {
-			return new Date().getTime() - timestamp;
+			return System.currentTimeMillis() - timestamp;
 		}
 		
 		public boolean isIt(String checkId) {
@@ -264,6 +264,7 @@ public class FFAPI {
 		
 		static class Realtime {
 			String cursor;
+			final long timestamp = System.currentTimeMillis();
 		}
 	}
 	
@@ -291,7 +292,7 @@ public class FFAPI {
 		}
 		
 		public String getFuzzyTime() {
-			return DateUtils.getRelativeTimeSpanString(date.getTime(), new Date().getTime(),
+			return DateUtils.getRelativeTimeSpanString(date.getTime(), System.currentTimeMillis(),
 				DateUtils.MINUTE_IN_MILLIS).toString();
 		}
 		
@@ -535,6 +536,13 @@ public class FFAPI {
 			return false;
 		}
 		
+		public boolean hasReplies() {
+			for (Comment c: comments)
+				if ((c.created || c.updated) && !c.from.isMe())
+					return true;
+			return false;
+		}
+		
 		public void thumbNext() {
 			thumbpos = thumbnails.length > 0 ? (thumbpos + 1) % thumbnails.length : 0;
 		}
@@ -576,7 +584,7 @@ public class FFAPI {
 			}
 			
 			public String getFuzzyTime() {
-				return DateUtils.getRelativeTimeSpanString(date.getTime(), new Date().getTime(),
+				return DateUtils.getRelativeTimeSpanString(date.getTime(), System.currentTimeMillis(),
 					DateUtils.MINUTE_IN_MILLIS).toString();
 			}
 		}
@@ -666,10 +674,10 @@ public class FFAPI {
 		SectionItem[] groups;
 		SectionItem[] searches;
 		Section[] sections;
-		long timestamp = new Date().getTime();
+		long timestamp = System.currentTimeMillis();
 		
 		public long getAge() {
-			return new Date().getTime() - timestamp;
+			return System.currentTimeMillis() - timestamp;
 		}
 		
 		public SectionItem getSectionByFeed(String feed_id) {
@@ -700,12 +708,14 @@ public class FFAPI {
 	
 	public static void dropClients() {
 		CLIENT_PROFILE = null;
+		CLIENT_MSGS = null;
 		CLIENT_FEED = null;
 		CLIENT_ENTRY = null;
 		CLIENT_WRITER = null;
 	}
 	
 	private static FF CLIENT_PROFILE;
+	private static FF CLIENT_MSGS;
 	private static FF CLIENT_FEED;
 	private static FF CLIENT_ENTRY;
 	private static FF CLIENT_WRITER;
@@ -724,6 +734,24 @@ public class FFAPI {
 					}
 				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
 		return CLIENT_PROFILE;
+	}
+	
+	public static FF client_msgs(final FFSession session) {
+		if (CLIENT_MSGS == null)
+			CLIENT_MSGS = new RestAdapter.Builder().setEndpoint(API_URL).setRequestInterceptor(
+				new RequestInterceptor() {
+					@Override
+					public void intercept(RequestFacade request) {
+						String authText = session.getUsername() + ":" + session.getRemoteKey();
+						String authData = "Basic " + Base64.encodeToString(authText.getBytes(), 0);
+						request.addHeader("Authorization", authData);
+						request.addHeader("User-Agent", Commons.USER_AGENT);
+						request.addQueryParam("locale", session.getPrefs().getString(PK.LOCALE, "en"));
+						request.addQueryParam("maxcomments", "1000");
+						request.addQueryParam("raw", "1");
+					}
+				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+		return CLIENT_MSGS;
 	}
 	
 	public static FF client_feed(final FFSession session) {

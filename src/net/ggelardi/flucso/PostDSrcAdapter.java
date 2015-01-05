@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.FFAPI.BaseFeed;
 import android.content.Context;
 import android.text.TextUtils;
@@ -80,12 +79,12 @@ public class PostDSrcAdapter extends BaseAdapter implements Filterable {
 	private ArrayList<BaseFeed> getFeedList(String filter) {
 		ArrayList<BaseFeed> result = new ArrayList<BaseFeed>();
 		List<String> check = new ArrayList<String>();
-		for (BaseFeed feed : session.profile.subscriptions)
+		for (BaseFeed feed : session.getProfile().subscriptions)
 			if (checkFeed(feed, filter)) {
 				result.add(feed);
 				check.add(feed.id);
 			}
-		for (BaseFeed feed : session.profile.subscribers) {
+		for (BaseFeed feed : session.getProfile().subscribers) {
 			if (checkFeed(feed, filter) && !check.contains(feed.id))
 				result.add(feed);
 		}

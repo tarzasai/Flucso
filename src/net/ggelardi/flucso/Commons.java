@@ -30,6 +30,8 @@ public class Commons {
 		public static final String REMOTEKEY = "RemoteKey";
 		public static final String STARTUP = "pk_startup";
 		public static final String LOCALE = "pk_locale";
+		public static final String PROF_INFO = "pk_prof_info";
+		public static final String PROF_LIST = "pk_prof_list";
 		public static final String FEED_UPD = "pk_feed_upd";
 		public static final String FEED_FOF = "pk_feed_fof";
 		public static final String FEED_HID = "pk_feed_hid";
@@ -41,8 +43,8 @@ public class Commons {
 		public static final String SERV_PROF = "pk_serv_prof";
 		public static final String SERV_NOTF = "pk_serv_notf";
 		public static final String SERV_MSGS = "pk_serv_msgs";
-		public static final String SERV_PROR = "pk_serv_pror";
 		//
+		public static final String SERV_MSGS_TIME = "pk_serv_msgs_time";
 		public static final String SERV_MSGS_CURS = "pk_serv_msgs_cursor";
 	}
 	

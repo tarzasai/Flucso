@@ -294,8 +294,8 @@ public class FeedFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 	@Override
 	public void onRefresh() {
 		checkMenu();
-		if ((updater != null && updater.scheduledExecutionTime() >= new Date().getTime()) ||
-			(loader != null && loader.scheduledExecutionTime() >= new Date().getTime()))
+		if ((updater != null && updater.scheduledExecutionTime() >= System.currentTimeMillis()) ||
+			(loader != null && loader.scheduledExecutionTime() >= System.currentTimeMillis()))
 			return;
 		amount = AMOUNT_BASE;
 		if (timer != null)

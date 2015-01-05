@@ -166,7 +166,7 @@
                         android:gravity="top"
                         android:hint="@string/post_body"
                         android:inputType="textMultiLine"
-                        android:text="@string/test_time_1" />
+                        android:text="@string/test_body_short" />
                 </LinearLayout>
 
                 <LinearLayout

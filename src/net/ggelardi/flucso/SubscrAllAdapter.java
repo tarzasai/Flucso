@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.FFAPI.BaseFeed;
 import android.content.Context;
 import android.text.TextUtils;
@@ -109,13 +108,13 @@ public class SubscrAllAdapter extends BaseAdapter implements Filterable {
 		ArrayList<BaseFeed> result = new ArrayList<BaseFeed>();
 		List<String> check = new ArrayList<String>();
 		if (scope.equals(Scope.ALL) || scope.equals(Scope.SUBSCRIPTIONS))
-			for (BaseFeed feed : session.profile.subscriptions)
+			for (BaseFeed feed : session.getProfile().subscriptions)
 				if (checkFeed(feed, filter)) {
 					result.add(feed);
 					check.add(feed.id);
 				}
 		if (scope.equals(Scope.ALL) || scope.equals(Scope.SUBSCRIBERS))
-			for (BaseFeed feed : session.profile.subscribers) {
+			for (BaseFeed feed : session.getProfile().subscribers) {
 				if (checkFeed(feed, filter) && !check.contains(feed.id))
 					result.add(feed);
 			}

@@ -1,6 +1,5 @@
 package net.ggelardi.flucso;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.FFAPI.FeedList.Section;
 import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
 import android.content.Context;
@@ -37,8 +36,8 @@ public class DrawerAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		int total = 0;
-		if (session.navigation != null && session.navigation.sections != null) {
-			for (Section sec : session.navigation.sections)
+		if (session.hasProfile() && session.getNavigation().sections != null) {
+			for (Section sec : session.getNavigation().sections)
 				total += sec.feeds.length + 1;
 		}
 		return total;
@@ -46,10 +45,10 @@ public class DrawerAdapter extends BaseAdapter {
 	
 	@Override
 	public Object getItem(int position) {
-		if (position >= 0 && session.navigation != null && session.navigation.sections != null) {
+		if (position >= 0 && session.hasProfile() && session.getNavigation().sections != null) {
 			int offset = 0;
 			int index = -1;
-			for (Section sec : session.navigation.sections) {
+			for (Section sec : session.getNavigation().sections) {
 				if (position <= (offset + sec.feeds.length)) {
 					index = position - offset - 1;
 					return index < 0 ? sec : sec.feeds[index]; // a Section or a SectionItem

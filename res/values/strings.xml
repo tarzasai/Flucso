@@ -51,7 +51,7 @@
     <string name="action_post_file">Attach file</string>
     <string name="action_post_snap">Attach photo</string>
     <string name="action_post_home">Post in home</string>
-    <string name="action_post_wimg">Screenshot the linked site</string>
+    <string name="action_post_wimg">Add website screenshot</string>
     <string name="action_feed_dm">Direct message</string>
     <string name="action_feed_autoups">Auto updates</string>
     <string name="action_feed_stopups">Pause updates</string>

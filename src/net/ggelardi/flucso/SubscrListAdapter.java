@@ -6,11 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.FFAPI.BaseFeed;
 import net.ggelardi.flucso.FFAPI.FeedInfo;
-import net.ggelardi.flucso.FFAPI.SimpleResponse;
 import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
+import net.ggelardi.flucso.FFAPI.SimpleResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -123,7 +122,7 @@ public class SubscrListAdapter extends BaseAdapter {
 			FFAPI.client_profile(session).get_profile(target.id, callback);
 		} else {
 			lstsubs.add(new ListRef("home", "Home", false));
-			for (SectionItem s: session.navigation.lists)
+			for (SectionItem s: session.getNavigation().lists)
 				lstsubs.add(new ListRef(s.id, s.name, false));
 			checkTargetPresence(0, true);
 		}

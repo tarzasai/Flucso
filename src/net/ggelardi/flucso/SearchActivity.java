@@ -1,6 +1,5 @@
 package net.ggelardi.flucso;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
 import net.ggelardi.flucso.SubscrAllAdapter.Scope;
 import android.content.Intent;
@@ -134,12 +133,12 @@ public class SearchActivity extends BaseActivity {
 			rb.setOnCheckedChangeListener(rbListener);
 		}
 		
-		if (session.navigation.lists == null || session.navigation.lists.length <= 0) {
+		if (session.getNavigation().lists == null || session.getNavigation().lists.length <= 0) {
 			rbPScop3.setEnabled(false);
 			spPLists.setVisibility(View.GONE);
 		} else {
 			ArrayAdapter<String> spData = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-			for (SectionItem si : session.navigation.lists)
+			for (SectionItem si : session.getNavigation().lists)
 				spData.add(si.name);
 			spData.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spPLists.setAdapter(spData);

@@ -51,7 +51,7 @@
     <string name="action_post_file">Allega file</string>
     <string name="action_post_snap">Allega foto</string>
     <string name="action_post_home">Pubblica nel tuo feed</string>
-    <string name="action_post_wimg">Allega immagine del sito linkato</string>
+    <string name="action_post_wimg">Aggiungi screenshot del sito</string>
     <string name="action_feed_dm">Messaggio diretto</string>
     <string name="action_feed_autoups">Aggiornamento automatico</string>
     <string name="action_feed_stopups">Pausa aggiornamento</string>

@@ -312,15 +312,15 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 			lDsts.setVisibility(View.VISIBLE);
 			BaseFeed to;
 			for (String s : dsts)
-				if (session.profile.isIt(s))
-					aDsts.append(session.profile);
+				if (session.getProfile().isIt(s))
+					aDsts.append(session.getProfile());
 				else {
-					to = session.profile.findFeedById(s);
+					to = session.getProfile().findFeedById(s);
 					if (to != null && (to.isGroup() && to.canPost() || to.isUser() && to.canDM()))
 						aDsts.append(to);
 				}
 			if (aDsts.getCount() <= 0)
-				aDsts.append(session.profile);
+				aDsts.append(session.getProfile());
 			lComm.setVisibility(View.VISIBLE);
 		}
 		if (tmbs != null)
@@ -431,7 +431,7 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 			return true;
 		}
 		if (item.equals(miHome)) {
-			aDsts.append(session.profile);
+			aDsts.append(session.getProfile());
 			return true;
 		}
 		if (item.equals(miWImg)) {
@@ -682,7 +682,7 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 					mto.addPart("link", new TypedString(link));
 			}
 			for (String s : aDsts.getIDs())
-				mto.addPart("to", new TypedString(session.profile.isIt(s) ? "me" : s));
+				mto.addPart("to", new TypedString(session.getProfile().isIt(s) ? "me" : s));
 			if (!TextUtils.isEmpty(edtComm.getText().toString()))
 				mto.addPart("comment", new TypedString(edtComm.getText().toString()));
 			for (int i = 0; i < aTmbs.getCount(); i++)

@@ -1,8 +1,8 @@
 package net.ggelardi.flucso;
 
-import net.ggelardi.flucso.R;
 import net.ggelardi.flucso.Commons.PK;
 import net.ggelardi.flucso.FFAPI.Entry;
+import net.ggelardi.flucso.FFAPI.FeedInfo;
 import net.ggelardi.flucso.FFAPI.FeedList;
 import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
 import retrofit.Callback;
@@ -222,8 +222,8 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 		if (mDrawerToggle.onOptionsItemSelected(item))
 			return true;
 		if (item.equals(miDrwUpd)) {
-			session.updateProfile();
-			loadNavigation();
+			updateProfile();
+			updateNavigation();
 			return true;
 		}
 		if (item.equals(miDrwCfg) || item.equals(miConfig)) {
@@ -247,7 +247,7 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 		Log.v(logTag(), "onNewIntent(): " + act);
 		if (act.equals(FFService.DM_BASE_NOTIF)) {
 			String fid = "filter/direct";
-			SectionItem si = session.navigation != null ? session.navigation.getSectionByFeed(fid) : null;
+			SectionItem si = session.hasProfile() ? session.getNavigation().getSectionByFeed(fid) : null;
 			if (si == null) {
 				si = new SectionItem();
 				si.id = fid;
@@ -337,43 +337,35 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 	
 	@Override
 	protected void profileReady() {
-		Commons.picasso(getApplicationContext()).load(session.profile.getAvatarUrl()).placeholder(
+		Commons.picasso(getApplicationContext()).load(session.getProfile().getAvatarUrl()).placeholder(
 			R.drawable.nomugshot).into(mUserIcon);
 		mUserLogin.setText(session.getUsername());
-		mUserName.setText(session.profile.name);
+		mUserName.setText(session.getProfile().name);
 		mUserBox.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				SectionItem me = new SectionItem();
 				me.id = "me";
-				me.name = session.profile.name;
+				me.name = session.getProfile().name;
 				selectDrawerItem(me);
 				mDrawerLayout.closeDrawer(mDrawerView);
 			}
 		});
-		if (session.navigation == null)
-			loadNavigation();
-		else
-			navigationReady();
-	}
-	
-	private void navigationReady() {
 		if (getFragmentManager().findFragmentByTag(FeedFragment.FRAGMENT_TAG) == null) {
 			// Open the startup feed.
-			SectionItem si = session.navigation.getSectionByFeed(lastFeed);
-			selectDrawerItem(si != null ? si : session.navigation.sections[0].feeds[0]);
+			SectionItem si = session.getNavigation().getSectionByFeed(lastFeed);
+			selectDrawerItem(si != null ? si : session.getNavigation().sections[0].feeds[0]);
 		}
 	}
 	
-	private void loadNavigation() {
+	private void updateProfile() {
 		setProgressBarIndeterminateVisibility(true);
-		Callback<FeedList> callback = new Callback<FeedList>() {
+		Callback<FeedInfo> callback = new Callback<FeedInfo>() {
 			@Override
-			public void success(FeedList result, Response response) {
+			public void success(FeedInfo result, Response response) {
 				setProgressBarIndeterminateVisibility(false);
-				session.navigation = result;
-				adapter.notifyDataSetChanged();
-				navigationReady();
+				session.setProfile(result);
+				profileReady();
 			}
 			@Override
 			public void failure(RetrofitError error) {
@@ -383,7 +375,32 @@ public class MainActivity extends BaseActivity implements OnFFReqsListener {
 					R.string.dlg_btn_retry, new OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							loadNavigation();
+							updateProfile();
+						}
+					}).setCancelable(true).create().show();
+			}
+		};
+		FFAPI.client_profile(session).get_profile("me", callback);
+	}
+	
+	private void updateNavigation() {
+		setProgressBarIndeterminateVisibility(true);
+		Callback<FeedList> callback = new Callback<FeedList>() {
+			@Override
+			public void success(FeedList result, Response response) {
+				setProgressBarIndeterminateVisibility(false);
+				session.setNavigation(result);
+				adapter.notifyDataSetChanged();
+			}
+			@Override
+			public void failure(RetrofitError error) {
+				setProgressBarIndeterminateVisibility(false);
+				new AlertDialog.Builder(MainActivity.this).setTitle(R.string.res_rfcall_failed).setMessage(
+					Commons.retrofitErrorText(error)).setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(
+					R.string.dlg_btn_retry, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							updateNavigation();
 						}
 					}).setCancelable(true).create().show();
 			}

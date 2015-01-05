@@ -1,11 +1,10 @@
 package net.ggelardi.flucso;
 
-import java.util.Date;
-
 import net.ggelardi.flucso.Commons.PK;
 import net.ggelardi.flucso.FFAPI.Entry;
 import net.ggelardi.flucso.FFAPI.Entry.Comment;
 import net.ggelardi.flucso.FFAPI.Feed;
+import net.ggelardi.flucso.FFAPI.Feed.Realtime;
 import retrofit.RetrofitError;
 import android.annotation.TargetApi;
 import android.app.IntentService;
@@ -32,12 +31,10 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	private LocalBroadcastManager notifier;
 	
 	private Boolean terminated = false;
-	private String cursor;
-	private long printv;
-	private long dmintv;
-	private long prlast;
-	private long dmlast;
-	private int dmnotf;
+	private long printv; // profile update interval (ms)
+	private long dmintv; // direct messages update interval (ms)
+	private int dmnotf; // direct messages notification type
+	private Realtime dmlast;
 	
 	public FFService() {
 		super("FFService");
@@ -57,10 +54,9 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 		session = FFSession.getInstance(this);
 		notifier = LocalBroadcastManager.getInstance(this);
 		
-		cursor = session.getPrefs().getString(PK.SERV_MSGS_CURS, "");
 		printv = session.getPrefs().getInt(PK.SERV_PROF, 0);
-		dmnotf = session.getPrefs().getInt(PK.SERV_NOTF, 0);
 		dmintv = session.getPrefs().getInt(PK.SERV_MSGS, 0);
+		dmnotf = session.getPrefs().getInt(PK.SERV_NOTF, 0);
 		
 		session.getPrefs().registerOnSharedPreferenceChangeListener(this);
 		
@@ -84,12 +80,6 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			terminated = true;
 			notifyError(e);
 		} finally {
-			try {
-				SharedPreferences.Editor editor = session.getPrefs().edit();
-				editor.putString(PK.SERV_MSGS_CURS, cursor);
-				editor.commit();
-			} catch (Exception err) {
-			}
 			stopSelf();
 		}
 	}
@@ -97,8 +87,6 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	@Override
 	public void onDestroy() {
 		Log.v("FFService", "onDestroy()");
-		
-		//terminated = true;
 		
 		session.getPrefs().unregisterOnSharedPreferenceChangeListener(this);
 		
@@ -124,24 +112,31 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 	}
 	
 	private boolean checkProfile() {
-		if (session.hasProfile() && (printv == 0 || printv > (new Date().getTime() - prlast) / (60 * 1000) % 60))
+		if (session.hasProfile() && session.getProfile().getAge() <= printv * 60000)
 			return true;
 		Log.v("FFService", "checkProfile()");
-		session.profile = FFAPI.client_profile(session).get_profile_sync("me");
-		session.initProfile();
-		prlast = new Date().getTime();
-		if (session.navigation == null)
-			session.navigation = FFAPI.client_profile(session).get_navigation_sync();
+		session.setProfile(FFAPI.client_profile(session).get_profile_sync("me"));
+		session.setNavigation(FFAPI.client_profile(session).get_navigation_sync());
 		notifier.sendBroadcast(new Intent(PROFILE_READY));
 		return true;
 	}
 	
 	private void checkMessages() {
-		if (dmnotf == 0 || dmintv > (new Date().getTime() - dmlast) / (60 * 1000) % 60)
+		if (dmnotf == 0)
+			return;
+		long chk = dmlast != null ? dmlast.timestamp : session.getPrefs().getLong(PK.SERV_MSGS_TIME, 0);
+		if (chk > 0 && System.currentTimeMillis() - chk <= dmintv * 60000)
 			return;
 		Log.v("FFService", "checkMessages()");
-		Feed data = FFAPI.client_feed(session).get_feed_updates("filter/direct", 50, cursor, 0, 1);
-		cursor = data.realtime.cursor;
+		String cursor = dmlast != null ? dmlast.cursor : session.getPrefs().getString(PK.SERV_MSGS_CURS, "");
+		Feed data = FFAPI.client_msgs(session).get_feed_updates("filter/direct", 50, cursor, 0, 1);
+		dmlast = data.realtime;
+		// save the token
+		SharedPreferences.Editor editor = session.getPrefs().edit();
+		editor.putString(PK.SERV_MSGS_CURS, dmlast.cursor);
+		editor.putLong(PK.SERV_MSGS_TIME, System.currentTimeMillis());
+		editor.commit();
+		// check for updates
 		boolean news = false;
 		boolean upds = false;
 		for (Entry e : data.entries) {
@@ -166,7 +161,6 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			NotificationManager nmg = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			nmg.notify(NOTIFICATION_ID, ncb.build());
 		}
-		dmlast = new Date().getTime();
 	}
 	
 	private void checkFeedCache() {
@@ -195,10 +189,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if (key.equals(PK.SERV_PROR)) {
-			prlast = 0;
-			Log.v("FFService", "profile update requested");
-		} else if (key.equals(PK.SERV_PROF)) {
+		if (key.equals(PK.SERV_PROF)) {
 			printv = sharedPreferences.getInt(PK.SERV_PROF, 0);
 			Log.v("FFService", "printv: " + Long.toString(printv));
 		} else if (key.equals(PK.SERV_NOTF)) {
