@@ -1,10 +1,12 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.serv;
 
-import net.ggelardi.flucso.Commons.PK;
-import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.Entry.Comment;
-import net.ggelardi.flucso.FFAPI.Feed;
-import net.ggelardi.flucso.FFAPI.Feed.Realtime;
+import net.ggelardi.flucso.MainActivity;
+import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.serv.Commons.PK;
+import net.ggelardi.flucso.serv.FFAPI.Comment;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
+import net.ggelardi.flucso.serv.FFAPI.Feed;
+import net.ggelardi.flucso.serv.FFAPI.Feed.Realtime;
 import retrofit.RetrofitError;
 import android.annotation.TargetApi;
 import android.app.IntentService;
@@ -176,7 +178,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 			session.cachedFeed.realtime = FFAPI.client_feed(session).get_feed_updates(fid, 20, "", 0, 1).realtime;
 		} else {
 			session.cachedFeed.update(FFAPI.client_feed(session).get_feed_updates(fid,
-				session.cachedFeed.entries.size(), session.cachedFeed.realtime.cursor, 0, 1));
+				session.cachedFeed.entries.size(), session.cachedFeed.realtime.cursor, 0, 1), true);
 		}
 	}
 	
@@ -186,7 +188,7 @@ public class FFService extends IntentService implements OnSharedPreferenceChange
 				return true;
 		return false;
 	}
-
+	
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if (key.equals(PK.SERV_PROF)) {

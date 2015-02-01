@@ -1,4 +1,4 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.comp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

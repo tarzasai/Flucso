@@ -1,14 +1,17 @@
 package net.ggelardi.flucso;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.ggelardi.flucso.Commons.PK;
-import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.Entry.Like;
-import net.ggelardi.flucso.FFAPI.Feed;
-import net.ggelardi.flucso.FFAPI.SimpleResponse;
+import net.ggelardi.flucso.data.FeedAdapter;
+import net.ggelardi.flucso.data.SubscrListAdapter;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.Commons.PK;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
+import net.ggelardi.flucso.serv.FFAPI.Feed;
+import net.ggelardi.flucso.serv.FFAPI.Like;
+import net.ggelardi.flucso.serv.FFAPI.SimpleResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

@@ -1,10 +1,15 @@
 package net.ggelardi.flucso;
 
-import net.ggelardi.flucso.Commons.PK;
-import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.FeedInfo;
-import net.ggelardi.flucso.FFAPI.FeedList;
-import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
+import net.ggelardi.flucso.BaseFragment.OnFFReqsListener;
+import net.ggelardi.flucso.data.DrawerAdapter;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFService;
+import net.ggelardi.flucso.serv.Commons.PK;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
+import net.ggelardi.flucso.serv.FFAPI.FeedInfo;
+import net.ggelardi.flucso.serv.FFAPI.FeedList;
+import net.ggelardi.flucso.serv.FFAPI.FeedList.SectionItem;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

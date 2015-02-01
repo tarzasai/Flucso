@@ -1,15 +1,16 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.serv;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import net.ggelardi.flucso.Commons.PK;
-import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.Feed;
-import net.ggelardi.flucso.FFAPI.FeedInfo;
-import net.ggelardi.flucso.FFAPI.FeedList;
-import net.ggelardi.flucso.FFAPI.IdentItem;
+import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.serv.Commons.PK;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
+import net.ggelardi.flucso.serv.FFAPI.Feed;
+import net.ggelardi.flucso.serv.FFAPI.FeedInfo;
+import net.ggelardi.flucso.serv.FFAPI.FeedList;
+import net.ggelardi.flucso.serv.FFAPI.IdentItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -49,6 +50,14 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 		
 		if (hasProfile()) // just a trick to reload profile and navigation data.
 			Log.v("FFSession", "Cached profile loaded");
+		
+		if (prefs.getBoolean(PK.PROXY_USED, false)) {
+			System.setProperty("http.proxyHost", prefs.getString(PK.PROXY_HOST, ""));
+			System.setProperty("http.proxyPort", prefs.getString(PK.PROXY_PORT, ""));
+		} else {
+			System.clearProperty("http.proxyHost");
+			System.clearProperty("http.proxyPort");
+		}
 		
 		loadFilters();
 	}
@@ -147,7 +156,7 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 	}
 	
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
 		if (key.equals(PK.USERNAME) || key.equals(PK.REMOTEKEY)) {
 			profile = null;
 			navigation = null;
@@ -160,6 +169,10 @@ public final class FFSession implements OnSharedPreferenceChangeListener {
 			FFAPI.dropClients();
 		} else if (key.equals(PK.FEED_HBK) || key.equals(PK.FEED_HBF) || key.equals(PK.FEED_SPO)) {
 			loadFilters();
+		} else if (key.equals(PK.PROXY_HOST) || key.equals(PK.PROXY_PORT)) {
+			System.setProperty("http.proxyHost", sp.getString(PK.PROXY_HOST, ""));
+			System.setProperty("http.proxyPort", sp.getString(PK.PROXY_PORT, ""));
+			FFAPI.dropClients();
 		}
 	}
 }

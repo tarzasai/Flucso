@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.serv.FFService;
+import net.ggelardi.flucso.serv.FFSession;
 
 public abstract class BaseActivity extends Activity {
 	

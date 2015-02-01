@@ -1,6 +1,8 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
-import net.ggelardi.flucso.FFAPI.Entry;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFSession;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;

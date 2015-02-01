@@ -1,4 +1,4 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,10 +6,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.ggelardi.flucso.FFAPI.BaseFeed;
-import net.ggelardi.flucso.FFAPI.FeedInfo;
-import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
-import net.ggelardi.flucso.FFAPI.SimpleResponse;
+import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.R.drawable;
+import net.ggelardi.flucso.R.id;
+import net.ggelardi.flucso.R.layout;
+import net.ggelardi.flucso.R.string;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFSession;
+import net.ggelardi.flucso.serv.FFAPI.BaseFeed;
+import net.ggelardi.flucso.serv.FFAPI.FeedInfo;
+import net.ggelardi.flucso.serv.FFAPI.FeedList;
+import net.ggelardi.flucso.serv.FFAPI.SimpleResponse;
+import net.ggelardi.flucso.serv.FFAPI.FeedList.SectionItem;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

@@ -88,7 +88,7 @@
                         <requestFocus />
                     </AutoCompleteTextView>
 
-                    <net.ggelardi.flucso.ExpandableHeightGridView
+                    <net.ggelardi.flucso.comp.ExpandableHeightGridView
                         android:id="@+id/gv_post_dsts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                         android:text="@string/test_nums_1" />
                 </LinearLayout>
 
-                <net.ggelardi.flucso.ExpandableHeightGridView
+                <net.ggelardi.flucso.comp.ExpandableHeightGridView
                     android:id="@+id/gv_post_atts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

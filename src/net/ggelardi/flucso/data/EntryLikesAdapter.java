@@ -1,7 +1,8 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
 import net.ggelardi.flucso.R;
-import net.ggelardi.flucso.FFAPI.Entry.Like;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.FFAPI.Like;
 import android.content.Context;
 import android.text.Html;
 import android.view.View;

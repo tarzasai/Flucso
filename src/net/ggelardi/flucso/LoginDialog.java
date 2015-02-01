@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.serv.FFSession;
 
 public class LoginDialog extends DialogPreference {
 	
@@ -31,10 +32,10 @@ public class LoginDialog extends DialogPreference {
 	protected View onCreateDialogView() {
 		View view = super.onCreateDialogView();
 		
-		mUsername = (EditText) view.findViewById(R.id.edtUsername);
-		mPassword = (EditText) view.findViewById(R.id.edtRemoteKey);
+		mUsername = (EditText) view.findViewById(R.id.txt_login_username);
+		mPassword = (EditText) view.findViewById(R.id.txt_login_remotekey);
 		
-		CheckBox mShowRKey = (CheckBox) view.findViewById(R.id.chkPwdVisible);
+		CheckBox mShowRKey = (CheckBox) view.findViewById(R.id.chk_login_showremkey);
 		mShowRKey.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
@@ -45,7 +46,7 @@ public class LoginDialog extends DialogPreference {
 			}
 		});
 		
-		Button mGoToRKey = (Button) view.findViewById(R.id.btnRemoteKey);
+		Button mGoToRKey = (Button) view.findViewById(R.id.btn_login_gotoremkey);
 		mGoToRKey.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent browse = new Intent(Intent.ACTION_VIEW, Uri.parse("http://friendfeed.com/remotekey"));

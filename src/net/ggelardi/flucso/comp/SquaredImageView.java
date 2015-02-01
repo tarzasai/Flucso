@@ -1,11 +1,11 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.comp;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /** An image view which always remains square with respect to its width. */
-final class SquaredImageView extends ImageView {
+public class SquaredImageView extends ImageView {
 	
 	public SquaredImageView(Context context) {
 		super(context);

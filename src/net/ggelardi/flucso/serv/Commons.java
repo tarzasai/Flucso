@@ -1,4 +1,4 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.serv;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,13 +23,14 @@ public class Commons {
 	// we better don't tell FF and other sites we are a phone, if we want to receive all images as supposed:
 	public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 5.1; rv:16.0) Gecko/20100101 Firefox/16.0";
 	
-	static final String idITDCCSS = "e/f1e550600ce349cc90271b3284bb22c3";
-	
-	static class PK {
+	public static class PK {
 		public static final String USERNAME = "Username";
 		public static final String REMOTEKEY = "RemoteKey";
 		public static final String STARTUP = "pk_startup";
 		public static final String LOCALE = "pk_locale";
+		public static final String PROXY_USED = "pk_proxy_active";
+		public static final String PROXY_HOST = "pk_proxy_host";
+		public static final String PROXY_PORT = "pk_proxy_port";
 		public static final String PROF_INFO = "pk_prof_info";
 		public static final String PROF_LIST = "pk_prof_list";
 		public static final String FEED_UPD = "pk_feed_upd";
@@ -43,14 +44,13 @@ public class Commons {
 		public static final String SERV_PROF = "pk_serv_prof";
 		public static final String SERV_NOTF = "pk_serv_notf";
 		public static final String SERV_MSGS = "pk_serv_msgs";
-		//
 		public static final String SERV_MSGS_TIME = "pk_serv_msgs_time";
 		public static final String SERV_MSGS_CURS = "pk_serv_msgs_cursor";
 	}
 	
-	static ArrayList<String> bFeeds = new ArrayList<String>();
-	static ArrayList<String> bWords = new ArrayList<String>();
-	static boolean bSpoilers = false;
+	public static ArrayList<String> bFeeds = new ArrayList<String>();
+	public static ArrayList<String> bWords = new ArrayList<String>();
+	public static boolean bSpoilers = false;
 	
 	public static boolean isConnected(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -149,7 +149,7 @@ public class Commons {
 		return null;
 	}
 	
-	static class YouTube {
+	public static class YouTube {
 		
 		public static boolean isVideoUrl(String url) {
 			return url.contains("www.youtube.com") || url.contains("://youtu.be/");

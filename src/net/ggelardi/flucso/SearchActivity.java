@@ -1,7 +1,8 @@
 package net.ggelardi.flucso;
 
-import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
-import net.ggelardi.flucso.SubscrAllAdapter.Scope;
+import net.ggelardi.flucso.data.SubscrAllAdapter;
+import net.ggelardi.flucso.data.SubscrAllAdapter.Scope;
+import net.ggelardi.flucso.serv.FFAPI.FeedList.SectionItem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;

@@ -99,7 +99,7 @@
 
     </RelativeLayout>
 
-    <net.ggelardi.flucso.ActionEditText
+    <net.ggelardi.flucso.comp.ActionEditText
         android:id="@+id/edt_entry_comm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

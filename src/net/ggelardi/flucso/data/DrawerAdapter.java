@@ -1,7 +1,13 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
-import net.ggelardi.flucso.FFAPI.FeedList.Section;
-import net.ggelardi.flucso.FFAPI.FeedList.SectionItem;
+import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.R.id;
+import net.ggelardi.flucso.R.layout;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFSession;
+import net.ggelardi.flucso.serv.FFAPI.FeedList;
+import net.ggelardi.flucso.serv.FFAPI.FeedList.Section;
+import net.ggelardi.flucso.serv.FFAPI.FeedList.SectionItem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

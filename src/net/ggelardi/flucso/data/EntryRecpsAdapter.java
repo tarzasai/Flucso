@@ -1,6 +1,12 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
-import net.ggelardi.flucso.FFAPI.BaseFeed;
+import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.R.drawable;
+import net.ggelardi.flucso.R.id;
+import net.ggelardi.flucso.R.layout;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFAPI.BaseFeed;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;

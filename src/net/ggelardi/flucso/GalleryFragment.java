@@ -1,9 +1,11 @@
 package net.ggelardi.flucso;
 
 import net.ggelardi.flucso.R;
-import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.FFAPI.Entry.Attachment;
-import net.ggelardi.flucso.FFAPI.Entry.Thumbnail;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
+import net.ggelardi.flucso.serv.FFAPI.Entry.Attachment;
+import net.ggelardi.flucso.serv.FFAPI.Entry.Thumbnail;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

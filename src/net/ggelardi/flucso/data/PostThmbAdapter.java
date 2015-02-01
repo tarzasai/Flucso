@@ -1,8 +1,13 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
+
 import java.util.ArrayList;
+
 import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.R.drawable;
+import net.ggelardi.flucso.comp.SquaredImageView;
+import net.ggelardi.flucso.serv.Commons;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;

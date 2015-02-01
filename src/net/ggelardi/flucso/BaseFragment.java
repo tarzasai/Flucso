@@ -1,5 +1,7 @@
 package net.ggelardi.flucso;
 
+import net.ggelardi.flucso.serv.FFService;
+import net.ggelardi.flucso.serv.FFSession;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -12,7 +14,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import net.ggelardi.flucso.R;
 
 public abstract class BaseFragment extends Fragment {
 	
@@ -118,4 +119,19 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	protected abstract void initFragment();
+	
+	public interface OnFFReqsListener {
+		
+		void openInfo(String feed_id);
+		
+		void openFeed(String name, String feed_id, String query);
+		
+		void openEntry(String entry_id);
+		
+		void openGallery(String entry_id, int position);
+		
+		void openPostNew(String[] dsts, String body, String link, String[] tmbs);
+		
+		void openPostEdit(String entry_id, String body);
+	}
 }

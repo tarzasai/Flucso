@@ -8,9 +8,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import net.ggelardi.flucso.FFAPI.BaseFeed;
-import net.ggelardi.flucso.FFAPI.Entry;
-import net.ggelardi.flucso.PostFileAdapter.ImageRef;
+import net.ggelardi.flucso.comp.ExpandableHeightGridView;
+import net.ggelardi.flucso.data.PostDSelAdapter;
+import net.ggelardi.flucso.data.PostDSrcAdapter;
+import net.ggelardi.flucso.data.PostFileAdapter;
+import net.ggelardi.flucso.data.PostThmbAdapter;
+import net.ggelardi.flucso.data.PostFileAdapter.ImageRef;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.FFAPI;
+import net.ggelardi.flucso.serv.FFAPI.BaseFeed;
+import net.ggelardi.flucso.serv.FFAPI.Entry;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -341,7 +348,8 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-
+		
+		dsts = savedInstanceState.getStringArray("dsts");
 		body = savedInstanceState.getString("body", "");
 		comm = savedInstanceState.getString("comment", "");
 		snap = savedInstanceState.getParcelable("photo");
@@ -350,6 +358,8 @@ public class PostActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		
+		outState.putStringArray("dsts", aDsts.getIDs());
 		
 		String text = edtBody.getText().toString();
 		if (!TextUtils.isEmpty(text))

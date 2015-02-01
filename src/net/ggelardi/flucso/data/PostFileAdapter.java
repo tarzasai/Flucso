@@ -1,7 +1,9 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
 import java.util.ArrayList;
+
 import net.ggelardi.flucso.R;
+import net.ggelardi.flucso.serv.Commons;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -81,10 +83,10 @@ public class PostFileAdapter extends BaseAdapter {
 		}
 	}
 	
-	static class ImageRef {
-		Uri uri;
-		String mime;
-		String path;
+	public static class ImageRef {
+		public Uri uri;
+		public String mime;
+		public String path;
 		
 		public String getMimeExt() {
 			return mime != null && mime.indexOf("/") > 0 ? mime.split("/")[1] : "";

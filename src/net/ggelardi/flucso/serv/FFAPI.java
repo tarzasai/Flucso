@@ -1,17 +1,17 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.serv;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.ggelardi.flucso.Commons.PK;
-import net.ggelardi.flucso.FFAPI.Entry.Comment;
-import net.ggelardi.flucso.FFAPI.Entry.Like;
+import net.ggelardi.flucso.serv.Commons.PK;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +41,7 @@ public class FFAPI {
 	
 	// private static final String API_SEC = "d5d5e78a0ced4a1da49230fe09696353078d9f37b0a841a888e24c064e88212d";
 	
-	interface FF {
+	public interface FF {
 		
 		// async
 		
@@ -126,19 +126,19 @@ public class FFAPI {
 		Entry get_entry(@EncodedPath("entry_id") String entry_id);
 	}
 	
-	static class SimpleResponse {
-		boolean success = false; // unlike & unsubscribe?
-		String status = ""; // subscribe & unsubscribe?
+	public static class SimpleResponse {
+		public boolean success = false; // unlike & unsubscribe?
+		public String status = ""; // subscribe & unsubscribe?
 	}
 	
 	static class IdentItem {
-		static String accountID = "";
-		static String accountName = "You";
-		static String accountFeed = "Your feed";
+		public static String accountID = "";
+		public static String accountName = "You";
+		public static String accountFeed = "Your feed";
 		
-		String id = "";
-		List<String> commands = new ArrayList<String>();
-		long timestamp = System.currentTimeMillis();
+		public String id = "";
+		public List<String> commands = new ArrayList<String>();
+		public long timestamp = System.currentTimeMillis();
 		
 		public long getAge() {
 			return System.currentTimeMillis() - timestamp;
@@ -149,12 +149,13 @@ public class FFAPI {
 		}
 	}
 	
-	static class BaseFeed extends IdentItem {
-		String name;
-		String type = "";
-		String description;
+	public static class BaseFeed extends IdentItem {
+		public String name;
+		public String type = "";
+		public String description;
+		
 		@SerializedName("private")
-		Boolean locked = false;
+		public Boolean locked = false;
 		
 		public boolean isMe() {
 			return !TextUtils.isEmpty(accountID) && isIt(accountID);
@@ -201,11 +202,11 @@ public class FFAPI {
 		}
 	}
 	
-	static class Feed extends BaseFeed {
-		List<Entry> entries = new ArrayList<Entry>();
-		Realtime realtime;
+	public static class Feed extends BaseFeed {
+		public List<Entry> entries = new ArrayList<Entry>();
+		public Realtime realtime;
 		
-		static String lastDeletedEntry = "";
+		public static String lastDeletedEntry = "";
 		
 		public int indexOf(String eid) {
 			for (int i = 0; i < entries.size(); i++)
@@ -232,7 +233,7 @@ public class FFAPI {
 			return res;
 		}
 		
-		public int update(Feed feed) {
+		public int update(Feed feed, boolean sortLikeSite) {
 			realtime = feed.realtime;
 			timestamp = feed.timestamp;
 			int res = 0;
@@ -254,7 +255,19 @@ public class FFAPI {
 						lastDeletedEntry = "";
 						break;
 					}
+			if (sortLikeSite && res > 0) {
+				Collections.sort(entries, new Comparator<BaseEntry>() {
+				    @Override
+				    public int compare(BaseEntry o1, BaseEntry o2) {
+				        return o1.date.compareTo(o2.date) * -1;
+				    }
+				});
+			}
 			return res;
+		}
+		
+		public int update(Feed feed) {
+			return update(feed, false);
 		}
 		
 		public void checkLocalHide() {
@@ -262,22 +275,22 @@ public class FFAPI {
 				e.checkLocalHide();
 		}
 		
-		static class Realtime {
-			String cursor;
-			final long timestamp = System.currentTimeMillis();
+		public static class Realtime {
+			public String cursor;
+			public final long timestamp = System.currentTimeMillis();
 		}
 	}
 	
-	static class BaseEntry extends IdentItem {
-		BaseFeed from;
-		Date date;
-		String body;
-		String rawBody;
-		Origin via;
-		boolean created;
-		boolean updated;
-		boolean banned = false; // local
-		boolean spoiler = false; // local
+	public static class BaseEntry extends IdentItem {
+		public BaseFeed from;
+		public Date date;
+		public String body;
+		public String rawBody;
+		public Origin via;
+		public boolean created;
+		public boolean updated;
+		public boolean banned = false; // local
+		public boolean spoiler = false; // local
 		
 		public boolean isMine() {
 			return from.isMe();
@@ -346,27 +359,27 @@ public class FFAPI {
 			}
 		}
 		
-		static class Origin {
-			String name;
-			String url;
+		public static class Origin {
+			public String name;
+			public String url;
 		}
 	}
 	
-	static class Entry extends BaseEntry {
-		String rawLink;
-		String url;
-		List<Comment> comments = new ArrayList<Comment>();
-		List<Like> likes = new ArrayList<Like>();
-		BaseFeed[] to = new BaseFeed[] {};
-		Thumbnail[] thumbnails = new Thumbnail[] {};
-		Fof fof;
-		String fofHtml;
-		String shortId = "";
-		String shortUrl = "";
-		Attachment[] files = new Attachment[] {};
-		Coordinates geo;
-		boolean hidden = false; // undocumented
-		int thumbpos = 0; // local
+	public static class Entry extends BaseEntry {
+		public String rawLink;
+		public String url;
+		public List<Comment> comments = new ArrayList<Comment>();
+		public List<Like> likes = new ArrayList<Like>();
+		public BaseFeed[] to = new BaseFeed[] {};
+		public Thumbnail[] thumbnails = new Thumbnail[] {};
+		public Fof fof;
+		public String fofHtml;
+		public String shortId = "";
+		public String shortUrl = "";
+		public Attachment[] files = new Attachment[] {};
+		public Coordinates geo;
+		public boolean hidden = false; // undocumented
+		public int thumbpos = 0; // local
 		
 		@Override
 		public void update(BaseEntry item) {
@@ -551,59 +564,21 @@ public class FFAPI {
 			thumbpos = thumbnails.length > 0 ? (thumbpos + (thumbnails.length - 1)) % thumbnails.length : 0;
 		}
 		
-		static class Comment extends BaseEntry {
-			// compact view only (plus body):
-			Boolean placeholder = false;
-			int num;
-			
-			@Override
-			public void checkLocalHide() {
-				if (placeholder)
-					return;
-				super.checkLocalHide();
-				if (body.toLowerCase(Locale.getDefault()).equals("sp") ||
-					body.toLowerCase(Locale.getDefault()).equals("spoiler") ||
-					rawBody.toLowerCase(Locale.getDefault()).equals("sp") ||
-					rawBody.toLowerCase(Locale.getDefault()).equals("spoiler"))
-					spoiler = true;
-			}
+		public static class Fof {
+			public String type;
+			public BaseFeed from;
 		}
 		
-		static class Like {
-			Date date;
-			BaseFeed from;
-			boolean created;
-			boolean updated;
-			// compact view only:
-			String body;
-			Boolean placeholder = false;
-			int num;
-			
-			public boolean isMine() {
-				return from.isMe();
-			}
-			
-			public String getFuzzyTime() {
-				return DateUtils.getRelativeTimeSpanString(date.getTime(), System.currentTimeMillis(),
-					DateUtils.MINUTE_IN_MILLIS).toString();
-			}
-		}
-		
-		static class Fof {
-			String type;
-			BaseFeed from;
-		}
-		
-		static class Thumbnail {
-			String url = "";
-			String link = "";
-			int width = 0;
-			int height = 0;
-			String player = "";
-			int rotation = 0; // local
-			boolean landscape = true; // local
-			String videoId = null; // local
-			String videoUrl = null; // local
+		public static class Thumbnail {
+			public String url = "";
+			public String link = "";
+			public int width = 0;
+			public int height = 0;
+			public String player = "";
+			public int rotation = 0; // local
+			public boolean landscape = true; // local
+			public String videoId = null; // local
+			public String videoUrl = null; // local
 			
 			public boolean isFFMediaPic() {
 				return link.indexOf("/m.friendfeed-media.com/") > 0;
@@ -636,26 +611,65 @@ public class FFAPI {
 			}
 		}
 		
-		static class Attachment {
-			String url;
-			String type;
-			String name;
-			String icon;
-			int size = 0;
+		public static class Attachment {
+			public String url;
+			public String type;
+			public String name;
+			public String icon;
+			public int size = 0;
 		}
 		
-		static class Coordinates {
-			String lat;
+		public static class Coordinates {
+			public String lat;
+			
 			@SerializedName("long")
-			String lon;
+			public String lon;
 		}
 	}
 	
-	static class FeedInfo extends BaseFeed {
-		BaseFeed[] feeds = new BaseFeed[] {}; // lists only
-		BaseFeed[] subscriptions = new BaseFeed[] {}; // users only
-		BaseFeed[] subscribers = new BaseFeed[] {}; // users and groups
-		BaseFeed[] admins = new BaseFeed[] {}; // groups only
+	public static class Comment extends BaseEntry {
+		// compact view only (plus body):
+		public Boolean placeholder = false;
+		public int num;
+		
+		@Override
+		public void checkLocalHide() {
+			if (placeholder)
+				return;
+			super.checkLocalHide();
+			if (body.toLowerCase(Locale.getDefault()).equals("sp") ||
+				body.toLowerCase(Locale.getDefault()).equals("spoiler") ||
+				rawBody.toLowerCase(Locale.getDefault()).equals("sp") ||
+				rawBody.toLowerCase(Locale.getDefault()).equals("spoiler"))
+				spoiler = true;
+		}
+	}
+	
+	public static class Like {
+		public Date date;
+		public BaseFeed from;
+		public boolean created;
+		public boolean updated;
+		// compact view only:
+		public String body;
+		public Boolean placeholder = false;
+		public int num;
+		
+		public boolean isMine() {
+			return from.isMe();
+		}
+		
+		public String getFuzzyTime() {
+			return DateUtils.getRelativeTimeSpanString(date.getTime(), System.currentTimeMillis(),
+				DateUtils.MINUTE_IN_MILLIS).toString();
+		}
+	}
+	
+	public static class FeedInfo extends BaseFeed {
+		public BaseFeed[] feeds = new BaseFeed[] {}; // lists only
+		public BaseFeed[] subscriptions = new BaseFeed[] {}; // users only
+		public BaseFeed[] subscribers = new BaseFeed[] {}; // users and groups
+		public BaseFeed[] admins = new BaseFeed[] {}; // groups only
 		
 		public BaseFeed findFeedById(String fid) {
 			for (BaseFeed f: subscriptions)
@@ -668,13 +682,13 @@ public class FFAPI {
 		}
 	}
 	
-	static class FeedList {
-		SectionItem[] main;
-		SectionItem[] lists;
-		SectionItem[] groups;
-		SectionItem[] searches;
-		Section[] sections;
-		long timestamp = System.currentTimeMillis();
+	public static class FeedList {
+		public SectionItem[] main;
+		public SectionItem[] lists;
+		public SectionItem[] groups;
+		public SectionItem[] searches;
+		public Section[] sections;
+		public long timestamp = System.currentTimeMillis();
 		
 		public long getAge() {
 			return System.currentTimeMillis() - timestamp;
@@ -688,14 +702,14 @@ public class FFAPI {
 			return null;
 		}
 		
-		static class SectionItem extends BaseFeed {
-			String query = "";
+		public static class SectionItem extends BaseFeed {
+			public String query = "";
 		}
 		
-		static class Section {
-			String id;
-			String name;
-			SectionItem[] feeds;
+		public static class Section {
+			public String id;
+			public String name;
+			public SectionItem[] feeds;
 			
 			public boolean hasFeed(String feed_id) {
 				for (SectionItem si : feeds)
@@ -732,7 +746,7 @@ public class FFAPI {
 						request.addHeader("User-Agent", Commons.USER_AGENT);
 						request.addQueryParam("locale", session.getPrefs().getString(PK.LOCALE, "en"));
 					}
-				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+				}).setLogLevel(RestAdapter.LogLevel.NONE).setClient(new WaitingUCC()).build().create(FF.class);
 		return CLIENT_PROFILE;
 	}
 	
@@ -750,7 +764,7 @@ public class FFAPI {
 						request.addQueryParam("maxcomments", "1000");
 						request.addQueryParam("raw", "1");
 					}
-				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+				}).setLogLevel(RestAdapter.LogLevel.NONE).setClient(new WaitingUCC()).build().create(FF.class);
 		return CLIENT_MSGS;
 	}
 	
@@ -773,7 +787,7 @@ public class FFAPI {
 						if (session.getPrefs().getBoolean(PK.FEED_HID, true))
 							request.addQueryParam("hidden", "1");
 					}
-				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+				}).setLogLevel(RestAdapter.LogLevel.NONE).setClient(new WaitingUCC()).build().create(FF.class);
 		return CLIENT_FEED;
 	}
 	
@@ -790,7 +804,7 @@ public class FFAPI {
 						request.addQueryParam("locale", session.getPrefs().getString(PK.LOCALE, "en"));
 						request.addQueryParam("raw", "1");
 					}
-				}).setLogLevel(RestAdapter.LogLevel.NONE).build().create(FF.class);
+				}).setLogLevel(RestAdapter.LogLevel.NONE).setClient(new WaitingUCC()).build().create(FF.class);
 		return CLIENT_ENTRY;
 	}
 	

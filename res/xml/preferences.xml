@@ -24,6 +24,11 @@
         android:summary="@string/pk_locale_summ"
         android:title="@string/pk_locale_title" />
 
+    <net.ggelardi.flucso.ProxyDialog
+        android.dialogIcon="@android:drawable/ic_dialog_info"
+        android:summary="@string/pd_proxy_summ"
+        android:title="@string/pd_proxy_title" />
+
     <PreferenceCategory
         android:key="pc_feed"
         android:title="@string/pc_feed_title" >
@@ -74,7 +79,7 @@
         android:key="pc_entry"
         android:title="@string/pc_entry_title" >
         
-        <net.ggelardi.flucso.IntListPreference
+        <net.ggelardi.flucso.comp.IntListPreference
             android:key="pk_entry_imco"
             android:defaultValue="1"
             android:dialogTitle="@string/pk_entry_imco_title"
@@ -89,7 +94,7 @@
         android:key="pc_service"
         android:title="@string/pc_serv_title" >
         
-        <net.ggelardi.flucso.IntListPreference
+        <net.ggelardi.flucso.comp.IntListPreference
             android:key="pk_serv_prof"
             android:defaultValue="30"
             android:dialogTitle="@string/pk_serv_prof_title"
@@ -98,7 +103,7 @@
             android:summary="@string/pk_serv_prof_summ"
             android:title="@string/pk_serv_prof_title" />
         
-        <net.ggelardi.flucso.IntListPreference
+        <net.ggelardi.flucso.comp.IntListPreference
             android:key="pk_serv_notf"
             android:defaultValue="0"
             android:dialogTitle="@string/pk_serv_notf_title"
@@ -107,7 +112,7 @@
             android:summary="@string/pk_serv_notf_summ"
             android:title="@string/pk_serv_notf_title" />
         
-        <net.ggelardi.flucso.IntListPreference
+        <net.ggelardi.flucso.comp.IntListPreference
             android:key="pk_serv_msgs"
             android:defaultValue="10"
             android:dialogTitle="@string/pk_serv_msgs_title"

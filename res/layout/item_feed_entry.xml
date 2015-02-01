@@ -41,7 +41,7 @@
 
             </LinearLayout>
 
-            <net.ggelardi.flucso.WwTextView
+            <net.ggelardi.flucso.comp.WwTextView
                 android:id="@+id/txt_feed_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

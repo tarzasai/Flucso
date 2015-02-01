@@ -1,8 +1,9 @@
-package net.ggelardi.flucso;
+package net.ggelardi.flucso.data;
 
 import net.ggelardi.flucso.R;
-import net.ggelardi.flucso.Commons.PK;
-import net.ggelardi.flucso.FFAPI.Entry.Comment;
+import net.ggelardi.flucso.serv.Commons;
+import net.ggelardi.flucso.serv.Commons.PK;
+import net.ggelardi.flucso.serv.FFAPI.Comment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
